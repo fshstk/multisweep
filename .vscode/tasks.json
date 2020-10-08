@@ -73,7 +73,7 @@
       "type": "process",
       "label": "Open Mac debug build",
       "command": "open",
-      "args": ["Debug/*.app"],
+      "args": ["Debug/NewProject.app"],
       "options": {
         "cwd": "${workspaceFolder}/Builds/MacOSX/build"
       }
