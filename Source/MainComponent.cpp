@@ -3,6 +3,8 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
+    // Make sure you set the size of the component after
+    // you add any child components.
     setSize (600, 400);
 }
 
