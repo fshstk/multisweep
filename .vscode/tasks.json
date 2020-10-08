@@ -1,0 +1,82 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "Linux Debug",
+      "command": "make",
+      "args": ["CONFIG=Debug"],
+      "options": {
+        "cwd": "${workspaceFolder}/Builds/LinuxMakefile"
+      },
+      "problemMatcher": {
+        "base": "$gcc",
+        "fileLocation": [
+          "autoDetect",
+          "${workspaceFolder}/Builds/LinuxMakeFile"
+        ]
+      },
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "label": "Linux Release",
+      "command": "make",
+      "args": ["CONFIG=Release"],
+      "options": {
+        "cwd": "${workspaceFolder}/Builds/LinuxMakefile"
+      },
+      "problemMatcher": {
+        "base": "$gcc",
+        "fileLocation": [
+          "autoDetect",
+          "${workspaceFolder}/Builds/LinuxMakeFile"
+        ]
+      },
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "label": "Mac Debug",
+      "command": "xcodebuild",
+      "args": ["-configuration", "Debug"],
+      "options": {
+        "cwd": "${workspaceFolder}/Builds/MacOSX"
+      },
+      "problemMatcher": {
+        "base": "$gcc",
+        "fileLocation": [
+          "autoDetect",
+          "${workspaceFolder}/Builds/LinuxMakeFile"
+        ]
+      },
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "label": "Mac Release",
+      "command": "xcodebuild",
+      "args": ["-configuration", "Release"],
+      "options": {
+        "cwd": "${workspaceFolder}/Builds/MacOSX"
+      },
+      "problemMatcher": {
+        "base": "$gcc",
+        "fileLocation": [
+          "autoDetect",
+          "${workspaceFolder}/Builds/LinuxMakeFile"
+        ]
+      },
+      "group": "build"
+    },
+    {
+      "type": "process",
+      "label": "Open Mac debug build",
+      "command": "open",
+      "args": ["Debug/*.app"],
+      "options": {
+        "cwd": "${workspaceFolder}/Builds/MacOSX/build"
+      }
+    }
+  ]
+}

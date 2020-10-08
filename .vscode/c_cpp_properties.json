@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "name": "Mac",
+      "includePath": ["${workspaceFolder}/**"],
+      "browse": {
+        "path": ["${workspaceFolder}", "~/JUCE"]
+      },
+      "compilerPath": "/usr/bin/clang",
+      "cppStandard": "c++14"
+    },
+    {
+      "name": "Linux",
+      "includePath": ["${workspaceFolder}/**"],
+      "browse": {
+        "path": ["${workspaceFolder}", "~/JUCE"]
+      },
+      "compilerPath": "/usr/bin/clang",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
