@@ -17,17 +17,15 @@ features:
 
 ## Usage
 
-### Install dependencies
+It's important that you **follow these instructions in the right order**. If you
+don't, builds will probably fail.
 
-You will need to have XCode installed. You won't need to open it ever, but VS
-Code's build tasks use the generated XCode project to determine the build
+You will need the [JUCE Framework](https://juce.com/) if you don't have it
+already.
+
+You will also need to have XCode installed. You won't need to open it ever, but
+VS Code's build tasks use the generated XCode project to determine the build
 configuration.
-
-Next, download and install the [JUCE Framework](https://juce.com/). Open
-`TODO.jucer` in _Projucer_ and open & save the project. You don't need to change
-any settings, this just generates the `Build` and `JuceLibraryCode` directories
-that are omitted by `.gitignore`. However this would be a good point to rename
-your project, and to customize any settings, or add any modules you might want.
 
 ### Merge branch
 
@@ -54,6 +52,14 @@ I've included a shell script that takes care of all this:
 chmod +x init.sh
 ./init.sh
 ```
+
+### Generate JUCE files
+
+Open `NewProject.jucer` in _Projucer_ and open & save the project. You don't
+need to change any settings, this just generates the `Build` and
+`JuceLibraryCode` directories that are omitted by `.gitignore`. However this
+would be a good point to rename your project, and to customize any settings, or
+add any modules you might want.
 
 ### Get started
 
