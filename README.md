@@ -65,7 +65,8 @@ add any modules you might want.
 
 That's it. If you have the
 [command-line](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line)
-tool installed, just run `code path/to/project` to get started!
+tool installed, just run `code path/to/project` to get started! Run the build
+task and check if it succeeds.
 
 You may be prompted to install VS Code's [C++
 extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools),
