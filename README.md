@@ -11,9 +11,9 @@ features:
 - Pre-configured IntelliSense search paths with tooltips for JUCE modules;
 - Build tasks for _Release_ and _Debug_ targets that parse the compiler output
   right back into VS Code in the case of errors/warnings. Just hit `Cmd-Shift-B`
-  and select your build target.
+  and select your build target;
 - Task for opening the app after building (`Cmd-Shift-B` → `Run Task` →
-  `Open Mac debug build`)
+  `Open Mac debug build`).
 
 ## Usage
 
@@ -29,25 +29,30 @@ any settings, this just generates the `Build` and `JuceLibraryCode` directories
 that are omitted by `.gitignore`. However this would be a good point to rename
 your project, and to customize any settings, or add any modules you might want.
 
-### Change JUCE folder location
+### Merge branch
 
-This template assumes that the JUCE framework directory is located in your home
-folder. If you have installed JUCE somewhere else, make sure to change your
-browse path in `.vscode/c_cpp_properties.json` for the Mac or Linux
-configuration.
+You will need to merge either the `app`, `audioapp` or the `plugin` branch into
+your `master` branch, depending on what sort of project you want to create.
 
-### Merge branch and clean up repository
+### Run init.sh
 
-You will need to merge either the `app` or the `plugin` branch into your
-`master` branch, depending on whether you want to make an audio application or a
-plug-in respectively.
+Before you get started with your project, you will need to:
 
-If you want to start with a fresh repository, you can also run something like
-[this](https://stackoverflow.com/a/23486788/13135932) to reset the commit
-history:
+- Change `<JUCERPROJECT id="......">` to a new and unique six-character
+  alphanumeric ID in `NewProject.jucer`;
+- Update the location of your JUCE library directory in
+  `.vscode/c_cpp_properties.json` (this defaults to `~/JUCE`, so if this is where
+  you have installed JUCE, there's no need to change anything);
+- Find/replace all occurrences of `NewProject` with your new project name.
+  (Careful: this is used as part of the default class names, so make sure you
+  format your name in PascalCase);
+- Rename `NewProject.jucer`.
+
+I've included a shell script that takes care of all this:
 
 ```bash
-git reset $(git commit-tree HEAD^{tree} -m "Initial commit")
+chmod +x init.sh
+./init.sh
 ```
 
 ### Get started
@@ -59,6 +64,14 @@ tool installed, just run `code path/to/project` to get started!
 You may be prompted to install VS Code's [C++
 extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools),
 which you will need for the features in this template to work properly.
+
+If you want to start with a fresh repository, you can also run something like
+[this](https://stackoverflow.com/a/23486788/13135932) to reset the commit
+history:
+
+```bash
+git reset $(git commit-tree HEAD^{tree} -m "Initial commit")
+```
 
 ## License
 
