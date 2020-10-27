@@ -10,8 +10,8 @@
 #include "PluginProcessor.h"
 
 //==============================================================================
-NewProjectAudioProcessorEditor::NewProjectAudioProcessorEditor(
-  NewProjectAudioProcessor& p)
+MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
+  MultiSweepAudioProcessor& p)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
 {
@@ -20,10 +20,10 @@ NewProjectAudioProcessorEditor::NewProjectAudioProcessorEditor(
   setSize(400, 300);
 }
 
-NewProjectAudioProcessorEditor::~NewProjectAudioProcessorEditor() {}
+MultiSweepAudioProcessorEditor::~MultiSweepAudioProcessorEditor() {}
 
 //==============================================================================
-void NewProjectAudioProcessorEditor::paint(juce::Graphics& g)
+void MultiSweepAudioProcessorEditor::paint(juce::Graphics& g)
 {
   // (Our component is opaque, so we must completely fill the background with a
   // solid colour)
@@ -36,7 +36,7 @@ void NewProjectAudioProcessorEditor::paint(juce::Graphics& g)
     "Hello World!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
-void NewProjectAudioProcessorEditor::resized()
+void MultiSweepAudioProcessorEditor::resized()
 {
   // This is generally where you'll want to lay out the positions of any
   // subcomponents in your editor..

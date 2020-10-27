@@ -73,7 +73,7 @@
       "type": "process",
       "label": "Open Mac debug build",
       "command": "open",
-      "args": ["Debug/NewProject.app"],
+      "args": ["Debug/MultiSweep.app"],
       "options": {
         "cwd": "${workspaceFolder}/Builds/MacOSX/build"
       }

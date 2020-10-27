@@ -13,12 +13,12 @@
 //==============================================================================
 /**
  */
-class NewProjectAudioProcessor : public juce::AudioProcessor
+class MultiSweepAudioProcessor : public juce::AudioProcessor
 {
 public:
   //============================================================================
-  NewProjectAudioProcessor();
-  ~NewProjectAudioProcessor() override;
+  MultiSweepAudioProcessor();
+  ~MultiSweepAudioProcessor() override;
 
   //============================================================================
   void prepareToPlay(double sampleRate, int samplesPerBlock) override;
@@ -55,5 +55,5 @@ public:
 
 private:
   //============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NewProjectAudioProcessor)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessor)
 };

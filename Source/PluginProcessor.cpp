@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-NewProjectAudioProcessor::NewProjectAudioProcessor()
+MultiSweepAudioProcessor::MultiSweepAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
   : AudioProcessor(
       BusesProperties()
@@ -24,15 +24,15 @@ NewProjectAudioProcessor::NewProjectAudioProcessor()
 #endif
 {}
 
-NewProjectAudioProcessor::~NewProjectAudioProcessor() {}
+MultiSweepAudioProcessor::~MultiSweepAudioProcessor() {}
 
 //==============================================================================
-const juce::String NewProjectAudioProcessor::getName() const
+const juce::String MultiSweepAudioProcessor::getName() const
 {
   return JucePlugin_Name;
 }
 
-bool NewProjectAudioProcessor::acceptsMidi() const
+bool MultiSweepAudioProcessor::acceptsMidi() const
 {
 #if JucePlugin_WantsMidiInput
   return true;
@@ -41,7 +41,7 @@ bool NewProjectAudioProcessor::acceptsMidi() const
 #endif
 }
 
-bool NewProjectAudioProcessor::producesMidi() const
+bool MultiSweepAudioProcessor::producesMidi() const
 {
 #if JucePlugin_ProducesMidiOutput
   return true;
@@ -50,7 +50,7 @@ bool NewProjectAudioProcessor::producesMidi() const
 #endif
 }
 
-bool NewProjectAudioProcessor::isMidiEffect() const
+bool MultiSweepAudioProcessor::isMidiEffect() const
 {
 #if JucePlugin_IsMidiEffect
   return true;
@@ -59,50 +59,50 @@ bool NewProjectAudioProcessor::isMidiEffect() const
 #endif
 }
 
-double NewProjectAudioProcessor::getTailLengthSeconds() const
+double MultiSweepAudioProcessor::getTailLengthSeconds() const
 {
   return 0.0;
 }
 
-int NewProjectAudioProcessor::getNumPrograms()
+int MultiSweepAudioProcessor::getNumPrograms()
 {
   return 1; // NB: some hosts don't cope very well if you tell them there are 0
             // programs, so this should be at least 1, even if you're not really
             // implementing programs.
 }
 
-int NewProjectAudioProcessor::getCurrentProgram()
+int MultiSweepAudioProcessor::getCurrentProgram()
 {
   return 0;
 }
 
-void NewProjectAudioProcessor::setCurrentProgram(int index) {}
+void MultiSweepAudioProcessor::setCurrentProgram(int index) {}
 
-const juce::String NewProjectAudioProcessor::getProgramName(int index)
+const juce::String MultiSweepAudioProcessor::getProgramName(int index)
 {
   return {};
 }
 
-void NewProjectAudioProcessor::changeProgramName(int index,
+void MultiSweepAudioProcessor::changeProgramName(int index,
                                                  const juce::String& newName)
 {}
 
 //==============================================================================
-void NewProjectAudioProcessor::prepareToPlay(double sampleRate,
+void MultiSweepAudioProcessor::prepareToPlay(double sampleRate,
                                              int samplesPerBlock)
 {
   // Use this method as the place to do any pre-playback
   // initialisation that you need..
 }
 
-void NewProjectAudioProcessor::releaseResources()
+void MultiSweepAudioProcessor::releaseResources()
 {
   // When playback stops, you can use this as an opportunity to free up any
   // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool NewProjectAudioProcessor::isBusesLayoutSupported(
+bool MultiSweepAudioProcessor::isBusesLayoutSupported(
   const BusesLayout& layouts) const
 {
 #if JucePlugin_IsMidiEffect
@@ -126,7 +126,7 @@ bool NewProjectAudioProcessor::isBusesLayoutSupported(
 }
 #endif
 
-void NewProjectAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
+void MultiSweepAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
                                             juce::MidiBuffer& midiMessages)
 {
   juce::ScopedNoDenormals noDenormals;
@@ -156,25 +156,25 @@ void NewProjectAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 }
 
 //==============================================================================
-bool NewProjectAudioProcessor::hasEditor() const
+bool MultiSweepAudioProcessor::hasEditor() const
 {
   return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* NewProjectAudioProcessor::createEditor()
+juce::AudioProcessorEditor* MultiSweepAudioProcessor::createEditor()
 {
-  return new NewProjectAudioProcessorEditor(*this);
+  return new MultiSweepAudioProcessorEditor(*this);
 }
 
 //==============================================================================
-void NewProjectAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
+void MultiSweepAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
   // You should use this method to store your parameters in the memory block.
   // You could do that either as raw data, or use the XML or ValueTree classes
   // as intermediaries to make it easy to save and load complex data.
 }
 
-void NewProjectAudioProcessor::setStateInformation(const void* data,
+void MultiSweepAudioProcessor::setStateInformation(const void* data,
                                                    int sizeInBytes)
 {
   // You should use this method to restore your parameters from this memory
@@ -186,5 +186,5 @@ void NewProjectAudioProcessor::setStateInformation(const void* data,
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-  return new NewProjectAudioProcessor();
+  return new MultiSweepAudioProcessor();
 }
