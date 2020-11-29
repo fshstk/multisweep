@@ -1,25 +1,13 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include "PluginProcessor.h"
 
-//==============================================================================
-/**
- */
 class MultiSweepAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
   MultiSweepAudioProcessorEditor(MultiSweepAudioProcessor&);
   ~MultiSweepAudioProcessorEditor() override;
 
-  //============================================================================
   void paint(juce::Graphics&) override;
   void resized() override;
 
