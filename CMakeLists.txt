@@ -31,8 +31,8 @@ juce_add_plugin(MultiSweep
 
 # New .cpp files need to be added here:
 target_sources(MultiSweep PRIVATE
-    Source/PluginEditor.cpp
-    Source/PluginProcessor.cpp
+    src/PluginEditor.cpp
+    src/PluginProcessor.cpp
 )
 
 target_compile_definitions(MultiSweep PUBLIC
