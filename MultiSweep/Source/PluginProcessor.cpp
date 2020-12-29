@@ -23,22 +23,13 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-//==============================================================================
 MultiSweepAudioProcessor::MultiSweepAudioProcessor()
   : AudioProcessorBase(
-#ifndef JucePlugin_PreferredChannelConfigurations
       BusesProperties()
-#if !JucePlugin_IsMidiEffect
-#if !JucePlugin_IsSynth
         .withInput("Input", AudioChannelSet::discreteChannels(10), true)
-#endif
-        .withOutput("Output", AudioChannelSet::discreteChannels(64), true)
-#endif
-        ,
-#endif
+        .withOutput("Output", AudioChannelSet::discreteChannels(64), true),
       createParameterLayout())
 {
-  // get pointers to the parameters
   inputChannelsSetting =
     parameters.getRawParameterValue("inputChannelsSetting");
   outputOrderSetting = parameters.getRawParameterValue("outputOrderSetting");
@@ -46,7 +37,6 @@ MultiSweepAudioProcessor::MultiSweepAudioProcessor()
   param1 = parameters.getRawParameterValue("param1");
   param2 = parameters.getRawParameterValue("param2");
 
-  // add listeners to parameter changes
   parameters.addParameterListener("inputChannelsSetting", this);
   parameters.addParameterListener("outputOrderSetting", this);
   parameters.addParameterListener("useSN3D", this);
@@ -56,37 +46,6 @@ MultiSweepAudioProcessor::MultiSweepAudioProcessor()
 
 MultiSweepAudioProcessor::~MultiSweepAudioProcessor() {}
 
-//==============================================================================
-int MultiSweepAudioProcessor::getNumPrograms()
-{
-  return 1; // NB: some hosts don't cope very well if you tell them there are 0
-            // programs, so this should be at least 1, even if you're not really
-            // implementing programs.
-}
-
-int MultiSweepAudioProcessor::getCurrentProgram()
-{
-  return 0;
-}
-
-void MultiSweepAudioProcessor::setCurrentProgram(int index)
-{
-  ignoreUnused(index);
-}
-
-const String MultiSweepAudioProcessor::getProgramName(int index)
-{
-  ignoreUnused(index);
-  return {};
-}
-
-void MultiSweepAudioProcessor::changeProgramName(int index,
-                                                 const String& newName)
-{
-  ignoreUnused(index, newName);
-}
-
-//==============================================================================
 void MultiSweepAudioProcessor::prepareToPlay(double sampleRate,
                                              int samplesPerBlock)
 {
@@ -135,18 +94,11 @@ void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
   }
 }
 
-//==============================================================================
-bool MultiSweepAudioProcessor::hasEditor() const
-{
-  return true; // (change this to false if you choose to not supply an editor)
-}
-
 AudioProcessorEditor* MultiSweepAudioProcessor::createEditor()
 {
   return new MultiSweepAudioProcessorEditor(*this, parameters);
 }
 
-//==============================================================================
 void MultiSweepAudioProcessor::getStateInformation(MemoryBlock& destData)
 {
   auto state = parameters.copyState();
@@ -181,7 +133,6 @@ void MultiSweepAudioProcessor::setStateInformation(const void* data,
     }
 }
 
-//==============================================================================
 void MultiSweepAudioProcessor::parameterChanged(const String& parameterID,
                                                 float newValue)
 {
@@ -199,7 +150,6 @@ void MultiSweepAudioProcessor::updateBuffers()
   DBG("IOHelper: output size: " << output.getSize());
 }
 
-//==============================================================================
 std::vector<std::unique_ptr<RangedAudioParameter>>
 MultiSweepAudioProcessor::createParameterLayout()
 {
@@ -278,8 +228,6 @@ MultiSweepAudioProcessor::createParameterLayout()
   return params;
 }
 
-//==============================================================================
-// This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
   return new MultiSweepAudioProcessor();

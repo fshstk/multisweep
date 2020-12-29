@@ -21,26 +21,17 @@
  */
 
 #pragma once
-
 #include "PluginProcessor.h"
-
-// Plugin Design Essentials
+#include <customComponents/ReverseSlider.h>
+#include <customComponents/SimpleLabel.h>
 #include <customComponents/TitleBar.h>
 #include <lookAndFeel/IEM_LaF.h>
 
-// Custom Components
-#include <customComponents/ReverseSlider.h>
-#include <customComponents/SimpleLabel.h>
-
-typedef ReverseSlider::SliderAttachment
-  SliderAttachment; // all ReverseSliders will make use of the parameters'
-                    // valueToText() function
+// All ReverseSliders will make use of the parameters' valueToText() function:
+typedef ReverseSlider::SliderAttachment SliderAttachment;
 typedef AudioProcessorValueTreeState::ComboBoxAttachment ComboBoxAttachment;
 typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
 
-//==============================================================================
-/**
- */
 class MultiSweepAudioProcessorEditor
   : public AudioProcessorEditor
   , private Timer
@@ -50,35 +41,25 @@ public:
                                  AudioProcessorValueTreeState&);
   ~MultiSweepAudioProcessorEditor() override;
 
-  //==============================================================================
   void paint(Graphics&) override;
   void resized() override;
 
   void timerCallback() override;
 
 private:
-  // ====================== begin essentials ==================
-  // lookAndFeel class with the IEM plug-in suite design
-  LaF globalLaF;
+  LaF globalLaF; // lookAndFeel class with the IEM plug-in suite design
 
-  // stored references to the AudioProcessor and ValueTreeState holding all the
-  // parameters
   MultiSweepAudioProcessor& audioProcessor;
   AudioProcessorValueTreeState& valueTreeState;
 
-  /* title and footer component
-   title component can hold different widgets for in- and output:
-      - NoIOWidget (if there's no need for an input or output widget)
-      - AudioChannelsIOWidget<maxNumberOfChannels, isChoosable>
-      - AmbisonicIOWidget<maxOrder>
-      - DirectivitiyIOWidget
-   */
+  // Title component can hold different widgets for in- and output:
+  //     - NoIOWidget (if there's no need for an input or output widget)
+  //     - AudioChannelsIOWidget<maxNumberOfChannels, isChoosable>
+  //     - AmbisonicIOWidget<maxOrder>
+  //     - DirectivitiyIOWidget
   TitleBar<AudioChannelsIOWidget<10, true>, AmbisonicIOWidget<>> title;
   OSCFooter footer;
-  // =============== end essentials ============
 
-  // Attachments to create a connection between IOWidgets comboboxes
-  // and the associated parameters
   std::unique_ptr<ComboBoxAttachment> cbInputChannelsSettingAttachment;
   std::unique_ptr<ComboBoxAttachment> cbOrderSettingAttachment;
   std::unique_ptr<ComboBoxAttachment> cbNormalizationSettingAttachment;

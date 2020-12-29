@@ -21,62 +21,47 @@
  */
 
 #pragma once
-
 #include <AudioProcessorBase.h>
-
 #define ProcessorClass MultiSweepAudioProcessor
 
-//==============================================================================
 class MultiSweepAudioProcessor
   : public AudioProcessorBase<IOTypes::AudioChannels<10>,
                               IOTypes::Ambisonics<7>>
 {
 public:
-  constexpr static int numberOfInputChannels = 10;
-  constexpr static int numberOfOutputChannels = 64;
-  //==============================================================================
   MultiSweepAudioProcessor();
   ~MultiSweepAudioProcessor() override;
 
-  //==============================================================================
   void prepareToPlay(double sampleRate, int samplesPerBlock) override;
   void releaseResources() override;
-
   void processBlock(AudioSampleBuffer&, MidiBuffer&) override;
 
-  //==============================================================================
+  bool hasEditor() const override { return true; };
   AudioProcessorEditor* createEditor() override;
-  bool hasEditor() const override;
 
-  //==============================================================================
-  int getNumPrograms() override;
-  int getCurrentProgram() override;
-  void setCurrentProgram(int index) override;
-  const String getProgramName(int index) override;
-  void changeProgramName(int index, const String& newName) override;
+  int getNumPrograms() override { return 1; };
+  int getCurrentProgram() override { return 0; };
+  void setCurrentProgram(int) override{};
+  const String getProgramName(int) override { return {}; };
+  void changeProgramName(int, const String&) override{};
 
-  //==============================================================================
   void getStateInformation(MemoryBlock& destData) override;
   void setStateInformation(const void* data, int sizeInBytes) override;
 
-  //==============================================================================
   void parameterChanged(const String& parameterID, float newValue) override;
   void updateBuffers() override; // use this to implement a buffer update method
 
-  //======= Parameters
-  //===========================================================
+public:
+  constexpr static int numberOfInputChannels = 10;
+  constexpr static int numberOfOutputChannels = 64;
   std::vector<std::unique_ptr<RangedAudioParameter>> createParameterLayout();
-  //==============================================================================
 
 private:
-  //==============================================================================
-  // list of used audio parameters
   std::atomic<float>* inputChannelsSetting;
   std::atomic<float>* outputOrderSetting;
   std::atomic<float>* useSN3D;
   std::atomic<float>* param1;
   std::atomic<float>* param2;
 
-  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessor)
 };

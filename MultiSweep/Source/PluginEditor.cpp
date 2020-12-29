@@ -23,7 +23,6 @@
 #include "PluginEditor.h"
 #include "PluginProcessor.h"
 
-//==============================================================================
 MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   MultiSweepAudioProcessor& p,
   AudioProcessorValueTreeState& vts)
@@ -32,20 +31,15 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   , valueTreeState(vts)
   , footer(p.getOSCParameterInterface())
 {
-  // ============== BEGIN: essentials ======================
-  // set GUI size and lookAndFeel
   // setSize(500, 300); // use this to create a fixed-size GUI
   setResizeLimits(500, 300, 800, 500); // use this to create a resizable GUI
   setLookAndFeel(&globalLaF);
 
-  // make title and footer visible, and set the PluginName
   addAndMakeVisible(&title);
-  title.setTitle(String("Plugin"), String("Template"));
+  title.setTitle(String("Multi"), String("Sweep"));
   title.setFont(globalLaF.robotoBold, globalLaF.robotoLight);
   addAndMakeVisible(&footer);
-  // ============= END: essentials ========================
 
-  // create the connection between title component's comboBoxes and parameters
   cbInputChannelsSettingAttachment.reset(
     new ComboBoxAttachment(valueTreeState,
                            "inputChannelsSetting",
@@ -66,7 +60,6 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   slParam2Attachment.reset(
     new SliderAttachment(valueTreeState, "param2", slParam2));
 
-  // start timer after everything is set up properly
   startTimer(20);
 }
 
@@ -75,7 +68,6 @@ MultiSweepAudioProcessorEditor::~MultiSweepAudioProcessorEditor()
   setLookAndFeel(nullptr);
 }
 
-//==============================================================================
 void MultiSweepAudioProcessorEditor::paint(Graphics& g)
 {
   g.fillAll(globalLaF.ClBackground);
@@ -111,10 +103,6 @@ void MultiSweepAudioProcessorEditor::resized()
 
 void MultiSweepAudioProcessorEditor::timerCallback()
 {
-  // === update titleBar widgets according to available input/output channel
-  // counts
+  // Update titleBar widgets according to available input/output channel counts:
   title.setMaxSize(audioProcessor.getMaxSize());
-  // ==========================================
-
-  // insert stuff you want to do be done at every timer callback
 }
