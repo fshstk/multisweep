@@ -21,80 +21,75 @@
  */
 
 #pragma once
+#include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_osc/juce_osc.h>
 #include "OSCUtilities.h"
-#include <JuceHeader.h>
+
+
 
 //#define DEBUG_PARAMETERS_FOR_DOCUMENTATION
 
 /**
- This class can be used to add parameters to a AudioProcessorValueTree and make
- them controllable via OSC. The used parameterID will be saved in a StringArray.
- If the OSCPattern of the forwarded OSCMessages matches one of the parameterIDs,
- that Parameter will be controlled.
+ This class can be used to add parameters to a AudioProcessorValueTree and make them controllable via OSC. The used parameterID will be saved in a StringArray. If the OSCPattern of the forwarded OSCMessages matches one of the parameterIDs, that Parameter will be controlled.
  */
 
-class OSCParameterInterface
-  : public OSCReceiver::Listener<OSCReceiver::RealtimeCallback>
-  , private Timer
+
+class OSCParameterInterface : public OSCReceiver::Listener<OSCReceiver::RealtimeCallback>, private Timer
 {
 public:
-  OSCParameterInterface(OSCMessageInterceptor& interceptor,
-                        AudioProcessorValueTreeState& valueTreeState);
+    OSCParameterInterface (OSCMessageInterceptor& interceptor, AudioProcessorValueTreeState &valueTreeState);
 
-  static std::unique_ptr<RangedAudioParameter> createParameterTheOldWay(
-    const String& parameterID,
-    const String& parameterName,
-    const String& labelText,
-    NormalisableRange<float> valueRange,
-    float defaultValue,
-    std::function<String(float)> valueToTextFunction = nullptr,
-    std::function<float(const String&)> textToValueFunction = nullptr,
-    bool isMetaParameter = false,
-    bool isAutomatableParameter = true,
-    bool isDiscrete = false,
-    AudioProcessorParameter::Category category =
-      AudioProcessorParameter::genericParameter,
-    bool isBoolean = false);
+    static std::unique_ptr<RangedAudioParameter> createParameterTheOldWay (const String& parameterID,
+                                                                 const String& parameterName,
+                                                                 const String& labelText,
+                                                                 NormalisableRange<float> valueRange,
+                                                                 float defaultValue,
+                                                                 std::function<String (float)> valueToTextFunction = nullptr,
+                                                                 std::function<float (const String&)> textToValueFunction = nullptr,
+                                                                 bool isMetaParameter = false,
+                                                                 bool isAutomatableParameter = true,
+                                                                 bool isDiscrete = false,
+                                                                 AudioProcessorParameter::Category category
+                                                                 = AudioProcessorParameter::genericParameter,
+                                                                           bool isBoolean = false);
 
-  /**
-   Checks whether the OSCAdressPattern of the OSCMessage matches one of the
-   ParameterID's and changes the parameter on success. Returns true, if there is
-   a match. Make sure the plugin-name-prefix was trimmed.
-   */
-  const bool processOSCMessage(OSCMessage oscMessage);
+    /**
+     Checks whether the OSCAdressPattern of the OSCMessage matches one of the ParameterID's and changes the parameter on success. Returns true, if there is a match. Make sure the plugin-name-prefix was trimmed.
+     */
+    const bool processOSCMessage (OSCMessage oscMessage);
 
-  /**
-   Sets the value of an audio-parameter with the specified parameter ID. The
-   provided value will be mapped to a 0-to-1 range.
-   */
-  void setValue(const String paramID, const float value);
+    /**
+     Sets the value of an audio-parameter with the specified parameter ID. The provided value will be mapped to a 0-to-1 range.
+     */
+    void setValue (const String paramID, const float value);
 
-  OSCReceiverPlus& getOSCReceiver() { return oscReceiver; };
-  OSCSenderPlus& getOSCSender() { return oscSender; };
+    OSCReceiverPlus& getOSCReceiver() { return oscReceiver; };
+    OSCSenderPlus& getOSCSender() { return oscSender; };
 
-  void oscMessageReceived(const OSCMessage& message) override;
-  void oscBundleReceived(const OSCBundle& bundle) override;
+    void oscMessageReceived (const OSCMessage &message) override;
+    void oscBundleReceived (const OSCBundle &bundle) override;
 
-  void timerCallback() override;
 
-  void sendParameterChanges(const bool forceSend = false);
-  void setOSCAddress(const String newAddress);
+    void timerCallback() override;
 
-  const String getOSCAddress() const { return address; };
+    void sendParameterChanges (const bool forceSend = false);
+    void setOSCAddress (const String newAddress);
 
-  void setInterval(const int interValInMilliseconds);
-  const int getInterval() const { return getTimerInterval(); }
+    const String getOSCAddress() const { return address; };
 
-  ValueTree getConfig() const;
-  void setConfig(ValueTree config);
+    void setInterval (const int interValInMilliseconds);
+    const int getInterval() const { return getTimerInterval(); }
+
+    ValueTree getConfig() const;
+    void setConfig (ValueTree config);
 
 private:
-  OSCMessageInterceptor& interceptor;
-  AudioProcessorValueTreeState& parameters;
+    OSCMessageInterceptor& interceptor;
+    AudioProcessorValueTreeState& parameters;
 
-  OSCReceiverPlus oscReceiver;
-  OSCSenderPlus oscSender;
+    OSCReceiverPlus oscReceiver;
+    OSCSenderPlus oscSender;
 
-  String address;
-  Array<float> lastSentValues;
+    String address;
+    Array<float> lastSentValues;
 };

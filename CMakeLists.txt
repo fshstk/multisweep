@@ -1,50 +1,53 @@
-# CMakeLists.txt for MultiSweep
+# ==============================================================================
+#  This file is part of the IEM plug-in suite.
+#  Author: Fabian Hummel
+#  Copyright (c) 2020 - Institute of Electronic Music and Acoustics (IEM)
+#  https://iem.at
+#
+#  The IEM plug-in suite is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  The IEM plug-in suite is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this software.  If not, see <https://www.gnu.org/licenses/>.
+# ==============================================================================
 
 cmake_minimum_required(VERSION 3.15)
 
-# This file is based on the example CMakeLists.txt file for the JUCE AudioPlugin
-# example. A lot of comments have been removed. For reference, see the very well
-# documented CMakeLists.txt file in {JUCE_DIR}/examples/CMake/AudioPlugin.
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-project(MULTI_SWEEP VERSION 0.0.1)
+project(IEMPluginSuite
+    VERSION     1.11.1
+    LANGUAGES   C CXX
+)
 
-# If you don't have JUCE installed globally (see README.md), download JUCE, put
-# the JUCE folder in the project root (same directory as this file), comment out
-# this line:
 find_package(JUCE CONFIG REQUIRED)
-# ...and uncomment this line:
-# add_subdirectory(JUCE)
 
-juce_add_plugin(MultiSweep
-    COMPANY_NAME "Fabian Hummel & David Neussl (iem.at)"
-    IS_SYNTH FALSE
-    NEEDS_MIDI_INPUT FALSE
-    NEEDS_MIDI_OUTPUT FALSE
-    IS_MIDI_EFFECT FALSE
-    EDITOR_WANTS_KEYBOARD_FOCUS FALSE
-    COPY_PLUGIN_AFTER_BUILD TRUE
-    PLUGIN_MANUFACTURER_CODE FHDN  # Fabian Hummel, David Neussl
-    PLUGIN_CODE MSwp  # MultiSweep
-    FORMATS VST3 Standalone  # Valid formats are: AAX Unity VST VST3 AU AUv3
-    PRODUCT_NAME "MultiSweep"  # The name of the final executable.
+set_directory_properties(PROPERTIES
+    JUCE_COMPANY_NAME                           "IEM"
+    JUCE_COMPANY_WEBSITE                        "iem.at"
+    JUCE_COMPANY_EMAIL                          "office@iem.at"
+    JUCE_COMPANY_COPYRIGHT                      "(c) 2020 Institute of Electronic Music, Graz University of the Arts"
+    JUCE_PLUGIN_MANUFACTURER_CODE               "IEMA"
+    JUCE_COPY_PLUGIN_AFTER_BUILD                TRUE
 )
 
-# New .cpp files need to be added here:
-target_sources(MultiSweep PRIVATE
-    src/PluginEditor.cpp
-    src/PluginProcessor.cpp
+# _juce_set_default_properties() # FIXME: why does this need to be called explicitly?
+
+include_directories(resources)
+
+juce_add_binary_data(RobotoFont SOURCES
+        resources/lookAndFeel/Roboto-Bold.ttf
+        resources/lookAndFeel/Roboto-Light.ttf
+        resources/lookAndFeel/Roboto-Medium.ttf
+        resources/lookAndFeel/Roboto-Regular.ttf
 )
 
-target_compile_definitions(MultiSweep PUBLIC
-    JUCE_WEB_BROWSER=0
-    JUCE_USE_CURL=0
-    JUCE_VST3_CAN_REPLACE_VST2=0
-    # As per the JUCE terms of use, the splash screen may only be disabled for
-    # open-source projects or after purchasing the appropriate license.
-    # Since this project is released under GPLv3, we disable it.
-    JUCE_DISPLAY_SPLASH_SCREEN=0
-)
-
-target_link_libraries(MultiSweep PRIVATE
-    juce::juce_audio_utils
-)
+add_subdirectory(MultiSweep)

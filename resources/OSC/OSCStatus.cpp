@@ -355,7 +355,7 @@ void OSCStatus::mouseUp (const MouseEvent &event)
         auto* dialogWindow = new OSCDialogWindow (oscParameterInterface, oscReceiver, oscSender);
         dialogWindow->setSize (211, 210);
 
-        CallOutBox& myBox = CallOutBox::launchAsynchronously (dialogWindow, getScreenBounds().removeFromLeft (bounds.getWidth()), nullptr);
+        CallOutBox& myBox = CallOutBox::launchAsynchronously (std::unique_ptr<OSCDialogWindow>(dialogWindow), getScreenBounds().removeFromLeft (bounds.getWidth()), nullptr);
         myBox.setLookAndFeel (&getLookAndFeel());
     }
 }

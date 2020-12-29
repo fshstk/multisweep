@@ -22,6 +22,8 @@
 
 #pragma once
 
+using namespace juce;
+
 /**
  An extension to JUCE's OSCReceiver class with some useful methods.
  */
