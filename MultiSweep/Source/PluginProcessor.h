@@ -24,10 +24,10 @@
 
 #include <AudioProcessorBase.h>
 
-#define ProcessorClass PluginTemplateAudioProcessor
+#define ProcessorClass MultiSweepAudioProcessor
 
 //==============================================================================
-class PluginTemplateAudioProcessor
+class MultiSweepAudioProcessor
   : public AudioProcessorBase<IOTypes::AudioChannels<10>,
                               IOTypes::Ambisonics<7>>
 {
@@ -35,8 +35,8 @@ public:
   constexpr static int numberOfInputChannels = 10;
   constexpr static int numberOfOutputChannels = 64;
   //==============================================================================
-  PluginTemplateAudioProcessor();
-  ~PluginTemplateAudioProcessor() override;
+  MultiSweepAudioProcessor();
+  ~MultiSweepAudioProcessor() override;
 
   //==============================================================================
   void prepareToPlay(double sampleRate, int samplesPerBlock) override;
@@ -78,5 +78,5 @@ private:
   std::atomic<float>* param2;
 
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginTemplateAudioProcessor)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessor)
 };

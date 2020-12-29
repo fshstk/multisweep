@@ -41,14 +41,14 @@ typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
 //==============================================================================
 /**
  */
-class PluginTemplateAudioProcessorEditor
+class MultiSweepAudioProcessorEditor
   : public AudioProcessorEditor
   , private Timer
 {
 public:
-  PluginTemplateAudioProcessorEditor(PluginTemplateAudioProcessor&,
-                                     AudioProcessorValueTreeState&);
-  ~PluginTemplateAudioProcessorEditor() override;
+  MultiSweepAudioProcessorEditor(MultiSweepAudioProcessor&,
+                                 AudioProcessorValueTreeState&);
+  ~MultiSweepAudioProcessorEditor() override;
 
   //==============================================================================
   void paint(Graphics&) override;
@@ -63,7 +63,7 @@ private:
 
   // stored references to the AudioProcessor and ValueTreeState holding all the
   // parameters
-  PluginTemplateAudioProcessor& audioProcessor;
+  MultiSweepAudioProcessor& audioProcessor;
   AudioProcessorValueTreeState& valueTreeState;
 
   /* title and footer component
@@ -88,6 +88,5 @@ private:
   ReverseSlider slParam2;
   std::unique_ptr<SliderAttachment> slParam1Attachment, slParam2Attachment;
 
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(
-    PluginTemplateAudioProcessorEditor)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessorEditor)
 };

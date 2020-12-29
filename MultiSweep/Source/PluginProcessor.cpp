@@ -24,7 +24,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-PluginTemplateAudioProcessor::PluginTemplateAudioProcessor()
+MultiSweepAudioProcessor::MultiSweepAudioProcessor()
   : AudioProcessorBase(
 #ifndef JucePlugin_PreferredChannelConfigurations
       BusesProperties()
@@ -54,41 +54,41 @@ PluginTemplateAudioProcessor::PluginTemplateAudioProcessor()
   parameters.addParameterListener("param2", this);
 }
 
-PluginTemplateAudioProcessor::~PluginTemplateAudioProcessor() {}
+MultiSweepAudioProcessor::~MultiSweepAudioProcessor() {}
 
 //==============================================================================
-int PluginTemplateAudioProcessor::getNumPrograms()
+int MultiSweepAudioProcessor::getNumPrograms()
 {
   return 1; // NB: some hosts don't cope very well if you tell them there are 0
             // programs, so this should be at least 1, even if you're not really
             // implementing programs.
 }
 
-int PluginTemplateAudioProcessor::getCurrentProgram()
+int MultiSweepAudioProcessor::getCurrentProgram()
 {
   return 0;
 }
 
-void PluginTemplateAudioProcessor::setCurrentProgram(int index)
+void MultiSweepAudioProcessor::setCurrentProgram(int index)
 {
   ignoreUnused(index);
 }
 
-const String PluginTemplateAudioProcessor::getProgramName(int index)
+const String MultiSweepAudioProcessor::getProgramName(int index)
 {
   ignoreUnused(index);
   return {};
 }
 
-void PluginTemplateAudioProcessor::changeProgramName(int index,
-                                                     const String& newName)
+void MultiSweepAudioProcessor::changeProgramName(int index,
+                                                 const String& newName)
 {
   ignoreUnused(index, newName);
 }
 
 //==============================================================================
-void PluginTemplateAudioProcessor::prepareToPlay(double sampleRate,
-                                                 int samplesPerBlock)
+void MultiSweepAudioProcessor::prepareToPlay(double sampleRate,
+                                             int samplesPerBlock)
 {
   checkInputAndOutput(this,
                       static_cast<int>(*inputChannelsSetting),
@@ -99,14 +99,14 @@ void PluginTemplateAudioProcessor::prepareToPlay(double sampleRate,
   ignoreUnused(sampleRate, samplesPerBlock);
 }
 
-void PluginTemplateAudioProcessor::releaseResources()
+void MultiSweepAudioProcessor::releaseResources()
 {
   // When playback stops, you can use this as an opportunity to free up any
   // spare memory, etc.
 }
 
-void PluginTemplateAudioProcessor::processBlock(AudioSampleBuffer& buffer,
-                                                MidiBuffer&)
+void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
+                                            MidiBuffer&)
 {
   checkInputAndOutput(this,
                       static_cast<int>(*inputChannelsSetting),
@@ -136,18 +136,18 @@ void PluginTemplateAudioProcessor::processBlock(AudioSampleBuffer& buffer,
 }
 
 //==============================================================================
-bool PluginTemplateAudioProcessor::hasEditor() const
+bool MultiSweepAudioProcessor::hasEditor() const
 {
   return true; // (change this to false if you choose to not supply an editor)
 }
 
-AudioProcessorEditor* PluginTemplateAudioProcessor::createEditor()
+AudioProcessorEditor* MultiSweepAudioProcessor::createEditor()
 {
-  return new PluginTemplateAudioProcessorEditor(*this, parameters);
+  return new MultiSweepAudioProcessorEditor(*this, parameters);
 }
 
 //==============================================================================
-void PluginTemplateAudioProcessor::getStateInformation(MemoryBlock& destData)
+void MultiSweepAudioProcessor::getStateInformation(MemoryBlock& destData)
 {
   auto state = parameters.copyState();
 
@@ -158,8 +158,8 @@ void PluginTemplateAudioProcessor::getStateInformation(MemoryBlock& destData)
   copyXmlToBinary(*xml, destData);
 }
 
-void PluginTemplateAudioProcessor::setStateInformation(const void* data,
-                                                       int sizeInBytes)
+void MultiSweepAudioProcessor::setStateInformation(const void* data,
+                                                   int sizeInBytes)
 {
   // You should use this method to restore your parameters from this memory
   // block, whose contents will have been created by the getStateInformation()
@@ -182,8 +182,8 @@ void PluginTemplateAudioProcessor::setStateInformation(const void* data,
 }
 
 //==============================================================================
-void PluginTemplateAudioProcessor::parameterChanged(const String& parameterID,
-                                                    float newValue)
+void MultiSweepAudioProcessor::parameterChanged(const String& parameterID,
+                                                float newValue)
 {
   DBG("Parameter with ID " << parameterID
                            << " has changed. New value: " << newValue);
@@ -193,7 +193,7 @@ void PluginTemplateAudioProcessor::parameterChanged(const String& parameterID,
     userChangedIOSettings = true;
 }
 
-void PluginTemplateAudioProcessor::updateBuffers()
+void MultiSweepAudioProcessor::updateBuffers()
 {
   DBG("IOHelper:  input size: " << input.getSize());
   DBG("IOHelper: output size: " << output.getSize());
@@ -201,7 +201,7 @@ void PluginTemplateAudioProcessor::updateBuffers()
 
 //==============================================================================
 std::vector<std::unique_ptr<RangedAudioParameter>>
-PluginTemplateAudioProcessor::createParameterLayout()
+MultiSweepAudioProcessor::createParameterLayout()
 {
   // add your audio parameters here
   std::vector<std::unique_ptr<RangedAudioParameter>> params;
@@ -282,5 +282,5 @@ PluginTemplateAudioProcessor::createParameterLayout()
 // This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-  return new PluginTemplateAudioProcessor();
+  return new MultiSweepAudioProcessor();
 }

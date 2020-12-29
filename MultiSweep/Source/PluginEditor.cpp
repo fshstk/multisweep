@@ -24,8 +24,8 @@
 #include "PluginProcessor.h"
 
 //==============================================================================
-PluginTemplateAudioProcessorEditor::PluginTemplateAudioProcessorEditor(
-  PluginTemplateAudioProcessor& p,
+MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
+  MultiSweepAudioProcessor& p,
   AudioProcessorValueTreeState& vts)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
@@ -70,18 +70,18 @@ PluginTemplateAudioProcessorEditor::PluginTemplateAudioProcessorEditor(
   startTimer(20);
 }
 
-PluginTemplateAudioProcessorEditor::~PluginTemplateAudioProcessorEditor()
+MultiSweepAudioProcessorEditor::~MultiSweepAudioProcessorEditor()
 {
   setLookAndFeel(nullptr);
 }
 
 //==============================================================================
-void PluginTemplateAudioProcessorEditor::paint(Graphics& g)
+void MultiSweepAudioProcessorEditor::paint(Graphics& g)
 {
   g.fillAll(globalLaF.ClBackground);
 }
 
-void PluginTemplateAudioProcessorEditor::resized()
+void MultiSweepAudioProcessorEditor::resized()
 {
   // ============ BEGIN: header and footer ============
   const int leftRightMargin = 30;
@@ -109,7 +109,7 @@ void PluginTemplateAudioProcessorEditor::resized()
   slParam2.setBounds(sliderRow.removeFromRight(150));
 }
 
-void PluginTemplateAudioProcessorEditor::timerCallback()
+void MultiSweepAudioProcessorEditor::timerCallback()
 {
   // === update titleBar widgets according to available input/output channel
   // counts
