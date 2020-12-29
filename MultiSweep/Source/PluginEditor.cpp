@@ -43,14 +43,6 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
     new ComboBoxAttachment(valueTreeState,
                            "inputChannelsSetting",
                            *title.getInputWidgetPtr()->getChannelsCbPointer()));
-  cbNormalizationSettingAttachment.reset(
-    new ComboBoxAttachment(valueTreeState,
-                           "useSN3D",
-                           *title.getOutputWidgetPtr()->getNormCbPointer()));
-  cbOrderSettingAttachment.reset(
-    new ComboBoxAttachment(valueTreeState,
-                           "outputOrderSetting",
-                           *title.getOutputWidgetPtr()->getOrderCbPointer()));
 
   addAndMakeVisible(slParam1);
   slParam1Attachment.reset(

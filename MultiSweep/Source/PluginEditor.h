@@ -59,7 +59,7 @@ private:
   //     - AudioChannelsIOWidget<maxNumberOfChannels, isChoosable>
   //     - AmbisonicIOWidget<maxOrder>
   //     - DirectivitiyIOWidget
-  TitleBar<AudioChannelsIOWidget<10, true>, AmbisonicIOWidget<>> title;
+  TitleBar<AudioChannelsIOWidget<10, true>, NoIOWidget> title;
   OSCFooter footer;
 
   std::unique_ptr<ComboBoxAttachment> cbInputChannelsSettingAttachment;
