@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  This file is part of the IEM plug-in suite.
- Author: Fabian Hummel, David Neussl
+ Authors: Fabian Hummel, David Neussl
  Copyright (c) 2020 - Institute of Electronic Music and Acoustics (IEM)
  https://iem.at
 
