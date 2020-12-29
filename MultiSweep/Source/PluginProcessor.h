@@ -36,14 +36,14 @@ public:
   void releaseResources() override;
   void processBlock(AudioSampleBuffer&, MidiBuffer&) override;
 
-  bool hasEditor() const override { return true; };
+  bool hasEditor() const override { return true; }
   AudioProcessorEditor* createEditor() override;
 
-  int getNumPrograms() override { return 1; };
-  int getCurrentProgram() override { return 0; };
-  void setCurrentProgram(int) override{};
-  const String getProgramName(int) override { return {}; };
-  void changeProgramName(int, const String&) override{};
+  int getNumPrograms() override { return 1; }
+  int getCurrentProgram() override { return 0; }
+  void setCurrentProgram(int) override {}
+  const String getProgramName(int) override { return {}; }
+  void changeProgramName(int, const String&) override {}
 
   void getStateInformation(MemoryBlock& destData) override;
   void setStateInformation(const void* data, int sizeInBytes) override;
