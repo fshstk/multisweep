@@ -46,7 +46,7 @@ public:
   void timerCallback() override;
 
 private:
-  LaF globalLaF; // lookAndFeel class with the IEM plug-in suite design
+  LaF iemLookAndFeel;
 
   MultiSweepAudioProcessor& audioProcessor;
   AudioProcessorValueTreeState& valueTreeState;

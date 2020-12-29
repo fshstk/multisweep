@@ -31,13 +31,11 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   , valueTreeState(vts)
   , footer(p.getOSCParameterInterface())
 {
-  // setSize(500, 300); // use this to create a fixed-size GUI
-  setResizeLimits(500, 300, 800, 500); // use this to create a resizable GUI
-  setLookAndFeel(&globalLaF);
+  setLookAndFeel(&iemLookAndFeel);
 
   addAndMakeVisible(&title);
   title.setTitle(String("Multi"), String("Sweep"));
-  title.setFont(globalLaF.robotoBold, globalLaF.robotoLight);
+  title.setFont(iemLookAndFeel.robotoBold, iemLookAndFeel.robotoLight);
   addAndMakeVisible(&footer);
 
   cbInputChannelsSettingAttachment.reset(
@@ -70,7 +68,7 @@ MultiSweepAudioProcessorEditor::~MultiSweepAudioProcessorEditor()
 
 void MultiSweepAudioProcessorEditor::paint(Graphics& g)
 {
-  g.fillAll(globalLaF.ClBackground);
+  g.fillAll(iemLookAndFeel.ClBackground);
 }
 
 void MultiSweepAudioProcessorEditor::resized()
