@@ -31,6 +31,7 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   , valueTreeState(vts)
   , footer(p.getOSCParameterInterface())
 {
+  setSize(editorWindowWidth, editorWindowHeight);
   setLookAndFeel(&iemLookAndFeel);
 
   addAndMakeVisible(&title);

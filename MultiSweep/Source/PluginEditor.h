@@ -46,6 +46,9 @@ public:
   void timerCallback() override;
 
 private:
+  int editorWindowHeight = 300;
+  int editorWindowWidth = 500;
+
   LaF iemLookAndFeel;
 
   MultiSweepAudioProcessor& audioProcessor;
