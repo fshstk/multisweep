@@ -27,7 +27,6 @@
 #include <customComponents/TitleBar.h>
 #include <lookAndFeel/IEM_LaF.h>
 
-// All ReverseSliders will make use of the parameters' valueToText() function:
 typedef ReverseSlider::SliderAttachment SliderAttachment;
 typedef AudioProcessorValueTreeState::ComboBoxAttachment ComboBoxAttachment;
 typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
