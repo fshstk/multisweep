@@ -39,8 +39,6 @@ set_directory_properties(PROPERTIES
     JUCE_COPY_PLUGIN_AFTER_BUILD                TRUE
 )
 
-# _juce_set_default_properties() # FIXME: why does this need to be called explicitly?
-
 include_directories(resources)
 
 juce_add_binary_data(RobotoFont SOURCES
