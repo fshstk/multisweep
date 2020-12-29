@@ -37,21 +37,22 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   addAndMakeVisible(&title);
   title.setTitle(String("Multi"), String("Sweep"));
   title.setFont(iemLookAndFeel.robotoBold, iemLookAndFeel.robotoLight);
+
   addAndMakeVisible(&footer);
 
-  cbInputChannelsSettingAttachment.reset(
+  audioChannelsIOAttachment.reset(
     new ComboBoxAttachment(valueTreeState,
                            "inputChannelsSetting",
                            *title.getInputWidgetPtr()->getChannelsCbPointer()));
 
-  addAndMakeVisible(slParam1);
-  slParam1Attachment.reset(
-    new SliderAttachment(valueTreeState, "param1", slParam1));
-  addAndMakeVisible(slParam2);
-  slParam2Attachment.reset(
-    new SliderAttachment(valueTreeState, "param2", slParam2));
+  addAndMakeVisible(demoSlider1);
+  slider1Attachment.reset(
+    new SliderAttachment(valueTreeState, "param1", demoSlider1));
+  addAndMakeVisible(demoSlider2);
+  slider2Attachment.reset(
+    new SliderAttachment(valueTreeState, "param2", demoSlider2));
 
-  startTimer(20);
+  startTimer(20); // --> timerCallback()
 }
 
 MultiSweepAudioProcessorEditor::~MultiSweepAudioProcessorEditor()
@@ -66,34 +67,34 @@ void MultiSweepAudioProcessorEditor::paint(Graphics& g)
 
 void MultiSweepAudioProcessorEditor::resized()
 {
-  // ============ BEGIN: header and footer ============
-  const int leftRightMargin = 30;
-  const int headerHeight = 60;
-  const int footerHeight = 25;
-  Rectangle<int> area(getLocalBounds());
+  Rectangle<int> area = getLocalBounds();
 
-  Rectangle<int> footerArea(area.removeFromBottom(footerHeight));
-  footer.setBounds(footerArea);
+  drawHeaderFooter(area);
 
-  area.removeFromLeft(leftRightMargin);
-  area.removeFromRight(leftRightMargin);
-  Rectangle<int> headerArea = area.removeFromTop(headerHeight);
-  title.setBounds(headerArea);
-  area.removeFromTop(10);
-  area.removeFromBottom(5);
-  // =========== END: header and footer =================
-
-  // try to not use explicit coordinates to position your GUI components
-  // the removeFrom...() methods are quite handy to create scalable areas
-  // best practice would be the use of flexBoxes...
-  // the following is medium level practice ;-)
   Rectangle<int> sliderRow = area.removeFromTop(50);
-  slParam1.setBounds(sliderRow.removeFromLeft(150));
-  slParam2.setBounds(sliderRow.removeFromRight(150));
+  demoSlider1.setBounds(sliderRow.removeFromLeft(150));
+  demoSlider2.setBounds(sliderRow.removeFromRight(150));
 }
 
 void MultiSweepAudioProcessorEditor::timerCallback()
 {
   // Update titleBar widgets according to available input/output channel counts:
   title.setMaxSize(audioProcessor.getMaxSize());
+}
+
+void MultiSweepAudioProcessorEditor::drawHeaderFooter(Rectangle<int>& canvas)
+{
+  const int leftRightMargin = 30;
+  const int headerHeight = 60;
+  const int footerHeight = 25;
+
+  Rectangle<int> footerArea(canvas.removeFromBottom(footerHeight));
+  footer.setBounds(footerArea);
+
+  canvas.removeFromLeft(leftRightMargin);
+  canvas.removeFromRight(leftRightMargin);
+  Rectangle<int> headerArea = canvas.removeFromTop(headerHeight);
+  title.setBounds(headerArea);
+  canvas.removeFromTop(10);
+  canvas.removeFromBottom(5);
 }

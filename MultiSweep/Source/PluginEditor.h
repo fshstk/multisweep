@@ -42,34 +42,29 @@ public:
 
   void paint(Graphics&) override;
   void resized() override;
-
   void timerCallback() override;
 
 private:
-  int editorWindowHeight = 300;
-  int editorWindowWidth = 500;
+  void drawHeaderFooter(Rectangle<int>& canvas);
+
+private:
+  static constexpr int editorWindowHeight = 300;
+  static constexpr int editorWindowWidth = 500;
+  static constexpr int maxNumberOfChannels = 10;
 
   LaF iemLookAndFeel;
-
   MultiSweepAudioProcessor& audioProcessor;
   AudioProcessorValueTreeState& valueTreeState;
 
-  // Title component can hold different widgets for in- and output:
-  //     - NoIOWidget (if there's no need for an input or output widget)
-  //     - AudioChannelsIOWidget<maxNumberOfChannels, isChoosable>
-  //     - AmbisonicIOWidget<maxOrder>
-  //     - DirectivitiyIOWidget
-  TitleBar<AudioChannelsIOWidget<10, true>, NoIOWidget> title;
+  TitleBar<AudioChannelsIOWidget<maxNumberOfChannels, true>, NoIOWidget> title;
+  std::unique_ptr<ComboBoxAttachment> audioChannelsIOAttachment;
+
   OSCFooter footer;
 
-  std::unique_ptr<ComboBoxAttachment> cbInputChannelsSettingAttachment;
-  std::unique_ptr<ComboBoxAttachment> cbOrderSettingAttachment;
-  std::unique_ptr<ComboBoxAttachment> cbNormalizationSettingAttachment;
-
-  // Demo stuff
-  Slider slParam1;
-  ReverseSlider slParam2;
-  std::unique_ptr<SliderAttachment> slParam1Attachment, slParam2Attachment;
+  Slider demoSlider1;
+  std::unique_ptr<SliderAttachment> slider1Attachment;
+  ReverseSlider demoSlider2;
+  std::unique_ptr<SliderAttachment> slider2Attachment;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessorEditor)
 };
