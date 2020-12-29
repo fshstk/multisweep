@@ -63,15 +63,4 @@ target_link_libraries(MultiSweep
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
-        # FIXME: no frameworks should need to be inclded explicitly!
-        # # Required for VST3 and Standalone:
-        # "-framework CoreImage"
-        # "-framework AppKit"
-        # "-framework IOKit"
-        # "-framework Accelerate"
-        # # Required for Standalone only:
-        # "-framework CoreMidi"
-        # "-framework CoreAudio"
-        # "-framework AudioToolbox"
-        # "-framework CoreAudioKit"
 )
