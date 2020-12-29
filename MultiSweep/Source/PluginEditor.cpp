@@ -68,7 +68,6 @@ void MultiSweepAudioProcessorEditor::paint(Graphics& g)
 void MultiSweepAudioProcessorEditor::resized()
 {
   Rectangle<int> area = getLocalBounds();
-
   drawHeaderFooter(area);
 
   Rectangle<int> sliderRow = area.removeFromTop(50);
@@ -78,7 +77,11 @@ void MultiSweepAudioProcessorEditor::resized()
 
 void MultiSweepAudioProcessorEditor::timerCallback()
 {
-  // Update titleBar widgets according to available input/output channel counts:
+  updateIOChannelCount();
+}
+
+void MultiSweepAudioProcessorEditor::updateIOChannelCount()
+{
   title.setMaxSize(audioProcessor.getMaxSize());
 }
 

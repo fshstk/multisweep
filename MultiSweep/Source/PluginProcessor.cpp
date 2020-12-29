@@ -32,14 +32,14 @@ MultiSweepAudioProcessor::MultiSweepAudioProcessor()
 {
   inputChannelsSetting =
     parameters.getRawParameterValue("inputChannelsSetting");
-  outputOrderSetting = parameters.getRawParameterValue("outputOrderSetting");
-  useSN3D = parameters.getRawParameterValue("useSN3D");
+  // outputOrderSetting = parameters.getRawParameterValue("outputOrderSetting");
+  // useSN3D = parameters.getRawParameterValue("useSN3D");
   param1 = parameters.getRawParameterValue("param1");
   param2 = parameters.getRawParameterValue("param2");
 
   parameters.addParameterListener("inputChannelsSetting", this);
-  parameters.addParameterListener("outputOrderSetting", this);
-  parameters.addParameterListener("useSN3D", this);
+  // parameters.addParameterListener("outputOrderSetting", this);
+  // parameters.addParameterListener("useSN3D", this);
   parameters.addParameterListener("param1", this);
   parameters.addParameterListener("param2", this);
 }
@@ -49,10 +49,11 @@ MultiSweepAudioProcessor::~MultiSweepAudioProcessor() {}
 void MultiSweepAudioProcessor::prepareToPlay(double sampleRate,
                                              int samplesPerBlock)
 {
-  checkInputAndOutput(this,
-                      static_cast<int>(*inputChannelsSetting),
-                      static_cast<int>(*outputOrderSetting),
-                      true);
+  // checkInputAndOutput(this,
+  //                     static_cast<int>(*inputChannelsSetting),
+  //                     static_cast<int>(*outputOrderSetting),
+  //                     true);
+  checkInputAndOutput(this, static_cast<int>(*inputChannelsSetting), 0, true);
   // Use this method as the place to do any pre-playback
   // initialisation that you need..
   ignoreUnused(sampleRate, samplesPerBlock);
@@ -67,10 +68,11 @@ void MultiSweepAudioProcessor::releaseResources()
 void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
                                             MidiBuffer&)
 {
-  checkInputAndOutput(this,
-                      static_cast<int>(*inputChannelsSetting),
-                      static_cast<int>(*outputOrderSetting),
-                      false);
+  // checkInputAndOutput(this,
+  //                     static_cast<int>(*inputChannelsSetting),
+  //                     static_cast<int>(*outputOrderSetting),
+  //                     false);
+  checkInputAndOutput(this, static_cast<int>(*inputChannelsSetting), 0, false);
   ScopedNoDenormals noDenormals;
 
   const int totalNumInputChannels = getTotalNumInputChannels();
@@ -139,8 +141,9 @@ void MultiSweepAudioProcessor::parameterChanged(const String& parameterID,
   DBG("Parameter with ID " << parameterID
                            << " has changed. New value: " << newValue);
 
-  if (parameterID == "inputChannelsSetting" ||
-      parameterID == "outputOrderSetting")
+  // if (parameterID == "inputChannelsSetting" ||
+  //     parameterID == "outputOrderSetting")
+  if (parameterID == "inputChannelsSetting")
     userChangedIOSettings = true;
 }
 
@@ -165,33 +168,33 @@ MultiSweepAudioProcessor::createParameterLayout()
     [](float value) { return value < 0.5f ? "Auto" : String(value); },
     nullptr));
 
-  params.push_back(OSCParameterInterface::createParameterTheOldWay(
-    "outputOrderSetting",
-    "Ambisonic Order",
-    "",
-    NormalisableRange<float>(0.0f, 8.0f, 1.0f),
-    0.0f,
-    [](float value) {
-      if (value >= 0.5f && value < 1.5f)
-        return "0th";
-      else if (value >= 1.5f && value < 2.5f)
-        return "1st";
-      else if (value >= 2.5f && value < 3.5f)
-        return "2nd";
-      else if (value >= 3.5f && value < 4.5f)
-        return "3rd";
-      else if (value >= 4.5f && value < 5.5f)
-        return "4th";
-      else if (value >= 5.5f && value < 6.5f)
-        return "5th";
-      else if (value >= 6.5f && value < 7.5f)
-        return "6th";
-      else if (value >= 7.5f)
-        return "7th";
-      else
-        return "Auto";
-    },
-    nullptr));
+  // params.push_back(OSCParameterInterface::createParameterTheOldWay(
+  //   "outputOrderSetting",
+  //   "Ambisonic Order",
+  //   "",
+  //   NormalisableRange<float>(0.0f, 8.0f, 1.0f),
+  //   0.0f,
+  //   [](float value) {
+  //     if (value >= 0.5f && value < 1.5f)
+  //       return "0th";
+  //     else if (value >= 1.5f && value < 2.5f)
+  //       return "1st";
+  //     else if (value >= 2.5f && value < 3.5f)
+  //       return "2nd";
+  //     else if (value >= 3.5f && value < 4.5f)
+  //       return "3rd";
+  //     else if (value >= 4.5f && value < 5.5f)
+  //       return "4th";
+  //     else if (value >= 5.5f && value < 6.5f)
+  //       return "5th";
+  //     else if (value >= 6.5f && value < 7.5f)
+  //       return "6th";
+  //     else if (value >= 7.5f)
+  //       return "7th";
+  //     else
+  //       return "Auto";
+  //   },
+  //   nullptr));
 
   params.push_back(OSCParameterInterface::createParameterTheOldWay(
     "useSN3D",

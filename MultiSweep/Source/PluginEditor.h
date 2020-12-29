@@ -46,6 +46,7 @@ public:
 
 private:
   void drawHeaderFooter(Rectangle<int>& canvas);
+  void updateIOChannelCount();
 
 private:
   static constexpr int editorWindowHeight = 300;
