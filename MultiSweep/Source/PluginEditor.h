@@ -24,69 +24,70 @@
 
 #include "PluginProcessor.h"
 
-//Plugin Design Essentials
-#include <lookAndFeel/IEM_LaF.h>
+// Plugin Design Essentials
 #include <customComponents/TitleBar.h>
+#include <lookAndFeel/IEM_LaF.h>
 
-//Custom Components
+// Custom Components
 #include <customComponents/ReverseSlider.h>
 #include <customComponents/SimpleLabel.h>
 
-
-typedef ReverseSlider::SliderAttachment SliderAttachment; // all ReverseSliders will make use of the parameters' valueToText() function
+typedef ReverseSlider::SliderAttachment
+  SliderAttachment; // all ReverseSliders will make use of the parameters'
+                    // valueToText() function
 typedef AudioProcessorValueTreeState::ComboBoxAttachment ComboBoxAttachment;
 typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
 
 //==============================================================================
 /**
-*/
-class PluginTemplateAudioProcessorEditor  : public AudioProcessorEditor, private Timer
+ */
+class PluginTemplateAudioProcessorEditor
+  : public AudioProcessorEditor
+  , private Timer
 {
 public:
-    PluginTemplateAudioProcessorEditor (PluginTemplateAudioProcessor&, AudioProcessorValueTreeState&);
-    ~PluginTemplateAudioProcessorEditor() override;
+  PluginTemplateAudioProcessorEditor(PluginTemplateAudioProcessor&,
+                                     AudioProcessorValueTreeState&);
+  ~PluginTemplateAudioProcessorEditor() override;
 
-    //==============================================================================
-    void paint (Graphics&) override;
-    void resized() override;
+  //==============================================================================
+  void paint(Graphics&) override;
+  void resized() override;
 
-
-    void timerCallback() override;
+  void timerCallback() override;
 
 private:
-    // ====================== begin essentials ==================
-    // lookAndFeel class with the IEM plug-in suite design
-    LaF globalLaF;
+  // ====================== begin essentials ==================
+  // lookAndFeel class with the IEM plug-in suite design
+  LaF globalLaF;
 
-    // stored references to the AudioProcessor and ValueTreeState holding all the parameters
-    PluginTemplateAudioProcessor& audioProcessor;
-    AudioProcessorValueTreeState& valueTreeState;
+  // stored references to the AudioProcessor and ValueTreeState holding all the
+  // parameters
+  PluginTemplateAudioProcessor& audioProcessor;
+  AudioProcessorValueTreeState& valueTreeState;
 
+  /* title and footer component
+   title component can hold different widgets for in- and output:
+      - NoIOWidget (if there's no need for an input or output widget)
+      - AudioChannelsIOWidget<maxNumberOfChannels, isChoosable>
+      - AmbisonicIOWidget<maxOrder>
+      - DirectivitiyIOWidget
+   */
+  TitleBar<AudioChannelsIOWidget<10, true>, AmbisonicIOWidget<>> title;
+  OSCFooter footer;
+  // =============== end essentials ============
 
-    /* title and footer component
-     title component can hold different widgets for in- and output:
-        - NoIOWidget (if there's no need for an input or output widget)
-        - AudioChannelsIOWidget<maxNumberOfChannels, isChoosable>
-        - AmbisonicIOWidget<maxOrder>
-        - DirectivitiyIOWidget
-     */
-    TitleBar<AudioChannelsIOWidget<10,true>, AmbisonicIOWidget<>> title;
-    OSCFooter footer;
-    // =============== end essentials ============
+  // Attachments to create a connection between IOWidgets comboboxes
+  // and the associated parameters
+  std::unique_ptr<ComboBoxAttachment> cbInputChannelsSettingAttachment;
+  std::unique_ptr<ComboBoxAttachment> cbOrderSettingAttachment;
+  std::unique_ptr<ComboBoxAttachment> cbNormalizationSettingAttachment;
 
-    // Attachments to create a connection between IOWidgets comboboxes
-    // and the associated parameters
-    std::unique_ptr<ComboBoxAttachment> cbInputChannelsSettingAttachment;
-    std::unique_ptr<ComboBoxAttachment> cbOrderSettingAttachment;
-    std::unique_ptr<ComboBoxAttachment> cbNormalizationSettingAttachment;
+  // Demo stuff
+  Slider slParam1;
+  ReverseSlider slParam2;
+  std::unique_ptr<SliderAttachment> slParam1Attachment, slParam2Attachment;
 
-    // Demo stuff
-    Slider slParam1;
-    ReverseSlider slParam2;
-    std::unique_ptr<SliderAttachment> slParam1Attachment, slParam2Attachment;
-
-
-
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginTemplateAudioProcessorEditor)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(
+    PluginTemplateAudioProcessorEditor)
 };
