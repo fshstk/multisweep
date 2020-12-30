@@ -30,14 +30,14 @@ MultiSweepAudioProcessor::MultiSweepAudioProcessor()
         .withOutput("Output", AudioChannelSet::discreteChannels(64), true),
       createParameterLayout())
 {
-  inputChannelsSetting =
-    parameters.getRawParameterValue("inputChannelsSetting");
+  outputChannelsSetting =
+    parameters.getRawParameterValue("outputChannelsSetting");
   // outputOrderSetting = parameters.getRawParameterValue("outputOrderSetting");
   // useSN3D = parameters.getRawParameterValue("useSN3D");
   param1 = parameters.getRawParameterValue("param1");
   param2 = parameters.getRawParameterValue("param2");
 
-  parameters.addParameterListener("inputChannelsSetting", this);
+  parameters.addParameterListener("outputChannelsSetting", this);
   // parameters.addParameterListener("outputOrderSetting", this);
   // parameters.addParameterListener("useSN3D", this);
   parameters.addParameterListener("param1", this);
@@ -53,7 +53,7 @@ void MultiSweepAudioProcessor::prepareToPlay(double sampleRate,
   //                     static_cast<int>(*inputChannelsSetting),
   //                     static_cast<int>(*outputOrderSetting),
   //                     true);
-  checkInputAndOutput(this, static_cast<int>(*inputChannelsSetting), 0, true);
+  checkInputAndOutput(this, 1, static_cast<int>(*outputChannelsSetting), true);
   // Use this method as the place to do any pre-playback
   // initialisation that you need..
   ignoreUnused(sampleRate, samplesPerBlock);
@@ -72,7 +72,7 @@ void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
   //                     static_cast<int>(*inputChannelsSetting),
   //                     static_cast<int>(*outputOrderSetting),
   //                     false);
-  checkInputAndOutput(this, static_cast<int>(*inputChannelsSetting), 0, false);
+  checkInputAndOutput(this, 1, static_cast<int>(*outputChannelsSetting), false);
   ScopedNoDenormals noDenormals;
 
   const int totalNumInputChannels = getTotalNumInputChannels();
@@ -143,7 +143,7 @@ void MultiSweepAudioProcessor::parameterChanged(const String& parameterID,
 
   // if (parameterID == "inputChannelsSetting" ||
   //     parameterID == "outputOrderSetting")
-  if (parameterID == "inputChannelsSetting")
+  if (parameterID == "outputChannelsSetting")
     userChangedIOSettings = true;
 }
 
@@ -160,8 +160,8 @@ MultiSweepAudioProcessor::createParameterLayout()
   std::vector<std::unique_ptr<RangedAudioParameter>> params;
 
   params.push_back(OSCParameterInterface::createParameterTheOldWay(
-    "inputChannelsSetting",
-    "Number of input channels ",
+    "outputChannelsSetting",
+    "Number of output channels ",
     "",
     NormalisableRange<float>(0.0f, 10.0f, 1.0f),
     0.0f,

@@ -57,7 +57,7 @@ public:
   std::vector<std::unique_ptr<RangedAudioParameter>> createParameterLayout();
 
 private:
-  std::atomic<float>* inputChannelsSetting;
+  std::atomic<float>* outputChannelsSetting;
   // std::atomic<float>* outputOrderSetting;
   // std::atomic<float>* useSN3D;
   std::atomic<float>* param1;

@@ -51,14 +51,14 @@ private:
 private:
   static constexpr int editorWindowHeight = 300;
   static constexpr int editorWindowWidth = 500;
-  static constexpr int maxNumberOfChannels = 10;
+  static constexpr int maxOuputChannels = 10;
 
   LaF iemLookAndFeel;
   MultiSweepAudioProcessor& audioProcessor;
   AudioProcessorValueTreeState& valueTreeState;
 
-  TitleBar<AudioChannelsIOWidget<maxNumberOfChannels, true>, NoIOWidget> title;
-  std::unique_ptr<ComboBoxAttachment> audioChannelsIOAttachment;
+  TitleBar<NoIOWidget, AudioChannelsIOWidget<maxOuputChannels, true>> title;
+  std::unique_ptr<ComboBoxAttachment> outputChannelsAttachment;
 
   Footer footer;
 

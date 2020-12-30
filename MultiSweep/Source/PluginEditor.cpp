@@ -40,10 +40,10 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
 
   addAndMakeVisible(&footer);
 
-  audioChannelsIOAttachment.reset(
-    new ComboBoxAttachment(valueTreeState,
-                           "inputChannelsSetting",
-                           *title.getInputWidgetPtr()->getChannelsCbPointer()));
+  outputChannelsAttachment.reset(new ComboBoxAttachment(
+    valueTreeState,
+    "outputChannelsSetting",
+    *title.getOutputWidgetPtr()->getChannelsCbPointer()));
 
   addAndMakeVisible(demoSlider1);
   slider1Attachment.reset(
