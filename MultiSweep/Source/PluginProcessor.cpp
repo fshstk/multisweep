@@ -196,19 +196,19 @@ MultiSweepAudioProcessor::createParameterLayout()
   //   },
   //   nullptr));
 
-  params.push_back(OSCParameterInterface::createParameterTheOldWay(
-    "useSN3D",
-    "Normalization",
-    "",
-    NormalisableRange<float>(0.0f, 1.0f, 1.0f),
-    1.0f,
-    [](float value) {
-      if (value >= 0.5f)
-        return "SN3D";
-      else
-        return "N3D";
-    },
-    nullptr));
+  // params.push_back(OSCParameterInterface::createParameterTheOldWay(
+  //   "useSN3D",
+  //   "Normalization",
+  //   "",
+  //   NormalisableRange<float>(0.0f, 1.0f, 1.0f),
+  //   1.0f,
+  //   [](float value) {
+  //     if (value >= 0.5f)
+  //       return "SN3D";
+  //     else
+  //       return "N3D";
+  //   },
+  //   nullptr));
 
   params.push_back(OSCParameterInterface::createParameterTheOldWay(
     "param1",
