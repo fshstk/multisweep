@@ -60,7 +60,7 @@ private:
   TitleBar<AudioChannelsIOWidget<maxNumberOfChannels, true>, NoIOWidget> title;
   std::unique_ptr<ComboBoxAttachment> audioChannelsIOAttachment;
 
-  OSCFooter footer;
+  Footer footer;
 
   Slider demoSlider1;
   std::unique_ptr<SliderAttachment> slider1Attachment;
