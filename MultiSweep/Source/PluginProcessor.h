@@ -25,8 +25,8 @@
 #define ProcessorClass MultiSweepAudioProcessor
 
 class MultiSweepAudioProcessor
-  : public AudioProcessorBase<IOTypes::AudioChannels<10>,
-                              IOTypes::Ambisonics<7>>
+  : public AudioProcessorBase<IOTypes::AudioChannels<1>,  // TODO: magic numbers
+                              IOTypes::AudioChannels<64>>
 {
 public:
   MultiSweepAudioProcessor();
