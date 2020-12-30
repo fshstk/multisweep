@@ -58,8 +58,6 @@ public:
 
 private:
   std::atomic<float>* outputChannelsSetting;
-  // std::atomic<float>* outputOrderSetting;
-  // std::atomic<float>* useSN3D;
   std::atomic<float>* param1;
   std::atomic<float>* param2;
 
