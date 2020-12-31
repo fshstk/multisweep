@@ -44,7 +44,7 @@ target_sources(MultiSweep
 
 target_compile_definitions(MultiSweep
     PUBLIC
-        JUCE_VST3_CAN_REPLACE_VST2=0 # FIXME: this should be off by default!
+        JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_DISPLAY_SPLASH_SCREEEN=0
         # JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1 # FIXME: this doesn't work
 )
