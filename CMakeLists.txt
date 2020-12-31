@@ -28,7 +28,7 @@ project(IEMPluginSuite
     LANGUAGES   C CXX
 )
 
-find_package(JUCE CONFIG REQUIRED)
+find_package(JUCE 6.0.5 REQUIRED)
 
 set_directory_properties(PROPERTIES
     JUCE_COMPANY_NAME                           "IEM"
