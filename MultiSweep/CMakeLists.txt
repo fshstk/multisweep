@@ -40,7 +40,6 @@ target_sources(MultiSweep
         Source/PluginEditor.cpp
         Source/PluginProcessor.cpp
         ../resources/OSC/OSCParameterInterface.cpp
-        ../resources/OSC/OSCStatus.cpp
 )
 
 target_compile_definitions(MultiSweep
