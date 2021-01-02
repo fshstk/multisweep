@@ -42,14 +42,14 @@ public:
                              float startFreq = defaultStartFreq,
                              float endFreq = defaultStopFreq) const;
   std::vector<double> inverseLinear(float durationInSeconds,
-                                    float startFreq,
-                                    float endFreq) const;
+                                    float startFreq = defaultStartFreq,
+                                    float endFreq = defaultStopFreq) const;
   std::vector<double> exponential(float durationInSeconds,
-                                  float startFreq,
-                                  float endFreq) const;
+                                  float startFreq = defaultStartFreq,
+                                  float endFreq = defaultStopFreq) const;
   std::vector<double> inverseExponential(float durationInSeconds,
-                                         float startFreq,
-                                         float endFreq) const;
+                                         float startFreq = defaultStartFreq,
+                                         float endFreq = defaultStopFreq) const;
 
 private:
   double getSampleRate() const;
