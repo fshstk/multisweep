@@ -33,8 +33,7 @@ const std::vector<double> Sweep::generate(SweepType type,
                                           float endFreq = 20e3)
 {
   std::vector<double> sweep;
-  const auto fs = audioContext->getSampleRate();
-  const auto numSamples = ceil(durationInSeconds * fs);
+  const auto numSamples = std::ceil(durationInSeconds * fs);
 
   for (auto i = 0; i < numSamples; ++i) {
     const auto t = i / fs;
@@ -42,20 +41,20 @@ const std::vector<double> Sweep::generate(SweepType type,
 
     if (type == Linear) {
       const auto k = (endFreq - startFreq) * (1 / durationInSeconds);
-      value = sin(2 * pi * (0.5 * k * pow(t, 2) + startFreq * t));
+      value = std::sin(2 * pi * (0.5 * k * std::pow(t, 2) + startFreq * t));
 
       if (inverse)
         value *= (1 / fs);
     }
 
     else if (type == Exponential) {
-      const auto k = pow(endFreq - startFreq, 1 / durationInSeconds);
-      value = sin(2 * pi * startFreq * (pow(k, t) - 1) / log(k));
+      const auto k = std::pow(endFreq - startFreq, 1 / durationInSeconds);
+      value = std::sin(2 * pi * startFreq * (std::pow(k, t) - 1) / std::log(k));
 
       if (inverse) {
-        value *= 2 * pow(k, t);
+        value *= 2 * std::pow(k, t);
         // Factor in next line is equivalent to sum(k^t) for all t in range:
-        value *= (1 - pow(k, numSamples / fs)) / (1 - pow(k, 1 / fs));
+        value *= (1 - std::pow(k, numSamples / fs)) / (1 - std::pow(k, 1 / fs));
       }
     }
 
