@@ -30,8 +30,11 @@ Sweep::Sweep(double _sampleRate)
   : sampleRate(_sampleRate)
 {}
 
-                                          float startFreq = 20,
-                                          float endFreq = 20e3)
+std::vector<double> Sweep::generateSweep(SweepType type,
+                                         float durationInSeconds,
+                                         bool inverse,
+                                         float startFreq,
+                                         float endFreq) const
 {
   std::vector<double> sweep;
   const auto fs = getSampleRate();

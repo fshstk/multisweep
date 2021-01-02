@@ -37,11 +37,13 @@ public:
   Sweep(juce::AudioProcessor* _audioContext);
   ~Sweep() = default;
 
-  const std::vector<double> generate(SweepType type,
-                                     bool inverse,
-                                     float durationInSeconds,
-                                     float startFreq,
-                                     float endFreq);
+private:
+  double getSampleRate() const;
+  std::vector<double> generateSweep(SweepType type,
+                                    float durationInSeconds,
+                                    bool inverse,
+                                    float startFreq,
+                                    float endFreq) const;
 
 private:
   juce::AudioProcessor* audioContext;
