@@ -35,6 +35,7 @@ public:
 
 public:
   Sweep(juce::AudioProcessor* _audioContext);
+  Sweep(double sampleRate);
   ~Sweep() = default;
 
 private:
@@ -47,5 +48,6 @@ private:
 
 private:
   juce::AudioProcessor* audioContext;
+  double sampleRate;
   static constexpr double pi = M_PI;
 };
