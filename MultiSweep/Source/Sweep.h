@@ -44,9 +44,6 @@ public:
                                      float endFreq);
 
 private:
-  const double getSampleRate() { return audioContext->getSampleRate(); }
-
-private:
   juce::AudioProcessor* audioContext;
   static constexpr double pi = M_PI;
 };

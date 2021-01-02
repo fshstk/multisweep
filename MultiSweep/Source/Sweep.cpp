@@ -33,7 +33,7 @@ const std::vector<double> Sweep::generate(SweepType type,
                                           float endFreq = 20e3)
 {
   std::vector<double> sweep;
-  const auto fs = getSampleRate();
+  const auto fs = audioContext->getSampleRate();
   const auto numSamples = ceil(durationInSeconds * fs);
 
   for (auto i = 0; i < numSamples; ++i) {
