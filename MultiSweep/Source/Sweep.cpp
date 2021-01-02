@@ -38,22 +38,28 @@ const std::vector<double> Sweep::generate(SweepType type,
 
   for (auto i = 0; i < numSamples; ++i) {
     const auto t = i / fs;
+    double value;
+
     if (type == Linear) {
       const auto k = (endFreq - startFreq) * (1 / durationInSeconds);
-      auto value = sin(2 * pi * (0.5 * k * pow(t, 2) + startFreq * t));
+      value = sin(2 * pi * (0.5 * k * pow(t, 2) + startFreq * t));
+
       if (inverse)
         value *= (1 / fs);
-      sweep.push_back(value);
-    } else if (type == Exponential) {
+    }
+
+    else if (type == Exponential) {
       const auto k = pow(endFreq - startFreq, 1 / durationInSeconds);
-      auto value = sin(2 * pi * startFreq * (pow(k, t) - 1) / log(k));
+      value = sin(2 * pi * startFreq * (pow(k, t) - 1) / log(k));
+
       if (inverse) {
         value *= 2 * pow(k, t);
         // Factor in next line is equivalent to sum(k^t) for all t in range:
         value *= (1 - pow(k, numSamples / fs)) / (1 - pow(k, 1 / fs));
       }
-      sweep.push_back(value);
     }
+
+    sweep.push_back(value);
   }
 
   if (inverse)
