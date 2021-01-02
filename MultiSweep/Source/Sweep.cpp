@@ -26,9 +26,10 @@ Sweep::Sweep(juce::AudioProcessor* _audioContext)
   : audioContext(_audioContext)
 {}
 
-const std::vector<double> Sweep::generate(SweepType type,
-                                          bool inverse,
-                                          float durationInSeconds,
+Sweep::Sweep(double _sampleRate)
+  : sampleRate(_sampleRate)
+{}
+
                                           float startFreq = 20,
                                           float endFreq = 20e3)
 {
