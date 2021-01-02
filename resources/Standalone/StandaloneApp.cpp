@@ -50,7 +50,6 @@
   ==============================================================================
 */
 
-#include "../Source/PluginProcessor.h"
 #include <JuceHeader.h>
 
 extern juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter();

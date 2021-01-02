@@ -175,7 +175,7 @@ public:
     virtual void createPlugin()
     {
       #if JUCE_MODULE_AVAILABLE_juce_audio_plugin_client
-        processor.reset (::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone));
+        processor.reset (juce::createPluginFilterOfType (AudioProcessor::wrapperType_Standalone));
       #else
         AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
         processor.reset (createPluginFilter());
