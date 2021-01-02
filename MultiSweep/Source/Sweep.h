@@ -31,9 +31,7 @@ public:
   enum SweepType
   {
     Linear,
-    Exponential,
-    InverseLinear,
-    InverseExponential
+    Exponential
   };
 
 public:
@@ -41,6 +39,7 @@ public:
   ~Sweep() = default;
 
   const std::vector<double> generate(SweepType type,
+                                     bool inverse,
                                      float durationInSeconds,
                                      float startFreq,
                                      float endFreq);

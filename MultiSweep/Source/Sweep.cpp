@@ -27,6 +27,7 @@ Sweep::Sweep(juce::AudioProcessor* _audioContext)
 {}
 
 const std::vector<double> Sweep::generate(SweepType type,
+                                          bool inverse,
                                           float durationInSeconds,
                                           float startFreq,
                                           float endFreq)
@@ -39,17 +40,23 @@ const std::vector<double> Sweep::generate(SweepType type,
 
   for (size_t i = 0; i < numSamples; ++i) {
     const auto t = i / fs;
-
-    if (type == Linear || type == InverseLinear) {
+    if (type == Linear) {
       const auto k = (endFreq - startFreq) * (1 / durationInSeconds);
       const auto value = sin(2 * pi * (0.5 * k * pow(t, 2) + startFreq * t));
+      if (inverse)
+        sweep *= (1 / fs);
       sweep.push_back(value);
-    } else {
+    } else if (type == Exponential) {
       const auto k = pow(endFreq - startFreq, 1 / durationInSeconds);
       const auto value = sin(2 * pi * startFreq * (pow(k, t) - 1) / log(k));
+      if (inverse)
+        sweep *= 2 * pow(k, t); // TODO: scale by sum(k ** t) for all t in range
       sweep.push_back(value);
     }
   }
+
+  if (inverse)
+    std::reverse(sweep.begin(), sweep.end());
 
   return sweep;
 }
