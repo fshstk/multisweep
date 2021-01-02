@@ -69,3 +69,23 @@ target_link_libraries(MultiSweep
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
+
+# ==============================================================================
+
+juce_add_console_app(MultiSweepTests)
+juce_generate_juce_header(MultiSweepTests)
+
+target_sources(MultiSweepTests
+    PRIVATE
+        Test/Main.cpp
+        Source/Sweep.cpp
+)
+
+target_link_libraries(MultiSweepTests
+    PRIVATE
+        juce::juce_core
+        juce::juce_audio_processors
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags
+)
