@@ -72,6 +72,37 @@ std::vector<double> Sweep::generateSweep(SweepType type,
   return sweep;
 }
 
+std::vector<double> Sweep::linear(float durationInSeconds,
+                                  float startFreq,
+                                  float endFreq) const
+{
+  return this->generateSweep(
+    Linear, durationInSeconds, false, startFreq, endFreq);
+}
+
+std::vector<double> Sweep::inverseLinear(float durationInSeconds,
+                                         float startFreq,
+                                         float endFreq) const
+{
+  return this->generateSweep(
+    Linear, durationInSeconds, true, startFreq, endFreq);
+}
+
+std::vector<double> Sweep::exponential(float durationInSeconds,
+                                       float startFreq,
+                                       float endFreq) const
+{
+  return this->generateSweep(
+    Exponential, durationInSeconds, false, startFreq, endFreq);
+}
+
+std::vector<double> Sweep::inverseExponential(float durationInSeconds,
+                                              float startFreq,
+                                              float endFreq) const
+{
+  return this->generateSweep(
+    Exponential, durationInSeconds, true, startFreq, endFreq);
+}
 
 double Sweep::getSampleRate() const
 {

@@ -38,6 +38,19 @@ public:
   Sweep(double sampleRate);
   ~Sweep() = default;
 
+  std::vector<double> linear(float durationInSeconds,
+                             float startFreq = defaultStartFreq,
+                             float endFreq = defaultStopFreq) const;
+  std::vector<double> inverseLinear(float durationInSeconds,
+                                    float startFreq,
+                                    float endFreq) const;
+  std::vector<double> exponential(float durationInSeconds,
+                                  float startFreq,
+                                  float endFreq) const;
+  std::vector<double> inverseExponential(float durationInSeconds,
+                                         float startFreq,
+                                         float endFreq) const;
+
 private:
   double getSampleRate() const;
   std::vector<double> generateSweep(SweepType type,
@@ -50,4 +63,6 @@ private:
   juce::AudioProcessor* audioContext;
   double sampleRate;
   static constexpr double pi = M_PI;
+  static constexpr double defaultStartFreq = 20;
+  static constexpr double defaultStopFreq = 20e3;
 };
