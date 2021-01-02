@@ -37,8 +37,11 @@ juce_generate_juce_header(MultiSweep)
 
 target_sources(MultiSweep
     PRIVATE
+        # Project files:
         Source/PluginEditor.cpp
         Source/PluginProcessor.cpp
+        Source/Sweep.cpp
+        # IEM library:
         ../resources/Standalone/StandaloneApp.cpp
         ../resources/Standalone/IEM_AudioDeviceSelectorComponent.cpp
         ../resources/OSC/OSCParameterInterface.cpp
