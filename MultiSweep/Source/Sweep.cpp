@@ -71,3 +71,12 @@ std::vector<double> Sweep::generateSweep(SweepType type,
 
   return sweep;
 }
+
+
+double Sweep::getSampleRate() const
+{
+  if (audioContext != nullptr)
+    return audioContext->getSampleRate();
+  else
+    return sampleRate;
+}
