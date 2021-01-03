@@ -72,16 +72,17 @@ juce::AudioSampleBuffer Sweep::generateSweep(float duration,
 
     switch (type) {
       case Linear: {
-
-        const auto k = (range.upper - range.lower) * (1 / duration);
-        value = std::sin(2 * pi * (0.5 * k * std::pow(t, 2) + range.lower * t));
+        const auto k = (range.getEnd() - range.getStart()) * (1 / duration);
+        value =
+          std::sin(2 * pi * (0.5 * k * std::pow(t, 2) + range.getStart() * t));
         if (inverse)
           value *= (1 / fs);
       } break;
       case Exponential: {
-        const auto k = std::pow(range.upper / range.lower, 1 / duration);
-        value =
-          std::sin(2 * pi * range.lower * (std::pow(k, t) - 1) / std::log(k));
+        const auto k =
+          std::pow(range.getEnd() / range.getStart(), 1 / duration);
+        value = std::sin(2 * pi * range.getStart() * (std::pow(k, t) - 1) /
+                         std::log(k));
         // DBG("unscaled:" << value);
         if (inverse) {
           value *= 2 * std::pow(k, t);

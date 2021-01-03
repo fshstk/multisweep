@@ -27,27 +27,20 @@
 class Sweep
 {
 public:
-  struct FreqRange
+  class FreqRange : public juce::Range<double>
   {
-    FreqRange(double _lower, double _upper)
-      : lower(_lower)
-      , upper(_upper)
-    {}
-    FreqRange()
-      : lower(min)
-      , upper(max)
-    {}
-
-    const double lower;
-    const double upper;
-
+  public:
     static constexpr double min = 20;
     static constexpr double max = 20e3;
 
-    bool isValidForSampleRate(double sampleRate)
-    {
-      return (lower >= min) && (upper <= max) && (upper < sampleRate / 2);
-    }
+    FreqRange()
+      : juce::Range<double>(min, max)
+    {}
+
+    // bool isValidForSampleRate(double sampleRate)
+    // {
+    //   return (lower >= min) && (upper <= max) && (upper < sampleRate / 2);
+    // }
   };
 
 public:
