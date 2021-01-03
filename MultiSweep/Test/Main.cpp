@@ -22,7 +22,9 @@ int main(int argc, char* argv[])
 
 void saveFile(juce::AudioSampleBuffer buffer, std::string fileName)
 {
-  auto filePath = basePath + fileName;
+  // Generate unique filename so we don't append to existing files:
+  const auto timestamp = juce::Time::getCurrentTime().toISO8601(false);
+  const auto filePath = basePath + timestamp + "_" + fileName;
 
   std::unique_ptr<juce::AudioFormatWriter> writer(
     juce::WavAudioFormat().createWriterFor(
