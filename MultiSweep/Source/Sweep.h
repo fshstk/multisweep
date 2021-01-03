@@ -27,10 +27,27 @@
 class Sweep
 {
 public:
-  enum SweepType
+  struct FreqRange
   {
-    Linear,
-    Exponential
+    FreqRange(double _lower, double _upper)
+      : lower(_lower)
+      , upper(_upper)
+    {}
+    FreqRange()
+      : lower(min)
+      , upper(max)
+    {}
+
+    const double lower;
+    const double upper;
+
+    static constexpr double min = 20;
+    static constexpr double max = 20e3;
+
+    bool isValidForSampleRate(double sampleRate)
+    {
+      return (lower >= min) && (upper <= max) && (upper < sampleRate / 2);
+    }
   };
 
 public:
@@ -38,31 +55,31 @@ public:
   Sweep(double sampleRate);
   ~Sweep() = default;
 
-  std::vector<double> linear(float durationInSeconds,
-                             float startFreq = defaultStartFreq,
-                             float endFreq = defaultStopFreq) const;
-  std::vector<double> inverseLinear(float durationInSeconds,
-                                    float startFreq = defaultStartFreq,
-                                    float endFreq = defaultStopFreq) const;
-  std::vector<double> exponential(float durationInSeconds,
-                                  float startFreq = defaultStartFreq,
-                                  float endFreq = defaultStopFreq) const;
-  std::vector<double> inverseExponential(float durationInSeconds,
-                                         float startFreq = defaultStartFreq,
-                                         float endFreq = defaultStopFreq) const;
+  std::vector<double> linear(float duration,
+                             FreqRange range = FreqRange()) const;
+  std::vector<double> inverseLinear(float duration,
+                                    FreqRange range = FreqRange()) const;
+  std::vector<double> exponential(float duration,
+                                  FreqRange range = FreqRange()) const;
+  std::vector<double> inverseExponential(float duration,
+                                         FreqRange range = FreqRange()) const;
+
+private:
+  enum SweepType // needs to be declared before generateSweep()
+  {
+    Linear,
+    Exponential
+  };
 
 private:
   double getSampleRate() const;
-  std::vector<double> generateSweep(SweepType type,
-                                    float durationInSeconds,
-                                    bool inverse,
-                                    float startFreq,
-                                    float endFreq) const;
+  std::vector<double> generateSweep(float duration,
+                                    FreqRange range,
+                                    SweepType type,
+                                    bool inverse) const;
 
 private:
-  juce::AudioProcessor* audioContext;
-  double sampleRate;
+  const juce::AudioProcessor* const audioContext;
+  const double sampleRate;
   static constexpr double pi = M_PI;
-  static constexpr double defaultStartFreq = 20;
-  static constexpr double defaultStopFreq = 20e3;
 };
