@@ -2,25 +2,31 @@
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <juce_core/juce_core.h>
 
+const auto basePath = "~/Downloads/sweeptest/";
+const auto fs = 44100;
+
+void saveFile(juce::AudioSampleBuffer, std::string);
+
 int main(int argc, char* argv[])
 {
-  const auto sweepLength = 4;
-  const auto fs = 44100;
+  const auto sweepLength = 1;
 
-  const auto sweep = Sweep(fs).linear(sweepLength);
-
-  juce::WavAudioFormat format;
-  std::unique_ptr<juce::AudioFormatWriter> writer;
-  writer.reset(format.createWriterFor(
-    new juce::FileOutputStream(juce::File("~/Downloads/sweeptest/test.wav")),
-    fs,
-    sweep.getNumChannels(),
-    24,
-    {},
-    0));
-  if (writer != nullptr)
-    writer->writeFromAudioSampleBuffer(sweep, 0, sweep.getNumSamples());
+  saveFile(Sweep(fs).linear(sweepLength), "lin.wav");
+  saveFile(Sweep(fs).inverseLinear(sweepLength), "inv_lin.wav");
+  saveFile(Sweep(fs).exponential(sweepLength), "exp.wav");
+  saveFile(Sweep(fs).inverseExponential(sweepLength), "inv_exp.wav");
 
   juce::ignoreUnused(argc, argv);
   return 0;
+}
+
+void saveFile(juce::AudioSampleBuffer buffer, std::string fileName)
+{
+  auto filePath = basePath + fileName;
+
+  std::unique_ptr<juce::AudioFormatWriter> writer(
+    juce::WavAudioFormat().createWriterFor(
+      new juce::FileOutputStream(juce::File(filePath)), fs, 1, 24, {}, 0));
+
+  writer->writeFromAudioSampleBuffer(buffer, 0, buffer.getNumSamples());
 }
