@@ -32,65 +32,72 @@ Sweep::Sweep(double _sampleRate)
   , sampleRate(_sampleRate)
 {}
 
-std::vector<double> Sweep::linear(float duration, FreqRange range) const
+juce::AudioSampleBuffer Sweep::linear(float duration, FreqRange range) const
 {
   return this->generateSweep(duration, range, Linear, false);
 }
 
-std::vector<double> Sweep::inverseLinear(float duration, FreqRange range) const
+juce::AudioSampleBuffer Sweep::inverseLinear(float duration,
+                                             FreqRange range) const
 {
   return this->generateSweep(duration, range, Linear, true);
 }
 
-std::vector<double> Sweep::exponential(float duration, FreqRange range) const
+juce::AudioSampleBuffer Sweep::exponential(float duration,
+                                           FreqRange range) const
 {
   return this->generateSweep(duration, range, Exponential, false);
 }
 
-std::vector<double> Sweep::inverseExponential(float duration,
-                                              FreqRange range) const
+juce::AudioSampleBuffer Sweep::inverseExponential(float duration,
+                                                  FreqRange range) const
 {
   return this->generateSweep(duration, range, Exponential, true);
 }
 
-std::vector<double> Sweep::generateSweep(float duration,
-                                         FreqRange range,
-                                         SweepType type,
-                                         bool inverse) const
+juce::AudioSampleBuffer Sweep::generateSweep(float duration,
+                                             FreqRange range,
+                                             SweepType type,
+                                             bool inverse) const
 {
-  std::vector<double> sweep;
   const auto fs = getSampleRate();
-  const auto numSamples = std::ceil(duration * fs);
+  const int numChannels = 1;
+  const auto numSamples = int(duration * fs);
+  juce::AudioSampleBuffer sweep(numChannels, numSamples);
 
   for (auto i = 0; i < numSamples; ++i) {
+    const auto channel = 0;
     const auto t = i / fs;
     double value;
 
-    if (type == Linear) {
-      const auto k = (range.upper - range.lower) * (1 / duration);
-      value = std::sin(2 * pi * (0.5 * k * std::pow(t, 2) + range.lower * t));
+    switch (type) {
+      case Linear: {
 
-      if (inverse)
-        value *= (1 / fs);
-    }
+        const auto k = (range.upper - range.lower) * (1 / duration);
+        value = std::sin(2 * pi * (0.5 * k * std::pow(t, 2) + range.lower * t));
 
-    else if (type == Exponential) {
-      const auto k = std::pow(range.upper - range.lower, 1 / duration);
-      value =
-        std::sin(2 * pi * range.lower * (std::pow(k, t) - 1) / std::log(k));
+        if (inverse)
+          value *= (1 / fs);
+      }
+      case Exponential: {
+        const auto k = std::pow(range.upper - range.lower, 1 / duration);
+        value =
+          std::sin(2 * pi * range.lower * (std::pow(k, t) - 1) / std::log(k));
 
-      if (inverse) {
-        value *= 2 * std::pow(k, t);
-        // Factor in next line is equivalent to sum(k^t) for all t in range:
-        value *= (1 - std::pow(k, numSamples / fs)) / (1 - std::pow(k, 1 / fs));
+        if (inverse) {
+          value *= 2 * std::pow(k, t);
+          // Factor in next line is equivalent to sum(k^t) for all t in range:
+          value *=
+            (1 - std::pow(k, numSamples / fs)) / (1 - std::pow(k, 1 / fs));
+        }
       }
     }
 
-    sweep.push_back(value);
+    sweep.setSample(channel, i, float(value));
   }
 
   if (inverse)
-    std::reverse(sweep.begin(), sweep.end());
+    sweep.reverse(0, numSamples);
 
   return sweep;
 }

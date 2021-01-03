@@ -55,14 +55,15 @@ public:
   Sweep(double sampleRate);
   ~Sweep() = default;
 
-  std::vector<double> linear(float duration,
-                             FreqRange range = FreqRange()) const;
-  std::vector<double> inverseLinear(float duration,
-                                    FreqRange range = FreqRange()) const;
-  std::vector<double> exponential(float duration,
-                                  FreqRange range = FreqRange()) const;
-  std::vector<double> inverseExponential(float duration,
-                                         FreqRange range = FreqRange()) const;
+  juce::AudioSampleBuffer linear(float duration,
+                                 FreqRange range = FreqRange()) const;
+  juce::AudioSampleBuffer inverseLinear(float duration,
+                                        FreqRange range = FreqRange()) const;
+  juce::AudioSampleBuffer exponential(float duration,
+                                      FreqRange range = FreqRange()) const;
+  juce::AudioSampleBuffer inverseExponential(
+    float duration,
+    FreqRange range = FreqRange()) const;
 
 private:
   enum SweepType // needs to be declared before generateSweep()
