@@ -75,5 +75,5 @@ private:
 private:
   const juce::AudioProcessor* const audioContext;
   const double sampleRate;
-  static constexpr double pi = M_PI;
+  static constexpr double pi = juce::MathConstants<double>::pi;
 };
