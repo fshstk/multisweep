@@ -75,24 +75,24 @@ juce::AudioSampleBuffer Sweep::generateSweep(float duration,
 
         const auto k = (range.upper - range.lower) * (1 / duration);
         value = std::sin(2 * pi * (0.5 * k * std::pow(t, 2) + range.lower * t));
-
         if (inverse)
           value *= (1 / fs);
-      }
+      } break;
       case Exponential: {
-        const auto k = std::pow(range.upper - range.lower, 1 / duration);
+        const auto k = std::pow(range.upper / range.lower, 1 / duration);
         value =
           std::sin(2 * pi * range.lower * (std::pow(k, t) - 1) / std::log(k));
-
+        // DBG("unscaled:" << value);
         if (inverse) {
           value *= 2 * std::pow(k, t);
+          // DBG("half scaled:" << value);
           // Factor in next line is equivalent to sum(k^t) for all t in range:
           value *=
             (1 - std::pow(k, numSamples / fs)) / (1 - std::pow(k, 1 / fs));
         }
-      }
+        // DBG("fully scaled:" << value);
+      } break;
     }
-
     sweep.setSample(channel, i, float(value));
   }
 
