@@ -7,7 +7,18 @@ int main(int argc, char* argv[])
   const auto fs = 44100;
 
   const auto sweep = Sweep(fs).linear(sweepLength);
-  DBG(sweep.size());
+
+  juce::WavAudioFormat format;
+  std::unique_ptr<juce::AudioFormatWriter> writer;
+  writer.reset(format.createWriterFor(
+    new juce::FileOutputStream(juce::File("~/Downloads/sweeptest/test.wav")),
+    fs,
+    sweep.getNumChannels(),
+    24,
+    {},
+    0));
+  if (writer != nullptr)
+    writer->writeFromAudioSampleBuffer(sweep, 0, sweep.getNumSamples());
 
   juce::ignoreUnused(argc, argv);
   return 0;

@@ -84,6 +84,7 @@ target_sources(MultiSweepTests
 target_link_libraries(MultiSweepTests
     PRIVATE
         juce::juce_core
+        juce::juce_audio_formats
         juce::juce_audio_processors
     PUBLIC
         juce::juce_recommended_config_flags
