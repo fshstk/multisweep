@@ -74,10 +74,10 @@ private:
 
 private:
   double getSampleRate() const;
-  std::vector<double> generateSweep(float duration,
-                                    FreqRange range,
-                                    SweepType type,
-                                    bool inverse) const;
+  juce::AudioSampleBuffer generateSweep(float duration,
+                                        FreqRange range,
+                                        SweepType type,
+                                        bool inverse) const;
 
 private:
   const juce::AudioProcessor* const audioContext;
