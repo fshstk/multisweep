@@ -89,7 +89,7 @@ juce::AudioSampleBuffer Sweep::generateSweep(float duration,
           // DBG("half scaled:" << value);
           // Factor in next line is equivalent to sum(k^t) for all t in range:
           value *=
-            (1 - std::pow(k, numSamples / fs)) / (1 - std::pow(k, 1 / fs));
+            (1 - std::pow(k, 1 / fs)) / (1 - std::pow(k, numSamples / fs));
         }
         // DBG("fully scaled:" << value);
       } break;
