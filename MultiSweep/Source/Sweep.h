@@ -69,5 +69,5 @@ private:
 private:
   const juce::AudioProcessor* const audioContext;
   const double sampleRate;
-  static constexpr double pi = juce::MathConstants<double>::pi;
+  static constexpr auto pi = juce::MathConstants<double>::pi;
 };
