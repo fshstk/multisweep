@@ -34,25 +34,25 @@ Sweep::Sweep(double _sampleRate)
 
 juce::AudioSampleBuffer Sweep::linear(float duration, FreqRange range) const
 {
-  return this->generateSweep(duration, range, Linear, false);
+  return generateSweep(duration, range, Linear, false);
 }
 
 juce::AudioSampleBuffer Sweep::inverseLinear(float duration,
                                              FreqRange range) const
 {
-  return this->generateSweep(duration, range, Linear, true);
+  return generateSweep(duration, range, Linear, true);
 }
 
 juce::AudioSampleBuffer Sweep::exponential(float duration,
                                            FreqRange range) const
 {
-  return this->generateSweep(duration, range, Exponential, false);
+  return generateSweep(duration, range, Exponential, false);
 }
 
 juce::AudioSampleBuffer Sweep::inverseExponential(float duration,
                                                   FreqRange range) const
 {
-  return this->generateSweep(duration, range, Exponential, true);
+  return generateSweep(duration, range, Exponential, true);
 }
 
 juce::AudioSampleBuffer Sweep::generateSweep(float duration,
