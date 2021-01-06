@@ -34,31 +34,31 @@ Sweep::Sweep(double _sampleRate)
 
 juce::AudioSampleBuffer Sweep::linear(float duration, FreqRange range) const
 {
-  return generateSweep(duration, range, Linear, false);
+  return generateSweep(duration, range, SweepType::Linear, Inverse::No);
 }
 
 juce::AudioSampleBuffer Sweep::inverseLinear(float duration,
                                              FreqRange range) const
 {
-  return generateSweep(duration, range, Linear, true);
+  return generateSweep(duration, range, SweepType::Linear, Inverse::Yes);
 }
 
 juce::AudioSampleBuffer Sweep::exponential(float duration,
                                            FreqRange range) const
 {
-  return generateSweep(duration, range, Exponential, false);
+  return generateSweep(duration, range, SweepType::Exponential, Inverse::No);
 }
 
 juce::AudioSampleBuffer Sweep::inverseExponential(float duration,
                                                   FreqRange range) const
 {
-  return generateSweep(duration, range, Exponential, true);
+  return generateSweep(duration, range, SweepType::Exponential, Inverse::Yes);
 }
 
 juce::AudioSampleBuffer Sweep::generateSweep(float duration,
                                              FreqRange range,
                                              SweepType type,
-                                             bool inverse) const
+                                             Inverse inverse) const
 {
   const auto fs = getSampleRate();
   const int numChannels = 1;
@@ -71,19 +71,19 @@ juce::AudioSampleBuffer Sweep::generateSweep(float duration,
     double value;
 
     switch (type) {
-      case Linear: {
+      case SweepType::Linear: {
         const auto k = (range.getEnd() - range.getStart()) * (1 / duration);
         value =
           std::sin(2 * pi * (0.5 * k * std::pow(t, 2) + range.getStart() * t));
-        if (inverse)
+        if (inverse == Inverse::Yes)
           value *= (1 / fs);
       } break;
-      case Exponential: {
+      case SweepType::Exponential: {
         const auto k =
           std::pow(range.getEnd() / range.getStart(), 1 / duration);
         value = std::sin(2 * pi * range.getStart() * (std::pow(k, t) - 1) /
                          std::log(k));
-        if (inverse) {
+        if (inverse == Inverse::Yes) {
           value *= 2 * std::pow(k, t);
           // Factor in next line is equivalent to sum(k^t) for all t in range:
           value *=
@@ -94,7 +94,7 @@ juce::AudioSampleBuffer Sweep::generateSweep(float duration,
     sweep.setSample(channel, i, float(value));
   }
 
-  if (inverse)
+  if (inverse == Inverse::Yes)
     sweep.reverse(0, numSamples);
 
   return sweep;

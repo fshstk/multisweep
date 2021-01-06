@@ -53,10 +53,15 @@ public:
     FreqRange range = FreqRange()) const;
 
 private:
-  enum SweepType // needs to be declared before generateSweep()
+  enum class SweepType // needs to be declared before generateSweep()
   {
     Linear,
     Exponential
+  };
+  enum class Inverse
+  {
+    No = false,
+    Yes = true
   };
 
 private:
@@ -64,7 +69,7 @@ private:
   juce::AudioSampleBuffer generateSweep(float duration,
                                         FreqRange range,
                                         SweepType type,
-                                        bool inverse) const;
+                                        Inverse inverse) const;
 
 private:
   const juce::AudioProcessor* const audioContext;
