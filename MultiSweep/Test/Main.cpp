@@ -1,4 +1,4 @@
-#include "../Source/Sweep.h"
+#include "../Source/LogSweep.h"
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <juce_core/juce_core.h>
 
@@ -9,22 +9,40 @@ const auto basePath = "~/Documents/Toningenieur/Algorithmen 2/sweeptest/";
 const auto fs = 44100;
 const auto sweepLength = 2;
 
-void saveFile(juce::AudioSampleBuffer, std::string);
+void saveFile(const juce::AudioSampleBuffer&, std::string);
+void saveFile(const std::vector<float>&, std::string);
+juce::AudioSampleBuffer makeAudioBuffer(const std::vector<float>&);
+
+// =============================================================================
 
 int main(int argc, char* argv[])
 {
   DBG(timestamp);
 
-  saveFile(Sweep(fs).linear(sweepLength), "lin.wav");
-  saveFile(Sweep(fs).inverseLinear(sweepLength), "inv_lin.wav");
-  saveFile(Sweep(fs).exponential(sweepLength), "exp.wav");
-  saveFile(Sweep(fs).inverseExponential(sweepLength), "inv_exp.wav");
+  const auto sweepObject = LogSweep(Frequency(fs), Duration(sweepLength));
+  const auto sweep = sweepObject.generateSignal();
+  const auto invSweep = sweepObject.generateInverse();
+
+  DBG(sweep.size());
+
+  saveFile(sweep, "exp.wav");
+  saveFile(invSweep, "inv_exp.wav");
 
   juce::ignoreUnused(argc, argv);
   return 0;
 }
 
-void saveFile(juce::AudioSampleBuffer buffer, std::string fileName)
+// =============================================================================
+
+juce::AudioSampleBuffer makeAudioBuffer(const std::vector<float>& vector)
+{
+  juce::AudioSampleBuffer buffer(1, vector.size());
+  for (auto i = 0; i < vector.size(); ++i)
+    buffer.setSample(0, i, vector[i]);
+  return buffer;
+}
+
+void saveFile(const juce::AudioSampleBuffer& buffer, std::string fileName)
 {
   const auto filePath = basePath + timestamp + "_" + fileName;
 
@@ -33,4 +51,9 @@ void saveFile(juce::AudioSampleBuffer buffer, std::string fileName)
       new juce::FileOutputStream(juce::File(filePath)), fs, 1, 24, {}, 0));
 
   writer->writeFromAudioSampleBuffer(buffer, 0, buffer.getNumSamples());
+}
+
+void saveFile(const std::vector<float>& vector, std::string fileName)
+{
+  saveFile(makeAudioBuffer(vector), fileName);
 }

@@ -40,7 +40,7 @@ target_sources(MultiSweep
         # Project files:
         Source/PluginEditor.cpp
         Source/PluginProcessor.cpp
-        Source/Sweep.cpp
+        Source/LogSweep.cpp
         # IEM library:
         ../resources/Standalone/StandaloneApp.cpp
         ../resources/Standalone/IEM_AudioDeviceSelectorComponent.cpp
@@ -78,7 +78,7 @@ juce_generate_juce_header(MultiSweepTests)
 target_sources(MultiSweepTests
     PRIVATE
         Test/Main.cpp
-        Source/Sweep.cpp
+        Source/LogSweep.cpp
 )
 
 target_link_libraries(MultiSweepTests
