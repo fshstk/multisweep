@@ -29,11 +29,9 @@ std::vector<float> LogSweep::generateSignal() const
 
   sweep = std::vector<float>(numSamples);
 
-  for (size_t i = 0; i < numSamples; ++i) {
-    const auto t = i / fs;
+  for (size_t i = 0; i < numSamples; ++i)
     sweep[i] = float(
-      std::sin(2 * pi * range.lower * (std::pow(k, t) - 1) / std::log(k)));
-  }
+      std::sin(2 * pi * range.lower * (std::pow(k, t(i)) - 1) / std::log(k)));
 
   return sweep;
 }
@@ -45,14 +43,13 @@ std::vector<float> LogSweep::generateInverse() const
 
   invSweep = generateSignal();
 
+  // Factor is equivalent to sum(k^t) for all t in range:
+  const auto factor =
+    (1 - std::pow(k, 1 / fs)) / (1 - std::pow(k, numSamples / fs));
+
   // Amplitude scaling:
-  for (size_t i = 0; i < numSamples; ++i) {
-    const auto t = i / fs;
-    invSweep[i] *= float(2 * std::pow(k, t));
-    // Factor in next line is equivalent to sum(k^t) for all t in range:
-    invSweep[i] *=
-      float((1 - std::pow(k, 1 / fs)) / (1 - std::pow(k, numSamples / fs)));
-  }
+  for (size_t i = 0; i < numSamples; ++i)
+    invSweep[i] *= float(2 * factor * std::pow(k, t(i)));
 
   std::reverse(invSweep.begin(), invSweep.end());
   return invSweep;

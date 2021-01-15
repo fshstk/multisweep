@@ -59,6 +59,9 @@ public:
   virtual std::vector<float> computeIR(const float signalResponse) const = 0;
 
 protected:
+  inline double t(size_t i) const { return i / fs; }
+
+protected:
   const Frequency fs;
   const Duration duration;
   const FreqRange range;
