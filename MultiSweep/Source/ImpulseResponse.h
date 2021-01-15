@@ -47,7 +47,7 @@ public:
     : fs(_fs)
     , duration(_duration)
     , range(_range)
-    , numSamples(std::ceil(fs * duration))
+    , numSamples(size_t(std::ceil(fs * duration)))
   {
     assert(duration > 0);
     assert(fs > 0);
