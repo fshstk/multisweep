@@ -24,9 +24,12 @@
 #include <AudioProcessorBase.h>
 #define ProcessorClass MultiSweepAudioProcessor
 
+constexpr auto numInputs = 1;
+constexpr auto numOutputs = 64;
+
 class MultiSweepAudioProcessor
-  : public AudioProcessorBase<IOTypes::AudioChannels<1>,  // TODO: magic numbers
-                              IOTypes::AudioChannels<64>>
+  : public AudioProcessorBase<IOTypes::AudioChannels<numInputs>,
+                              IOTypes::AudioChannels<numOutputs>>
 {
 public:
   MultiSweepAudioProcessor();
