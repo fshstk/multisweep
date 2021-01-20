@@ -31,12 +31,12 @@ project(IEMPluginSuite
 find_package(JUCE 6.0.5 REQUIRED)
 
 set_directory_properties(PROPERTIES
-    JUCE_COMPANY_NAME                           "IEM"
-    JUCE_COMPANY_WEBSITE                        "iem.at"
-    JUCE_COMPANY_EMAIL                          "office@iem.at"
-    JUCE_COMPANY_COPYRIGHT                      "(c) 2020 Institute of Electronic Music, Graz University of the Arts"
-    JUCE_PLUGIN_MANUFACTURER_CODE               "IEMA"
-    JUCE_COPY_PLUGIN_AFTER_BUILD                TRUE
+    JUCE_COMPANY_NAME               "IEM"
+    JUCE_COMPANY_WEBSITE            "iem.at"
+    JUCE_COMPANY_EMAIL              "office@iem.at"
+    JUCE_COMPANY_COPYRIGHT          "(c) 2020 Institute of Electronic Music, Graz University of the Arts"
+    JUCE_PLUGIN_MANUFACTURER_CODE   "IEMA"
+    JUCE_COPY_PLUGIN_AFTER_BUILD    TRUE
 )
 
 include_directories(resources)
