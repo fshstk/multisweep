@@ -20,44 +20,42 @@
  ==============================================================================
  */
 
-#include "LogSweep.h"
 #include "fft.h"
+#include <algorithm>
+#include <cassert>
+#include <functional>
 
-std::vector<float> LogSweep::generateSignal() const
+ComplexVector complexExponential(double k, int numSamples)
 {
-  if (!sweep.empty())
-    return sweep;
-
-  sweep = std::vector<float>(numSamples);
-
-  for (size_t i = 0; i < numSamples; ++i)
-    sweep[i] = float(
-      std::sin(2 * pi * range.lower * (std::pow(k, t(i)) - 1) / std::log(k)));
-
-  return sweep;
+  //
 }
 
-std::vector<float> LogSweep::generateInverse() const
+ComplexVector dft(const RealVector& x)
 {
-  if (!invSweep.empty())
-    return invSweep;
-
-  invSweep = generateSignal();
-
-  // Factor is equivalent to sum(k^t) for all t in range:
-  const auto factor =
-    (1 - std::pow(k, 1 / fs)) / (1 - std::pow(k, numSamples / fs));
-
-  // Amplitude scaling:
-  for (size_t i = 0; i < numSamples; ++i)
-    invSweep[i] *= float(2 * factor * std::pow(k, t(i)));
-
-  std::reverse(invSweep.begin(), invSweep.end());
-  return invSweep;
+  //
 }
 
-std::vector<float> LogSweep::computeIR(
-  const std::vector<float>& signalResponse) const
+RealVector idft(const ComplexVector& x)
 {
-  return convolve(signalResponse, generateInverse());
+  //
+}
+
+RealVector convolve(RealVector a, RealVector b)
+{
+  const auto numSamples = a.size() + b.size() - 1;
+  a.resize(numSamples, 0);
+  b.resize(numSamples, 0);
+  auto convolution = ComplexVector(numSamples);
+
+  const auto a_dft = dft(a);
+  const auto b_dft = dft(b);
+
+  // Element-wise multiplication of a_dft & b_dft:
+  std::transform(a_dft.cbegin(),
+                 a_dft.cend(),
+                 b_dft.cbegin(),
+                 convolution.begin(),
+                 std::multiplies<std::complex<double>>());
+
+  return idft(convolution);
 }

@@ -41,6 +41,7 @@ target_sources(MultiSweep
         Source/PluginEditor.cpp
         Source/PluginProcessor.cpp
         Source/LogSweep.cpp
+        Source/fft.cpp
         # IEM library:
         ../resources/Standalone/StandaloneApp.cpp
         ../resources/Standalone/IEM_AudioDeviceSelectorComponent.cpp
@@ -79,6 +80,7 @@ target_sources(MultiSweepTests
     PRIVATE
         Test/Main.cpp
         Source/LogSweep.cpp
+        Source/fft.cpp
 )
 
 target_link_libraries(MultiSweepTests
