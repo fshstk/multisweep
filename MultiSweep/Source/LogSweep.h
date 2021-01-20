@@ -38,7 +38,8 @@ public:
 
   std::vector<float> generateSignal() const override;
   std::vector<float> generateInverse() const;
-  std::vector<float> computeIR(const float signalResponse) const override;
+  std::vector<float> computeIR(
+    const std::vector<float>& signalResponse) const override;
 
 private:
   double k;

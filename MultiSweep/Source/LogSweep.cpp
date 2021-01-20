@@ -55,7 +55,8 @@ std::vector<float> LogSweep::generateInverse() const
   return invSweep;
 }
 
-std::vector<float> LogSweep::computeIR(const float signalResponse) const
+std::vector<float> LogSweep::computeIR(
+  const std::vector<float>& signalResponse) const
 {
   // frequency-domain convolution of signalResponse and invSweep
 }

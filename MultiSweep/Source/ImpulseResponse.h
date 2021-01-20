@@ -56,7 +56,8 @@ public:
   virtual ~ImpulseResponse() = default;
 
   virtual std::vector<float> generateSignal() const = 0;
-  virtual std::vector<float> computeIR(const float signalResponse) const = 0;
+  virtual std::vector<float> computeIR(
+    const std::vector<float>& signalResponse) const = 0;
 
 protected:
   inline double t(size_t i) const { return i / fs; }
