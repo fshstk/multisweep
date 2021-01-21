@@ -18,6 +18,9 @@
 #  along with this software.  If not, see <https://www.gnu.org/licenses/>.
 # ==============================================================================
 
+include(FindPkgConfig)
+pkg_check_modules(fftw3 REQUIRED IMPORTED_TARGET fftw3f)
+
 juce_add_plugin(MultiSweep
     VERSION                                     0.0.1
     PLUGIN_CODE                                 MuSw
@@ -58,11 +61,12 @@ target_compile_definitions(MultiSweep
 
 target_link_libraries(MultiSweep
     PRIVATE
-        # Required for VST3 and Standalone:
+        PkgConfig::fftw3
+        # JUCE modules required for VST3 and Standalone:
         RobotoFont
         juce::juce_audio_plugin_client
         juce::juce_osc
-        # Required for Standalone only:
+        # JUCE modules required for Standalone only:
         juce::juce_audio_devices
         juce::juce_audio_utils
     PUBLIC
@@ -85,6 +89,8 @@ target_sources(MultiSweepTests
 
 target_link_libraries(MultiSweepTests
     PRIVATE
+        PkgConfig::fftw3
+        # JUCE modules:
         juce::juce_core
         juce::juce_audio_formats
         juce::juce_audio_processors

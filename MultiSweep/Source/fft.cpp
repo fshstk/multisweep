@@ -23,6 +23,7 @@
 #include "fft.h"
 #include <algorithm>
 #include <cassert>
+#include <fftw3.h>
 #include <functional>
 
 ComplexVector complexExponential(double k, int numSamples)
