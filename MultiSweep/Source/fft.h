@@ -25,8 +25,12 @@
 #include <complex>
 #include <vector>
 
-typedef std::vector<std::complex<double>> ComplexVector;
-typedef std::vector<float> RealVector;
+// These MUST be "double" and "fftw_complex" for fftw to work!
+// (std::complex<double> may also work but is not guaranteed to.)
+typedef double RealType;
+typedef fftw_complex ComplexType;
+typedef std::vector<RealType> RealVector;
+typedef std::vector<ComplexType> ComplexVector;
 
 ComplexVector complexExponential(double k, int numSamples);
 ComplexVector dft(const RealVector& x);
