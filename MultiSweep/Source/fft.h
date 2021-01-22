@@ -23,6 +23,7 @@
 #pragma once
 
 #include <complex>
+#include <fftw3.h>
 #include <vector>
 
 // These MUST be "double" and "fftw_complex" for fftw to work!
@@ -32,7 +33,13 @@ typedef fftw_complex ComplexType;
 typedef std::vector<RealType> RealVector;
 typedef std::vector<ComplexType> ComplexVector;
 
-ComplexVector complexExponential(double k, int numSamples);
-ComplexVector dft(const RealVector& x);
-RealVector idft(const ComplexVector& x);
+// Ideally, we would want to pass these two by const ref, but this would require
+// a const_cast or something similar since FFTW does not take const parameters:
+ComplexVector dft(RealVector input);
+RealVector idft(ComplexVector input);
+
 RealVector convolve(RealVector a, RealVector b);
+
+// Convenience function for using floats instead of doubles:
+std::vector<float> convolve(const std::vector<float>& a,
+                            const std::vector<float>& b);

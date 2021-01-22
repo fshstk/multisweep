@@ -23,76 +23,55 @@
 #include "fft.h"
 #include <algorithm>
 #include <cassert>
-#include <fftw3.h>
 #include <functional>
 
-ComplexVector dft(const RealVector& x)
+ComplexVector dft(RealVector input)
 {
+  // To avoid confusion when calculating the inverse dft, dft() needs an input
+  // of even length:
+  input.resize(input.size() + input.size() % 2, 0);
+  ComplexVector output(input.size() / 2 + 1);
 
-  const size_t inputLength = x.size();
-  // To avoid confusion when calculating the inverse dft, dft() will only accept
-  // inputs of even length:
-  assert(inputLength % 2 == 0);
-  auto* const inputBuffer = fftw_alloc_real(inputLength);
-  std::copy(x.begin(), x.end(), inputBuffer);
-
-  const size_t outputLength = inputLength / 2 + 1;
-  auto* const outputBuffer = fftw_alloc_complex(outputLength);
-
-  auto* const plan =
-    fftw_plan_dft_r2c_1d(inputLength, inputBuffer, outputBuffer, FFTW_ESTIMATE);
+  // NOTE: if FFTW_ESTIMATE is not specified, this will overwrite the contents
+  // of the input/output buffers!
+  auto* const plan = fftw_plan_dft_r2c_1d(
+    int(input.size()), input.data(), output.data(), FFTW_ESTIMATE);
   fftw_execute(plan);
-  const auto outputVector =
-    ComplexVector(outputBuffer, outputBuffer + outputLength);
-
   fftw_destroy_plan(plan);
-  fftw_free(inputBuffer);
-  fftw_free(outputBuffer);
 
-  return outputVector;
+  return output;
 }
 
-RealVector idft(const ComplexVector& x)
+RealVector idft(ComplexVector input)
 {
-  const size_t inputLength = x.size();
-  auto* const inputBuffer = fftw_alloc_complex(inputLength);
-  std::copy(x.begin(), x.end(), inputBuffer);
-
   // NOTE: This works as long as we ensure that the original real-valued signal
   // was even:
-  const size_t outputLength = (inputLength - 1) * 2;
-  auto* const outputBuffer = fftw_alloc_real(outputLength);
+  RealVector output((input.size() - 1) * 2);
 
   // NOTE: if FFTW_ESTIMATE is not specified, this will overwrite the contents
   // of the input/output buffers!
   auto* const plan = fftw_plan_dft_c2r_1d(
-    outputLength, inputBuffer, outputBuffer, FFTW_ESTIMATE);
-
+    int(output.size()), input.data(), output.data(), FFTW_ESTIMATE);
   fftw_execute(plan);
-  const auto outputVector =
-    RealVector(outputBuffer, outputBuffer + outputLength);
-
   fftw_destroy_plan(plan);
-  fftw_free(inputBuffer);
-  fftw_free(outputBuffer);
 
   // FFTW doesn't normalise the IFFT by itself, so we have to do it manually:
-  std::transform(output.cbegin(),
-                 output.cend(),
-                 output.begin(),
-                 [output](ComplexType& n) { return n / output.size() });
+  std::for_each(output.begin(), output.end(), [output](ComplexType& n) {
+    n[0] /= 2;
+    n[1] /= 2;
+  });
 
   return output;
 }
 
 RealVector convolve(RealVector a, RealVector b)
 {
-  auto numSamples = a.size() + b.size() - 1;
-  // Make sure numSamples is even:
-  numSamples = numSamples % 2;
-  assert(numSamples % 2 == 0);
-  a.resize(numSamples, 0);
-  b.resize(numSamples, 0);
+  auto outputSize = a.size() + b.size() - 1;
+  // Make sure outputSize is even:
+  outputSize += outputSize % 2;
+  assert(outputSize % 2 == 0);
+  a.resize(outputSize, 0);
+  b.resize(outputSize, 0);
 
   const auto a_dft = dft(a);
   const auto b_dft = dft(b);
@@ -108,6 +87,15 @@ RealVector convolve(RealVector a, RealVector b)
 
   const auto output = idft(convolution);
   // Sanity check:
-  assert(output.size() == numSamples);
+  assert(output.size() == outputSize);
   return output;
+}
+
+std::vector<float> convolve(const std::vector<float>& a,
+                            const std::vector<float>& b)
+{
+  std::vector<double> a_double(a.cbegin(), a.cend());
+  std::vector<double> b_double(b.cbegin(), b.cend());
+  const auto output = convolve(a_double, b_double);
+  return std::vector<float>(output.cbegin(), output.cend());
 }
