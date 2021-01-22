@@ -29,11 +29,7 @@ class LogSweep : public ImpulseResponse
 public:
   explicit LogSweep(Frequency _fs,
                     Duration _duration,
-                    FreqRange _range = { 20, 20e3 })
-    : ImpulseResponse(_fs, _duration, _range)
-  {
-    k = std::pow(range.upper / range.lower, 1 / duration);
-  }
+                    FreqRange _range = { 20, 20e3 });
   virtual ~LogSweep() override = default;
 
   std::vector<float> generateSignal() const override;
