@@ -34,8 +34,11 @@ ComplexVector dft(RealVector input)
 
   // NOTE: if FFTW_ESTIMATE is not specified, this will overwrite the contents
   // of the input/output buffers!
-  auto* const plan = fftw_plan_dft_r2c_1d(
-    int(input.size()), input.data(), output.data(), FFTW_ESTIMATE);
+  auto* const plan =
+    fftw_plan_dft_r2c_1d(int(input.size()),
+                         input.data(),
+                         reinterpret_cast<fftw_complex*>(output.data()),
+                         FFTW_ESTIMATE);
   fftw_execute(plan);
   fftw_destroy_plan(plan);
 
@@ -50,8 +53,11 @@ RealVector idft(ComplexVector input)
 
   // NOTE: if FFTW_ESTIMATE is not specified, this will overwrite the contents
   // of the input/output buffers!
-  auto* const plan = fftw_plan_dft_c2r_1d(
-    int(output.size()), input.data(), output.data(), FFTW_ESTIMATE);
+  auto* const plan =
+    fftw_plan_dft_c2r_1d(int(output.size()),
+                         reinterpret_cast<fftw_complex*>(input.data()),
+                         output.data(),
+                         FFTW_ESTIMATE);
   fftw_execute(plan);
   fftw_destroy_plan(plan);
 

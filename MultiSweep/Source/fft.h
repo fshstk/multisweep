@@ -29,7 +29,7 @@
 // These MUST be "double" and "fftw_complex" for fftw to work!
 // (std::complex<double> may also work but is not guaranteed to.)
 typedef double RealType;
-typedef fftw_complex ComplexType;
+typedef std::complex<RealType> ComplexType;
 typedef std::vector<RealType> RealVector;
 typedef std::vector<ComplexType> ComplexVector;
 
