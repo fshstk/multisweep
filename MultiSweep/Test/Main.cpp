@@ -1,4 +1,5 @@
 #include "../Source/LogSweep.h"
+#include "../Source/fft.h"
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <juce_core/juce_core.h>
 
@@ -23,10 +24,18 @@ int main(int argc, char* argv[])
   const auto sweep = sweepObject.generateSignal();
   const auto invSweep = sweepObject.generateInverse();
 
+  const std::vector<float> kernel{ .1f, 1.0f, -1.0f, .5f };
+  const auto filtersweep = convolve(sweep, kernel);
+
+  const auto impulse = sweepObject.computeIR(sweep);
+  const auto filterimpulse = sweepObject.computeIR(filtersweep);
+
   DBG(sweep.size());
 
   saveFile(sweep, "exp.wav");
   saveFile(invSweep, "inv_exp.wav");
+  saveFile(impulse, "impulse.wav");
+  saveFile(filterimpulse, "filter_ir.wav");
 
   juce::ignoreUnused(argc, argv);
   return 0;
