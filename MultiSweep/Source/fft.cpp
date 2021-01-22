@@ -62,9 +62,8 @@ RealVector idft(ComplexVector input)
   fftw_destroy_plan(plan);
 
   // FFTW doesn't normalise the IFFT by itself, so we have to do it manually:
-  std::for_each(output.begin(), output.end(), [output](ComplexType& n) {
-    n[0] /= 2;
-    n[1] /= 2;
+  std::for_each(output.begin(), output.end(), [output](RealType& n) {
+    n /= output.size();
   });
 
   return output;
