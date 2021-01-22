@@ -51,7 +51,7 @@ public:
   {
     assert(duration > 0);
     assert(fs > 0);
-    assert(range.upper < fs / 2);
+    assert(range.upper <= fs / 2);
   }
   virtual ~ImpulseResponse() = default;
 
