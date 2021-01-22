@@ -19,7 +19,7 @@
 # ==============================================================================
 
 include(FindPkgConfig)
-pkg_check_modules(fftw3 REQUIRED IMPORTED_TARGET fftw3f)
+pkg_check_modules(fftw3 REQUIRED IMPORTED_TARGET fftw3)
 
 juce_add_plugin(MultiSweep
     VERSION                                     0.0.1
