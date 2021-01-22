@@ -36,9 +36,9 @@ int main(int argc, char* argv[])
 
 juce::AudioSampleBuffer makeAudioBuffer(const std::vector<float>& vector)
 {
-  juce::AudioSampleBuffer buffer(1, vector.size());
+  juce::AudioSampleBuffer buffer(1, int(vector.size()));
   for (size_t i = 0; i < vector.size(); ++i)
-    buffer.setSample(0, i, vector[i]);
+    buffer.setSample(0, int(i), vector[i]);
   return buffer;
 }
 
