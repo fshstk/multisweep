@@ -152,6 +152,11 @@ void MultiSweepAudioProcessor::playSweep()
   sweep.playFromStart();
 }
 
+void MultiSweepAudioProcessor::stopPlaying()
+{
+  sweep.stop();
+}
+
 std::vector<std::unique_ptr<RangedAudioParameter>>
 MultiSweepAudioProcessor::createParameterLayout()
 {

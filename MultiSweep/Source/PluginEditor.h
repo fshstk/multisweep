@@ -69,6 +69,7 @@ private:
   std::unique_ptr<SliderAttachment> slider2Attachment;
 
   TextButton playButton;
+  TextButton stopButton;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessorEditor)
 };

@@ -57,6 +57,10 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   playButton.setButtonText("play sweep");
   playButton.onClick = [this] { audioProcessor.playSweep(); };
 
+  addAndMakeVisible(stopButton);
+  stopButton.setButtonText("stop playing");
+  stopButton.onClick = [this] { audioProcessor.stopPlaying(); };
+
   startTimer(20); // --> timerCallback()
 }
 
@@ -79,7 +83,8 @@ void MultiSweepAudioProcessorEditor::resized()
   demoSlider1.setBounds(sliderRow.removeFromLeft(150));
   demoSlider2.setBounds(sliderRow.removeFromRight(150));
 
-  playButton.setBounds(area.removeFromBottom(100));
+  stopButton.setBounds(area.removeFromBottom(50));
+  playButton.setBounds(area.removeFromBottom(50));
 }
 
 void MultiSweepAudioProcessorEditor::timerCallback()

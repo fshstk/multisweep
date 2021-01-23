@@ -57,6 +57,7 @@ public:
   void updateBuffers() override; // use this to implement a buffer update method
 
   void playSweep();
+  void stopPlaying();
 
 public:
   constexpr static int numberOfInputChannels = 10;
