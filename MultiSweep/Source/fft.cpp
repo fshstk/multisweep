@@ -88,7 +88,7 @@ RealVector convolve(RealVector a, RealVector b)
                  a_dft.cend(),
                  b_dft.cbegin(),
                  convolution.begin(),
-                 std::multiplies<ComplexType>());
+                 std::multiplies<>());
 
   const auto output = idft(convolution);
   // Sanity check:
