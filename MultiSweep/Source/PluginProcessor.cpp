@@ -21,7 +21,16 @@
  */
 
 #include "PluginProcessor.h"
+#include "LogSweep.h"
 #include "PluginEditor.h"
+
+juce::AudioSampleBuffer makeAudioBuffer(const std::vector<float>& vector)
+{
+  juce::AudioSampleBuffer buffer(1, int(vector.size()));
+  for (size_t i = 0; i < vector.size(); ++i)
+    buffer.setSample(0, int(i), vector[i]);
+  return buffer;
+}
 
 MultiSweepAudioProcessor::MultiSweepAudioProcessor()
   : AudioProcessorBase(
@@ -38,6 +47,16 @@ MultiSweepAudioProcessor::MultiSweepAudioProcessor()
   parameters.addParameterListener("outputChannelsSetting", this);
   parameters.addParameterListener("param1", this);
   parameters.addParameterListener("param2", this);
+
+  // TODO: apparently this is unknown here. can we move it to prepareToPlay()?
+  const auto sampleRate = 44100;
+  const auto sweep = LogSweep(sampleRate, 2, { 20, 10e3 });
+  auto sweepBuffer = makeAudioBuffer(sweep.generateSignal());
+  // TODO: it loops...
+  audioSource = std::make_unique<MemoryAudioSource>(sweepBuffer, true, true);
+  audioTransport.setSource(audioSource.get());
+  audioTransport.setPosition(0.0);
+  audioTransport.start(); // on button click usually
 }
 
 MultiSweepAudioProcessor::~MultiSweepAudioProcessor() {}
@@ -50,12 +69,16 @@ void MultiSweepAudioProcessor::prepareToPlay(double sampleRate,
   // Use this method as the place to do any pre-playback
   // initialisation that you need..
   ignoreUnused(sampleRate, samplesPerBlock);
+
+  audioTransport.prepareToPlay(samplesPerBlock, sampleRate);
 }
 
 void MultiSweepAudioProcessor::releaseResources()
 {
   // When playback stops, you can use this as an opportunity to free up any
   // spare memory, etc.
+
+  audioTransport.releaseResources();
 }
 
 void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
@@ -84,6 +107,10 @@ void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
     ignoreUnused(channelData);
     // ..do something to the data...
   }
+
+  float* channelData = buffer.getWritePointer(0);
+  audioTransport.getNextAudioBlock(AudioSourceChannelInfo(buffer));
+  ignoreUnused(channelData);
 }
 
 AudioProcessorEditor* MultiSweepAudioProcessor::createEditor()
