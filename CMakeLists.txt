@@ -31,7 +31,10 @@ project(IEMPluginSuite
 find_package(JUCE 6.0.5 REQUIRED)
 find_package(Catch2 REQUIRED)
 
+include(CTest)
+include(Catch)
 include(FindPkgConfig)
+
 pkg_check_modules(fftw3 REQUIRED IMPORTED_TARGET fftw3)
 
 set_directory_properties(PROPERTIES

@@ -100,9 +100,6 @@ target_link_libraries(MultiSweepTests
 
 add_executable(SweepTest)
 
-include(CTest)
-include(Catch)
-
 target_sources(SweepTest
     PRIVATE
         Test/SweepTest.cpp
