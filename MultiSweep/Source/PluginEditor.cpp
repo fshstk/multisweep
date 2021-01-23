@@ -34,11 +34,11 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   setSize(editorWindowWidth, editorWindowHeight);
   setLookAndFeel(&iemLookAndFeel);
 
-  addAndMakeVisible(&title);
+  addAndMakeVisible(title);
+  addAndMakeVisible(footer);
+
   title.setTitle(String("Multi"), String("Sweep"));
   title.setFont(iemLookAndFeel.robotoBold, iemLookAndFeel.robotoLight);
-
-  addAndMakeVisible(&footer);
 
   outputChannelsAttachment = std::make_unique<ComboBoxAttachment>(
     valueTreeState,
