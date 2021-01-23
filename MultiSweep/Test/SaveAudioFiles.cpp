@@ -16,28 +16,19 @@ juce::AudioSampleBuffer makeAudioBuffer(const std::vector<float>&);
 
 // =============================================================================
 
-int main(int argc, char* argv[])
+int main()
 {
   DBG(timestamp);
 
-  const auto sweepObject = LogSweep(Frequency(fs), Duration(sweepLength));
+  const auto sweepObject =
+    LogSweep(Frequency{ fs }, Duration{ sweepLength }, FreqRange{ 20, fs / 2 });
+
   const auto sweep = sweepObject.generateSignal();
   const auto invSweep = sweepObject.generateInverse();
 
-  const std::vector<float> kernel{ .1f, 1.0f, -1.0f, .5f };
-  const auto filtersweep = convolve(sweep, kernel);
+  saveFile(sweep, "sweep.wav");
+  saveFile(invSweep, "inv_sweep.wav");
 
-  const auto impulse = sweepObject.computeIR(sweep);
-  const auto filterimpulse = sweepObject.computeIR(filtersweep);
-
-  DBG(sweep.size());
-
-  saveFile(sweep, "exp.wav");
-  saveFile(invSweep, "inv_exp.wav");
-  saveFile(impulse, "impulse.wav");
-  saveFile(filterimpulse, "filter_ir.wav");
-
-  juce::ignoreUnused(argc, argv);
   return 0;
 }
 

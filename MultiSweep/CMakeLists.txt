@@ -74,20 +74,19 @@ target_link_libraries(MultiSweep
 
 # ==============================================================================
 
-juce_add_console_app(MultiSweepTests)
-juce_generate_juce_header(MultiSweepTests)
+juce_add_console_app(SaveAudioFiles)
+juce_generate_juce_header(SaveAudioFiles)
 
-target_sources(MultiSweepTests
+target_sources(SaveAudioFiles
     PRIVATE
-        Test/Main.cpp
+        Test/SaveAudioFiles.cpp
         Source/LogSweep.cpp
         Source/fft.cpp
 )
 
-target_link_libraries(MultiSweepTests
+target_link_libraries(SaveAudioFiles
     PRIVATE
         PkgConfig::fftw3
-        # JUCE modules:
         juce::juce_core
         juce::juce_audio_formats
         juce::juce_audio_processors
