@@ -29,7 +29,6 @@ class SweepAudioSource : public juce::AudioTransportSource
 {
 public:
   SweepAudioSource();
-  ~SweepAudioSource() = default;
 
   void prepareToPlay(int samplesPerBlock, double sampleRate) override;
   void playFromStart();
