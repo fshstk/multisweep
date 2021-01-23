@@ -53,6 +53,10 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   slider2Attachment =
     std::make_unique<SliderAttachment>(valueTreeState, "param2", demoSlider2);
 
+  addAndMakeVisible(playButton);
+  playButton.setButtonText("play sweep");
+  playButton.onClick = [this] { audioProcessor.playSweep(); };
+
   startTimer(20); // --> timerCallback()
 }
 
@@ -74,6 +78,8 @@ void MultiSweepAudioProcessorEditor::resized()
   Rectangle<int> sliderRow = area.removeFromTop(50);
   demoSlider1.setBounds(sliderRow.removeFromLeft(150));
   demoSlider2.setBounds(sliderRow.removeFromRight(150));
+
+  playButton.setBounds(area.removeFromBottom(100));
 }
 
 void MultiSweepAudioProcessorEditor::timerCallback()

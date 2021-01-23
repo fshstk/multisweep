@@ -147,6 +147,11 @@ void MultiSweepAudioProcessor::updateBuffers()
   DBG("IOHelper: output size: " << output.getSize());
 }
 
+void MultiSweepAudioProcessor::playSweep()
+{
+  sweep.playFromStart();
+}
+
 std::vector<std::unique_ptr<RangedAudioParameter>>
 MultiSweepAudioProcessor::createParameterLayout()
 {

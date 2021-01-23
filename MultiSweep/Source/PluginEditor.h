@@ -68,6 +68,8 @@ private:
   ReverseSlider demoSlider2;
   std::unique_ptr<SliderAttachment> slider2Attachment;
 
+  TextButton playButton;
+
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessorEditor)
 };
 

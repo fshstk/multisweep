@@ -56,6 +56,8 @@ public:
   void parameterChanged(const String& parameterID, float newValue) override;
   void updateBuffers() override; // use this to implement a buffer update method
 
+  void playSweep();
+
 public:
   constexpr static int numberOfInputChannels = 10;
   constexpr static int numberOfOutputChannels = 64;
