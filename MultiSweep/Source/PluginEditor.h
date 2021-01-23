@@ -62,6 +62,7 @@ private:
 
   Footer footer;
 
+  // UI Elements:
   Slider demoSlider1;
   std::unique_ptr<SliderAttachment> slider1Attachment;
   ReverseSlider demoSlider2;

@@ -35,6 +35,7 @@ public:
   MultiSweepAudioProcessor();
   ~MultiSweepAudioProcessor() override;
 
+  // Functions for playing audio:
   void prepareToPlay(double sampleRate, int samplesPerBlock) override;
   void releaseResources() override;
   void processBlock(AudioSampleBuffer&, MidiBuffer&) override;
