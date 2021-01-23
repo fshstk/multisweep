@@ -40,17 +40,18 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
 
   addAndMakeVisible(&footer);
 
-  outputChannelsAttachment.reset(new ComboBoxAttachment(
+  outputChannelsAttachment = std::make_unique<ComboBoxAttachment>(
     valueTreeState,
     "outputChannelsSetting",
-    *title.getOutputWidgetPtr()->getChannelsCbPointer()));
+    *title.getOutputWidgetPtr()->getChannelsCbPointer());
 
   addAndMakeVisible(demoSlider1);
-  slider1Attachment.reset(
-    new SliderAttachment(valueTreeState, "param1", demoSlider1));
+  slider1Attachment =
+    std::make_unique<SliderAttachment>(valueTreeState, "param1", demoSlider1);
+
   addAndMakeVisible(demoSlider2);
-  slider2Attachment.reset(
-    new SliderAttachment(valueTreeState, "param2", demoSlider2));
+  slider2Attachment =
+    std::make_unique<SliderAttachment>(valueTreeState, "param2", demoSlider2);
 
   startTimer(20); // --> timerCallback()
 }
