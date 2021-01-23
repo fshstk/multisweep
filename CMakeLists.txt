@@ -30,6 +30,9 @@ project(IEMPluginSuite
 
 find_package(JUCE 6.0.5 REQUIRED)
 
+include(FindPkgConfig)
+pkg_check_modules(fftw3 REQUIRED IMPORTED_TARGET fftw3)
+
 set_directory_properties(PROPERTIES
     JUCE_COMPANY_NAME               "IEM"
     JUCE_COMPANY_WEBSITE            "iem.at"

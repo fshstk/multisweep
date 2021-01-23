@@ -18,9 +18,6 @@
 #  along with this software.  If not, see <https://www.gnu.org/licenses/>.
 # ==============================================================================
 
-include(FindPkgConfig)
-pkg_check_modules(fftw3 REQUIRED IMPORTED_TARGET fftw3)
-
 juce_add_plugin(MultiSweep
     VERSION                                     0.0.1
     PLUGIN_CODE                                 MuSw
