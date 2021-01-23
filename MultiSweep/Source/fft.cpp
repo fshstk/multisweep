@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <cassert>
 #include <functional>
+#include <numeric>
 
 ComplexVector dft(RealVector input)
 {
@@ -103,4 +104,36 @@ std::vector<float> convolve(const std::vector<float>& a,
   std::vector<double> b_double(b.cbegin(), b.cend());
   const auto output = convolve(a_double, b_double);
   return std::vector<float>(output.cbegin(), output.cend());
+}
+
+RealVector dft_bins(float fs, size_t numSamples)
+{
+  const size_t numBins = size_t(std::ceil(numSamples / 2)) + 1;
+  RealVector bins(numBins);
+
+  const auto bin2freq = [fs, numSamples](auto x) {
+    return x * fs / numSamples;
+  };
+
+  std::iota(bins.begin(), bins.end(), 0);
+  std::for_each(bins.begin(), bins.end(), bin2freq);
+  return bins;
+}
+
+RealVector dft_magnitude(RealVector input)
+{
+  const auto spectrum = dft(input);
+  RealVector output(spectrum.size());
+  const auto magnitude = [](auto x) { return std::abs(x); };
+  std::transform(spectrum.cbegin(), spectrum.cend(), output.begin(), magnitude);
+  return output;
+}
+
+RealVector dft_phase(RealVector input)
+{
+  const auto spectrum = dft(input);
+  RealVector output(spectrum.size());
+  const auto phase = [](auto x) { return std::arg(x); };
+  std::transform(spectrum.cbegin(), spectrum.cend(), output.begin(), phase);
+  return output;
 }
