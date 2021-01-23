@@ -43,8 +43,8 @@ void SweepAudioSource::playFromStart()
   start();
 }
 
-juce::AudioSampleBuffer SweepAudioSource::makeAudioBuffer(
-  const std::vector<float>& vector) const
+const juce::AudioSampleBuffer SweepAudioSource::makeAudioBuffer(
+  const std::vector<float>& vector)
 {
   juce::AudioSampleBuffer buffer(1, int(vector.size()));
   for (size_t i = 0; i < vector.size(); ++i)

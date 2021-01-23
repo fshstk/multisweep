@@ -34,8 +34,8 @@ public:
   void playFromStart();
 
 private:
-  juce::AudioSampleBuffer makeAudioBuffer(
-    const std::vector<float>& vector) const;
+  static const juce::AudioSampleBuffer makeAudioBuffer(
+    const std::vector<float>& vector);
 
 private:
   const double duration = 2;
