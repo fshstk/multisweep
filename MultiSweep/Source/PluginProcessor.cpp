@@ -81,14 +81,6 @@ void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
   for (int i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
     buffer.clear(i, 0, buffer.getNumSamples());
 
-  // This is the place where you'd normally do the guts of your plugin's
-  // audio processing...
-  for (int channel = 0; channel < totalNumInputChannels; ++channel) {
-    float* channelData = buffer.getWritePointer(channel);
-    ignoreUnused(channelData);
-    // ..do something to the data...
-  }
-
   sweep.getNextAudioBlock(AudioSourceChannelInfo(buffer));
 }
 
