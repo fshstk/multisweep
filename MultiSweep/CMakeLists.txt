@@ -95,3 +95,25 @@ target_link_libraries(MultiSweepTests
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags
 )
+
+# ==============================================================================
+
+add_executable(SweepTest)
+
+include(CTest)
+include(Catch)
+
+target_sources(SweepTest
+    PRIVATE
+        Test/SweepTest.cpp
+        Source/LogSweep.cpp
+        Source/fft.cpp
+)
+
+target_link_libraries(SweepTest
+    PRIVATE
+        Catch2::Catch2
+        PkgConfig::fftw3
+)
+
+catch_discover_tests(SweepTest)
