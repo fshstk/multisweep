@@ -22,6 +22,7 @@
 
 #include "LogSweep.h"
 #include "fft.h"
+#include <algorithm>
 
 LogSweep::LogSweep(Frequency _fs, Duration _duration, FreqRange _range)
   : ImpulseResponse(_fs, _duration, _range)
