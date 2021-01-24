@@ -121,6 +121,9 @@ public:
     if (isSweepActive())
       return;
 
+    inputBufferIndex = 0;
+    outputBufferIndex = 0;
+
     const auto sweep = LogSweep(
       fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
     auto sweepBuffer = makeAudioBuffer(sweep.generateSignal());
@@ -145,7 +148,6 @@ public:
   void stopSweep()
   {
     sweepActive = false;
-    outputBufferIndex = 0;
     // processSweep();
   }
 
