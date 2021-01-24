@@ -71,6 +71,6 @@ TEST_CASE("Check LogSweep with a generated test system", "[sweeptest]")
   // NOTE: These values were determined more or less by trial and error. A
   // successful implementation of the sweep has values that are just under the
   // limits specified here:
-  REQUIRE(meanSquaredError(measuredSystem, referenceSystem) < 0.1); // -20dB
-  REQUIRE(maxError(measuredSystem, referenceSystem) < 0.01);        // -40dB
+  CHECK(meanSquaredError(measuredSystem, referenceSystem) < 0.1); // -20dB
+  CHECK(maxError(measuredSystem, referenceSystem) < 0.01);        // -40dB
 }
