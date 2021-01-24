@@ -101,9 +101,9 @@ public:
       juce::AudioSourceChannelInfo(buffer));
 
     // We need to manually stop the source from looping: (Why...?!)
-    const auto prevWriteIndex = writeIndex;
-    writeIndex = int(audioSource->getNextReadPosition());
-    if (prevWriteIndex > writeIndex)
+    const auto prevOutputBufferIndex = outputBufferIndex;
+    outputBufferIndex = int(audioSource->getNextReadPosition());
+    if (prevOutputBufferIndex > outputBufferIndex)
       stopSweep();
   }
 
@@ -142,8 +142,7 @@ public:
   void stopSweep()
   {
     sweepActive = false;
-    writeIndex = 0;
-    // audioSource.reset();
+    outputBufferIndex = 0;
     // processSweep();
   }
 
@@ -170,7 +169,7 @@ private:
   bool sweepActive = false;
   double fs = 0;
   int samplesPerBlock = 0;
-  int writeIndex = 0;
+  int outputBufferIndex = 0;
 
   SweepComponentMetadata metadata;
 
