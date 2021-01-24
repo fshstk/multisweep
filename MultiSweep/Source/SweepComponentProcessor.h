@@ -78,6 +78,13 @@ public:
 
       jassert(audioSource);
       audioSource->getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
+
+      const auto prevWriteIndex = writeIndex;
+      writeIndex = int(audioSource->getNextReadPosition());
+
+      // We need to manually stop the source from looping. Why...?!
+      if (prevWriteIndex > writeIndex)
+        sweepActive = false;
     }
   }
 
