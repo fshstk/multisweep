@@ -108,12 +108,9 @@ public:
   void stopSweep()
   {
     sweepActive = false;
-    readIndex = 0;
     writeIndex = 0;
-
-    sweepBuffer.reset();
-    sweepObject.reset();
-    responseBuffer.reset();
+    // audioSource.reset();
+    // processSweep();
   }
 
   bool isSweepActive() const { return sweepActive; }
@@ -124,27 +121,6 @@ private:
     // save block to first empty region in responseBuffer,
     // then increment the write pointer. when buffer is full, stop the sweep.
     // also update thumbnail here?
-  }
-
-  void fillOutputBuffer(juce::AudioSampleBuffer& output)
-  {
-    const auto remainingBuffer = sweepBuffer->getNumSamples() - writeIndex;
-    const auto blockSize = output.getNumSamples();
-
-    if (remainingBuffer <= 0)
-      return;
-
-    if (remainingBuffer >= int(blockSize)) {
-      // write sweepBuffer[writePointer:writePointer+blockSize-1] -> block
-    }
-
-    else {
-      // write sweepBuffer[writePointer:writePointer+remainingBuffer]
-      //    -> block[0:remainingBuffer]
-      // write zeros -> block[remainingBuffer+1 : blockSize-1]
-    }
-
-    writeIndex += blockSize;
   }
 
   static const juce::AudioSampleBuffer makeAudioBuffer(
@@ -162,17 +138,12 @@ private:
   int samplesPerBlock = 0;
   int channel = -1;
 
-  int readIndex = 0;
   int writeIndex = 0;
 
   static constexpr auto lowerFreq = 20.0;
   static constexpr auto upperFreq = 20e3;
   static constexpr auto duration = 2;
   static constexpr auto responseTailInSeconds = 1;
-
-  std::unique_ptr<LogSweep> sweepObject;
-  std::unique_ptr<juce::AudioSampleBuffer> responseBuffer;
-  std::unique_ptr<juce::AudioSampleBuffer> sweepBuffer;
 
   std::unique_ptr<juce::MemoryAudioSource> audioSource;
 };
