@@ -42,7 +42,6 @@ target_sources(MultiSweep
         Source/PluginProcessor.cpp
         Source/LogSweep.cpp
         Source/fft.cpp
-        Source/SweepAudioSource.cpp
         # IEM library:
         ../resources/Standalone/StandaloneApp.cpp
         ../resources/Standalone/IEM_AudioDeviceSelectorComponent.cpp

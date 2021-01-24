@@ -21,7 +21,6 @@
  */
 
 #pragma once
-#include "SweepAudioSource.h"
 #include "SweepComponentProcessor.h"
 #include <AudioProcessorBase.h>
 #define ProcessorClass MultiSweepAudioProcessor
