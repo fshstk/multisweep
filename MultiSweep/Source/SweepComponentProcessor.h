@@ -94,6 +94,10 @@ public:
   {
     jassert(fs > 0 && samplesPerBlock > 0);
 
+    // If sweep is already active, should we do nothing or stop/restart?
+    if (isSweepActive())
+      return;
+
     const auto sweep = LogSweep(fs, duration, { lowerFreq, upperFreq });
     auto buffer = makeAudioBuffer(sweep.generateSignal());
 
