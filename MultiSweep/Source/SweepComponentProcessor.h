@@ -37,11 +37,21 @@ separate class for recording?
 separate class for playback?
 
 */
+
+struct SweepComponentMetadata
+{
+  int channel = 0;
+  double duration = 2;
+  double lowerFreq = 20.0;
+  double upperFreq = 20e3;
+  double responseTailInSeconds = 1; // TODO: unused
+};
+
 class SweepComponentProcessor : public juce::AudioProcessor
 {
 public:
-  SweepComponentProcessor(int outputChannelToUse)
-    : channel(outputChannelToUse)
+  SweepComponentProcessor(SweepComponentMetadata metadata_)
+    : metadata(metadata_)
   {}
 
   const juce::String getName() const override { return {}; }
@@ -72,12 +82,12 @@ public:
                     juce::MidiBuffer&) override
   {
     jassert(fs > 0);
-    jassert(channel >= 0);
-    jassert(channel < buffer.getNumChannels());
+    jassert(metadata.channel >= 0);
+    jassert(metadata.channel < buffer.getNumChannels());
     if (fs <= 0)
       return;
 
-    if (channel < 0 || channel >= buffer.getNumChannels())
+    if (metadata.channel < 0 || metadata.channel >= buffer.getNumChannels())
       return;
 
     if (isSweepActive()) {
@@ -111,7 +121,8 @@ public:
     if (isSweepActive())
       return;
 
-    const auto sweep = LogSweep(fs, duration, { lowerFreq, upperFreq });
+    const auto sweep = LogSweep(
+      fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
     auto buffer = makeAudioBuffer(sweep.generateSignal());
     audioSource.reset(new juce::MemoryAudioSource(buffer, true));
 
@@ -119,7 +130,7 @@ public:
     // channel (otherwise it will just play on channel 0):
     outputChannelMapper.reset(
       new juce::ChannelRemappingAudioSource(audioSource.get(), false));
-    outputChannelMapper->setOutputChannelMapping(0, channel);
+    outputChannelMapper->setOutputChannelMapping(0, metadata.channel);
     outputChannelMapper->prepareToPlay(samplesPerBlock, fs);
 
     // This needs to happen AFTER all the memory stuff since everything runs
@@ -158,14 +169,9 @@ private:
   bool sweepActive = false;
   double fs = 0;
   int samplesPerBlock = 0;
-  int channel = -1;
-
   int writeIndex = 0;
 
-  static constexpr auto lowerFreq = 20.0;
-  static constexpr auto upperFreq = 20e3;
-  static constexpr auto duration = 2;
-  static constexpr auto responseTailInSeconds = 1;
+  SweepComponentMetadata metadata;
 
   std::unique_ptr<juce::MemoryAudioSource> audioSource;
   std::unique_ptr<juce::ChannelRemappingAudioSource> outputChannelMapper;

@@ -29,7 +29,7 @@ MultiSweepAudioProcessor::MultiSweepAudioProcessor()
         .withInput("Input", AudioChannelSet::discreteChannels(10), true)
         .withOutput("Output", AudioChannelSet::discreteChannels(64), true),
       createParameterLayout())
-  , sweep(SweepComponentProcessor{ 1 })
+  , sweep(SweepComponentProcessor({ 0 }))
 {
   outputChannelsSetting =
     parameters.getRawParameterValue("outputChannelsSetting");
