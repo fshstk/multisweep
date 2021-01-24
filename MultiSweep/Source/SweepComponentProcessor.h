@@ -71,6 +71,8 @@ public:
   void processBlock(juce::AudioBuffer<float>& buffer,
                     juce::MidiBuffer&) override
   {
+    jassert(fs > 0);
+    jassert(channel >= 0 && channel < buffer.getNumChannels());
     if (fs <= 0)
       return;
 
@@ -81,7 +83,9 @@ public:
       // saveInputBuffer(buffer);
 
       jassert(audioSource);
-      audioSource->getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
+      jassert(outputChannelMapper);
+      outputChannelMapper->getNextAudioBlock(
+        juce::AudioSourceChannelInfo(buffer));
 
       // We need to manually stop the source from looping: (Why...?!)
       const auto prevWriteIndex = writeIndex;
@@ -91,7 +95,11 @@ public:
     }
   }
 
-  void releaseResources() override { audioSource.reset(); }
+  void releaseResources() override
+  {
+    outputChannelMapper->releaseResources();
+    audioSource->releaseResources();
+  }
 
   void startSweep()
   {
@@ -103,9 +111,14 @@ public:
 
     const auto sweep = LogSweep(fs, duration, { lowerFreq, upperFreq });
     auto buffer = makeAudioBuffer(sweep.generateSignal());
-
     audioSource.reset(new juce::MemoryAudioSource(buffer, true));
-    audioSource->prepareToPlay(samplesPerBlock, fs);
+
+    // We need the outputChannelMapper so we can play the sweep on the desired
+    // channel (otherwise it will just play on channel 0):
+    outputChannelMapper.reset(
+      new juce::ChannelRemappingAudioSource(audioSource.get(), false));
+    outputChannelMapper->setOutputChannelMapping(0, channel);
+    outputChannelMapper->prepareToPlay(samplesPerBlock, fs);
 
     // This needs to happen AFTER all the memory stuff since everything runs
     // concurrently:
@@ -153,4 +166,5 @@ private:
   static constexpr auto responseTailInSeconds = 1;
 
   std::unique_ptr<juce::MemoryAudioSource> audioSource;
+  std::unique_ptr<juce::ChannelRemappingAudioSource> outputChannelMapper;
 };
