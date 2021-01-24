@@ -103,7 +103,7 @@ public:
     const auto prevOutputBufferIndex = outputBufferIndex;
     outputBufferIndex = int(audioSource->getNextReadPosition());
     if (prevOutputBufferIndex > outputBufferIndex)
-      stopSweep();
+      stopSweep(); // TODO: shouldn't stop it here since we need the tail
   }
 
   void releaseResources() override
