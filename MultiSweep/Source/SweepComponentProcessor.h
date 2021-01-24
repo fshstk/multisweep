@@ -78,8 +78,7 @@ public:
     samplesPerBlock = maxSamplesPerBlock;
   }
 
-  void processBlock(juce::AudioBuffer<float>& buffer,
-                    juce::MidiBuffer&) override
+  void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
   {
     jassert(fs > 0);
     jassert(metadata.channel >= 0);
