@@ -37,10 +37,10 @@ separate class: audio thumbnail, takes in buffer/vector by reference,
 
 */
 
-// class SweepComponentEditor : public juce::AudioProcessorEditor
-// {
-// public:
-//   SweepComponentEditor(SweepComponentProcessor& sweepProcessor)
-//     : AudioProcessorEditor(sweepProcessor)
-//   {}
-// };
+class SweepComponentEditor : public juce::AudioProcessorEditor
+{
+public:
+  SweepComponentEditor(SweepComponentProcessor* sweepProcessor)
+    : AudioProcessorEditor(sweepProcessor)
+  {}
+};

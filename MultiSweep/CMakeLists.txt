@@ -40,6 +40,7 @@ target_sources(MultiSweep
         # Project files:
         Source/PluginEditor.cpp
         Source/PluginProcessor.cpp
+        Source/SweepComponentProcessor.cpp
         Source/LogSweep.cpp
         Source/fft.cpp
         # IEM library:

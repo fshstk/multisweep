@@ -23,7 +23,6 @@
 #pragma once
 #include "ImpulseResponse.h"
 #include "LogSweep.h"
-#include "SweepComponentEditor.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 
 /*
@@ -58,10 +57,7 @@ public:
   void getStateInformation(juce::MemoryBlock&) override {}
   void setStateInformation(const void*, int) override {}
 
-  juce::AudioProcessorEditor* createEditor() override
-  {
-    // return new SweepComponentEditor(this);
-  }
+  juce::AudioProcessorEditor* createEditor() override;
 
   void prepareToPlay(double sampleRate, int maxSamplesPerBlock) override
   {
