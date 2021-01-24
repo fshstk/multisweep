@@ -148,7 +148,7 @@ public:
   void stopSweep()
   {
     sweepActive = false;
-    // processSweep();
+    // processSweep(); // should this happen here? it will block the thread
   }
 
   bool isSweepActive() const { return sweepActive; }
