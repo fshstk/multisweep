@@ -90,20 +90,21 @@ public:
     if (metadata.channel < 0 || metadata.channel >= buffer.getNumChannels())
       return;
 
-    if (isSweepActive()) {
-      // saveInputBuffer(buffer);
+    if (!isSweepActive())
+      return;
 
-      jassert(audioSource);
-      jassert(outputChannelMapper);
-      outputChannelMapper->getNextAudioBlock(
-        juce::AudioSourceChannelInfo(buffer));
+    // saveInputBuffer(buffer);
 
-      // We need to manually stop the source from looping: (Why...?!)
-      const auto prevWriteIndex = writeIndex;
-      writeIndex = int(audioSource->getNextReadPosition());
-      if (prevWriteIndex > writeIndex)
-        stopSweep();
-    }
+    jassert(audioSource);
+    jassert(outputChannelMapper);
+    outputChannelMapper->getNextAudioBlock(
+      juce::AudioSourceChannelInfo(buffer));
+
+    // We need to manually stop the source from looping: (Why...?!)
+    const auto prevWriteIndex = writeIndex;
+    writeIndex = int(audioSource->getNextReadPosition());
+    if (prevWriteIndex > writeIndex)
+      stopSweep();
   }
 
   void releaseResources() override
