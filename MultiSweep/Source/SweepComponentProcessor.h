@@ -88,7 +88,7 @@ public:
     }
   }
 
-  void releaseResources() override {}
+  void releaseResources() override { audioSource.reset(); }
 
   void startSweep()
   {
