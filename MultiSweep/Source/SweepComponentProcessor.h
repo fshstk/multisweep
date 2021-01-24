@@ -37,45 +37,39 @@ separate class for recording?
 separate class for playback?
 
 */
-class SweepComponentProcessor : public juce::dsp::ProcessorBase
+class SweepComponentProcessor : public juce::AudioProcessor
 {
 public:
   SweepComponentProcessor(int outputChannelToUse)
     : channel(outputChannelToUse)
   {}
 
-  void prepare(const juce::dsp::ProcessSpec& audioSpec) override
+  const juce::String getName() const override { return "Exponential Sweep"; }
+
+  void prepareToPlay(double sampleRate, int maxSamplesPerBlock) override
   {
-    fs = audioSpec.sampleRate;
-    maxChannels = int(audioSpec.numChannels);
+    fs = sampleRate;
   }
 
-  void process(
-    const juce::dsp::ProcessContextReplacing<float>& audioContext) override
+  // processBlock
+  // void process(
+  //   const juce::dsp::ProcessContextReplacing<float>& audioContext) override
+  void processBlock(juce::AudioBuffer<float>& buffer,
+                    juce::MidiBuffer&) override
   {
     if (fs <= 0)
       return;
 
-    if (channel < 0 || channel >= maxChannels)
+    if (channel < 0 || channel >= buffer.getNumChannels())
       return;
 
     if (isSweepActive()) {
-      // The order here is important since in/out might be the same block (?)
-      addInputToBuffer(audioContext.getInputBlock());
-      fillOutputWithSweep(audioContext.getOutputBlock());
+      saveInputBuffer(buffer);
+      fillOutputBuffer(buffer);
     }
   }
 
-  void reset() override
-  {
-    sweepActive = false;
-    readIndex = 0;
-    writeIndex = 0;
-
-    sweepBuffer.reset();
-    sweepObject.reset();
-    responseBuffer.reset();
-  }
+  void releaseResources() override {}
 
   void startSweep()
   {
@@ -91,20 +85,28 @@ public:
     responseBuffer.reset(new AudioSampleBuffer{ 1, numResponseSamples });
   }
 
+  void stopSweep()
+  {
+    sweepActive = false;
+    readIndex = 0;
+    writeIndex = 0;
+
+    sweepBuffer.reset();
+    sweepObject.reset();
+    responseBuffer.reset();
+  }
+
   bool isSweepActive() { return sweepActive; }
 
 private:
-  // TODO: This should be AudioBlock<float> (?)
-  template<typename SampleType>
-  void addInputToBuffer(const juce::dsp::AudioBlock<SampleType>& input)
+  void saveInputBuffer(juce::AudioSampleBuffer& input)
   {
     // save block to first empty region in responseBuffer,
     // then increment the write pointer. when buffer is full, stop the sweep.
     // also update thumbnail here?
   }
 
-  template<typename SampleType>
-  void fillOutputWithSweep(juce::dsp::AudioBlock<SampleType>& output)
+  void fillOutputBuffer(juce::AudioSampleBuffer& output)
   {
     const auto remainingBuffer = sweepBuffer->getNumSamples() - writeIndex;
     const auto blockSize = output.getNumSamples();
@@ -137,7 +139,6 @@ private:
 private:
   bool sweepActive = false;
   double fs = 0;
-  int maxChannels = 0;
   int channel = -1;
 
   int readIndex = 0;
