@@ -97,7 +97,7 @@ public:
     const auto sweep = LogSweep(fs, duration, { lowerFreq, upperFreq });
     auto buffer = makeAudioBuffer(sweep.generateSignal());
 
-    audioSource = std::make_unique<juce::MemoryAudioSource>(buffer, true);
+    audioSource.reset(new juce::MemoryAudioSource(buffer, true));
     audioSource->prepareToPlay(samplesPerBlock, fs);
 
     // This needs to happen AFTER all the memory stuff since everything runs
