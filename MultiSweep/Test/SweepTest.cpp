@@ -41,6 +41,8 @@ std::vector<float> simulateImpulseResponse()
   return testSystem;
 }
 
+// TODO: Perform this test but with multiple sample frequencies, sweep
+// durations, and simulated IRs.
 TEST_CASE("Check LogSweep with a generated test system", "[sweeptest]")
 {
   // Set all parameters and generate forward sweep:
