@@ -92,7 +92,7 @@ public:
     if (!isSweepActive())
       return;
 
-    // saveInputBuffer(buffer);
+    saveInputBuffer(buffer);
 
     jassert(audioSource);
     jassert(outputChannelMapper);
@@ -133,6 +133,10 @@ public:
     outputChannelMapper->setOutputChannelMapping(0, metadata.channel);
     outputChannelMapper->prepareToPlay(samplesPerBlock, fs);
 
+    const auto inputBufferSize =
+      sweepBuffer.getNumSamples() + int(fs * metadata.responseTailInSeconds);
+    inputBuffer.reset(new juce::AudioSampleBuffer(1, inputBufferSize));
+
     // This needs to happen AFTER all the memory stuff since everything runs
     // concurrently:
     sweepActive = true;
@@ -150,9 +154,16 @@ public:
 private:
   void saveInputBuffer(juce::AudioSampleBuffer& input)
   {
-    // save block to first empty region in responseBuffer,
-    // then increment the write pointer. when buffer is full, stop the sweep.
-    // also update thumbnail here?
+    jassert(inputBuffer);
+
+    if (inputBufferIndex >= inputBuffer->getNumSamples()) {
+      stopSweep();
+      return;
+    }
+
+    const auto numSamples = input.getNumSamples();
+    inputBuffer->copyFrom(0, inputBufferIndex, input, 0, 0, numSamples);
+    inputBufferIndex += numSamples;
   }
 
   static const juce::AudioSampleBuffer makeAudioBuffer(
@@ -168,10 +179,14 @@ private:
   bool sweepActive = false;
   double fs = 0;
   int samplesPerBlock = 0;
+
   int outputBufferIndex = 0;
+  int inputBufferIndex = 0;
 
   SweepComponentMetadata metadata;
 
   std::unique_ptr<juce::MemoryAudioSource> audioSource;
   std::unique_ptr<juce::ChannelRemappingAudioSource> outputChannelMapper;
+
+  std::unique_ptr<juce::AudioSampleBuffer> inputBuffer;
 };
