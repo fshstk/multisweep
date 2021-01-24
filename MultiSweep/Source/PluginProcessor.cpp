@@ -29,6 +29,7 @@ MultiSweepAudioProcessor::MultiSweepAudioProcessor()
         .withInput("Input", AudioChannelSet::discreteChannels(10), true)
         .withOutput("Output", AudioChannelSet::discreteChannels(64), true),
       createParameterLayout())
+  , sweep(SweepComponentProcessor{ 1 })
 {
   outputChannelsSetting =
     parameters.getRawParameterValue("outputChannelsSetting");
@@ -51,7 +52,7 @@ void MultiSweepAudioProcessor::prepareToPlay(double sampleRate,
   // initialisation that you need..
   ignoreUnused(sampleRate, samplesPerBlock);
 
-  sweep.prepareToPlay(samplesPerBlock, sampleRate);
+  sweep.prepareToPlay(sampleRate, samplesPerBlock);
 }
 
 void MultiSweepAudioProcessor::releaseResources()
@@ -63,7 +64,7 @@ void MultiSweepAudioProcessor::releaseResources()
 }
 
 void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
-                                            MidiBuffer&)
+                                            MidiBuffer& midi)
 {
   // TODO: magic number
   checkInputAndOutput(this, 1, static_cast<int>(*outputChannelsSetting), false);
@@ -81,7 +82,7 @@ void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
   for (int i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
     buffer.clear(i, 0, buffer.getNumSamples());
 
-  sweep.getNextAudioBlock(AudioSourceChannelInfo(buffer));
+  sweep.processBlock(buffer, midi);
 }
 
 AudioProcessorEditor* MultiSweepAudioProcessor::createEditor()
@@ -141,12 +142,12 @@ void MultiSweepAudioProcessor::updateBuffers()
 
 void MultiSweepAudioProcessor::playSweep()
 {
-  sweep.playFromStart();
+  sweep.startSweep();
 }
 
 void MultiSweepAudioProcessor::stopPlaying()
 {
-  sweep.stop();
+  sweep.stopSweep();
 }
 
 std::vector<std::unique_ptr<RangedAudioParameter>>

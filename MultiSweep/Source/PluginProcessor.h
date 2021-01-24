@@ -22,6 +22,7 @@
 
 #pragma once
 #include "SweepAudioSource.h"
+#include "SweepComponentProcessor.h"
 #include <AudioProcessorBase.h>
 #define ProcessorClass MultiSweepAudioProcessor
 
@@ -69,7 +70,7 @@ private:
   std::atomic<float>* param1;
   std::atomic<float>* param2;
 
-  SweepAudioSource sweep;
+  SweepComponentProcessor sweep;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessor)
 };
