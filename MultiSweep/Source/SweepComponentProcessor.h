@@ -124,8 +124,8 @@ public:
 
     const auto sweep = LogSweep(
       fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
-    auto buffer = makeAudioBuffer(sweep.generateSignal());
-    audioSource.reset(new juce::MemoryAudioSource(buffer, true));
+    auto sweepBuffer = makeAudioBuffer(sweep.generateSignal());
+    audioSource.reset(new juce::MemoryAudioSource(sweepBuffer, true));
 
     // We need the outputChannelMapper so we can play the sweep on the desired
     // channel (otherwise it will just play on channel 0):
