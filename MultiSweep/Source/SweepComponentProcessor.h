@@ -108,7 +108,7 @@ public:
     responseBuffer.reset();
   }
 
-  bool isSweepActive() { return sweepActive; }
+  bool isSweepActive() const { return sweepActive; }
 
 private:
   void saveInputBuffer(juce::AudioSampleBuffer& input)
@@ -139,7 +139,7 @@ private:
     writeIndex += blockSize;
   }
 
-  const juce::AudioSampleBuffer makeAudioBuffer(
+  static const juce::AudioSampleBuffer makeAudioBuffer(
     const std::vector<float>& vector)
   {
     juce::AudioSampleBuffer buffer(1, int(vector.size()));
