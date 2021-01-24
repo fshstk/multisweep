@@ -61,6 +61,7 @@ public:
   void prepareToPlay(double sampleRate, int maxSamplesPerBlock) override
   {
     fs = sampleRate;
+    samplesPerBlock = maxSamplesPerBlock;
   }
 
   void processBlock(juce::AudioBuffer<float>& buffer,
@@ -73,8 +74,10 @@ public:
       return;
 
     if (isSweepActive()) {
-      saveInputBuffer(buffer);
-      fillOutputBuffer(buffer);
+      // saveInputBuffer(buffer);
+
+      jassert(audioSource);
+      audioSource->getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
     }
   }
 
@@ -82,19 +85,17 @@ public:
 
   void startSweep()
   {
-    sweepActive = true;
+    jassert(fs > 0 && samplesPerBlock > 0);
 
-    DBG("a");
-    sweepObject.reset(new LogSweep{ fs, duration, { lowerFreq, upperFreq } });
-    DBG("b");
-    sweepBuffer.reset(new juce::AudioSampleBuffer{
-      makeAudioBuffer(sweepObject->generateSignal()) });
-    DBG("c");
-    const auto numResponseSamples =
-      sweepBuffer->getNumSamples() + int(responseTailInSeconds * fs);
-    DBG("d");
-    responseBuffer.reset(new juce::AudioSampleBuffer{ 1, numResponseSamples });
-    DBG("e");
+    const auto sweep = LogSweep(fs, duration, { lowerFreq, upperFreq });
+    auto buffer = makeAudioBuffer(sweep.generateSignal());
+
+    audioSource = std::make_unique<juce::MemoryAudioSource>(buffer, true);
+    audioSource->prepareToPlay(samplesPerBlock, fs);
+
+    // This needs to happen AFTER all the memory stuff since everything runs
+    // concurrently:
+    sweepActive = true;
   }
 
   void stopSweep()
@@ -151,6 +152,7 @@ private:
 private:
   bool sweepActive = false;
   double fs = 0;
+  int samplesPerBlock = 0;
   int channel = -1;
 
   int readIndex = 0;
@@ -164,5 +166,6 @@ private:
   std::unique_ptr<LogSweep> sweepObject;
   std::unique_ptr<juce::AudioSampleBuffer> responseBuffer;
   std::unique_ptr<juce::AudioSampleBuffer> sweepBuffer;
-};
 
+  std::unique_ptr<juce::MemoryAudioSource> audioSource;
+};
