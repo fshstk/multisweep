@@ -84,7 +84,7 @@ public:
 
       // We need to manually stop the source from looping. Why...?!
       if (prevWriteIndex > writeIndex)
-        sweepActive = false;
+        stopSweep();
     }
   }
 
