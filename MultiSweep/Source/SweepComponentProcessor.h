@@ -63,9 +63,6 @@ public:
     fs = sampleRate;
   }
 
-  // processBlock
-  // void process(
-  //   const juce::dsp::ProcessContextReplacing<float>& audioContext) override
   void processBlock(juce::AudioBuffer<float>& buffer,
                     juce::MidiBuffer&) override
   {
