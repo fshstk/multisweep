@@ -72,7 +72,8 @@ public:
                     juce::MidiBuffer&) override
   {
     jassert(fs > 0);
-    jassert(channel >= 0 && channel < buffer.getNumChannels());
+    jassert(channel >= 0);
+    jassert(channel < buffer.getNumChannels());
     if (fs <= 0)
       return;
 
@@ -103,7 +104,8 @@ public:
 
   void startSweep()
   {
-    jassert(fs > 0 && samplesPerBlock > 0);
+    jassert(fs > 0);
+    jassert(samplesPerBlock > 0);
 
     // If sweep is already active, should we do nothing or stop/restart?
     if (isSweepActive())
