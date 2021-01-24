@@ -23,6 +23,7 @@
 #pragma once
 #include "ImpulseResponse.h"
 #include "LogSweep.h"
+#include "SweepComponentEditor.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 
 /*
@@ -46,10 +47,9 @@ public:
 
   const juce::String getName() const override { return {}; }
   double getTailLengthSeconds() const override { return 0; }
-  bool acceptsMidi() const override { return 0; }
-  bool producesMidi() const override { return 0; }
-  juce::AudioProcessorEditor* createEditor() override {}
-  bool hasEditor() const override { return 0; }
+  bool acceptsMidi() const override { return false; }
+  bool producesMidi() const override { return false; }
+  bool hasEditor() const override { return true; }
   int getNumPrograms() override { return 0; }
   int getCurrentProgram() override { return 0; }
   void setCurrentProgram(int) override {}
@@ -57,6 +57,11 @@ public:
   void changeProgramName(int, const juce::String&) override {}
   void getStateInformation(juce::MemoryBlock&) override {}
   void setStateInformation(const void*, int) override {}
+
+  juce::AudioProcessorEditor* createEditor() override
+  {
+    // return new SweepComponentEditor(this);
+  }
 
   void prepareToPlay(double sampleRate, int maxSamplesPerBlock) override
   {
