@@ -58,7 +58,9 @@ TEST_CASE("Check LogSweep with a generated test system", "[sweeptest]")
 
   // Generate the expected IR by sandwiching testSystem in the middle of a
   // zero-initialised vector:
-  std::vector<float> referenceSystem(2 * sweep.size() + testSystem.size(), 0);
+  const size_t referenceLength =
+    2 * (sweep.size() - sweep.size() % 2) + testSystem.size();
+  std::vector<float> referenceSystem(referenceLength, 0);
   std::copy(testSystem.begin(),
             testSystem.end(),
             referenceSystem.begin() + int(sweep.size()) - 1);
