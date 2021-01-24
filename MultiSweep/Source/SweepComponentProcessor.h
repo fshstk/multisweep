@@ -46,17 +46,20 @@ public:
 
   const juce::String getName() const override { return {}; }
   double getTailLengthSeconds() const override { return 0; }
+
   bool acceptsMidi() const override { return false; }
   bool producesMidi() const override { return false; }
-  bool hasEditor() const override { return true; }
+
   int getNumPrograms() override { return 0; }
   int getCurrentProgram() override { return 0; }
   void setCurrentProgram(int) override {}
-  const juce::String getProgramName(int) override { return {}; }
   void changeProgramName(int, const juce::String&) override {}
+  const juce::String getProgramName(int) override { return {}; }
+
   void getStateInformation(juce::MemoryBlock&) override {}
   void setStateInformation(const void*, int) override {}
 
+  bool hasEditor() const override { return true; }
   juce::AudioProcessorEditor* createEditor() override;
 
   void prepareToPlay(double sampleRate, int maxSamplesPerBlock) override
