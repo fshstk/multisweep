@@ -23,7 +23,7 @@
 #pragma once
 #include "ImpulseResponse.h"
 #include "LogSweep.h"
-#include <juce_dsp/juce_dsp.h>
+#include <juce_audio_processors/juce_audio_processors.h>
 
 /*
 
@@ -44,7 +44,19 @@ public:
     : channel(outputChannelToUse)
   {}
 
-  const juce::String getName() const override { return "Exponential Sweep"; }
+  const juce::String getName() const override { return {}; }
+  double getTailLengthSeconds() const override { return 0; }
+  bool acceptsMidi() const override { return 0; }
+  bool producesMidi() const override { return 0; }
+  juce::AudioProcessorEditor* createEditor() override {}
+  bool hasEditor() const override { return 0; }
+  int getNumPrograms() override { return 0; }
+  int getCurrentProgram() override { return 0; }
+  void setCurrentProgram(int) override {}
+  const juce::String getProgramName(int) override { return {}; }
+  void changeProgramName(int, const juce::String&) override {}
+  void getStateInformation(juce::MemoryBlock&) override {}
+  void setStateInformation(const void*, int) override {}
 
   void prepareToPlay(double sampleRate, int maxSamplesPerBlock) override
   {
@@ -75,14 +87,17 @@ public:
   {
     sweepActive = true;
 
+    DBG("a");
     sweepObject.reset(new LogSweep{ fs, duration, { lowerFreq, upperFreq } });
-    sweepBuffer.reset(
-      new AudioSampleBuffer{ makeAudioBuffer(sweepObject->generateSignal()) });
-
+    DBG("b");
+    sweepBuffer.reset(new juce::AudioSampleBuffer{
+      makeAudioBuffer(sweepObject->generateSignal()) });
+    DBG("c");
     const auto numResponseSamples =
       sweepBuffer->getNumSamples() + int(responseTailInSeconds * fs);
-
-    responseBuffer.reset(new AudioSampleBuffer{ 1, numResponseSamples });
+    DBG("d");
+    responseBuffer.reset(new juce::AudioSampleBuffer{ 1, numResponseSamples });
+    DBG("e");
   }
 
   void stopSweep()
@@ -150,7 +165,7 @@ private:
   static constexpr auto responseTailInSeconds = 1;
 
   std::unique_ptr<LogSweep> sweepObject;
-  std::unique_ptr<AudioSampleBuffer> responseBuffer; // TODO: float->SampleType
-  std::unique_ptr<AudioSampleBuffer> sweepBuffer;    // TODO: AudioBuffer
+  std::unique_ptr<juce::AudioSampleBuffer> responseBuffer;
+  std::unique_ptr<juce::AudioSampleBuffer> sweepBuffer;
 };
 
