@@ -102,10 +102,33 @@ private:
 class SweepComponentEditor : public juce::AudioProcessorEditor
 {
 public:
-  SweepComponentEditor(SweepComponentProcessor* sweepProcessor)
-    : AudioProcessorEditor(sweepProcessor)
-  {}
+  SweepComponentEditor(SweepComponentProcessor& sweepProcessor)
+    : AudioProcessorEditor(&sweepProcessor)
+    , sweep(sweepProcessor)
+  {
+    // setSize(200, 200);
+
+    addAndMakeVisible(playButton);
+    playButton.setButtonText("play sweep");
+    playButton.onClick = [this] { sweep.startSweep(); };
+
+    addAndMakeVisible(stopButton);
+    stopButton.setButtonText("stop playing");
+    stopButton.onClick = [this] { sweep.stopSweep(); };
+  }
+
+  void resized() override
+  {
+    juce::Rectangle<int> area = getLocalBounds();
+    stopButton.setBounds(area.removeFromBottom(50));
+    playButton.setBounds(area.removeFromBottom(50));
+  }
 
 private:
+  SweepComponentProcessor& sweep;
+
+  juce::TextButton playButton;
+  juce::TextButton stopButton;
+
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentEditor)
 };

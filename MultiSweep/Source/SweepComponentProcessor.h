@@ -21,7 +21,6 @@
  */
 
 #pragma once
-#include "ImpulseResponse.h"
 #include "LogSweep.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 

@@ -33,12 +33,10 @@ MultiSweepAudioProcessor::MultiSweepAudioProcessor()
 {
   outputChannelsSetting =
     parameters.getRawParameterValue("outputChannelsSetting");
-  param1 = parameters.getRawParameterValue("param1");
-  param2 = parameters.getRawParameterValue("param2");
-
   parameters.addParameterListener("outputChannelsSetting", this);
-  parameters.addParameterListener("param1", this);
-  parameters.addParameterListener("param2", this);
+
+  // param1 = parameters.getRawParameterValue("param1");
+  // parameters.addParameterListener("param1", this);
 }
 
 MultiSweepAudioProcessor::~MultiSweepAudioProcessor() {}
@@ -138,16 +136,6 @@ void MultiSweepAudioProcessor::updateBuffers()
 {
   DBG("IOHelper:  input size: " << input.getSize());
   DBG("IOHelper: output size: " << output.getSize());
-}
-
-void MultiSweepAudioProcessor::playSweep()
-{
-  sweep.startSweep();
-}
-
-void MultiSweepAudioProcessor::stopPlaying()
-{
-  sweep.stopSweep();
 }
 
 std::vector<std::unique_ptr<RangedAudioParameter>>

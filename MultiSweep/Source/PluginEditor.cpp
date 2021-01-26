@@ -30,6 +30,7 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   , audioProcessor(p)
   , valueTreeState(vts)
   , footer()
+  , sweepEditor(p.sweep)
 {
   setSize(editorWindowWidth, editorWindowHeight);
   setLookAndFeel(&iemLookAndFeel);
@@ -45,21 +46,7 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
     "outputChannelsSetting",
     *title.getOutputWidgetPtr()->getChannelsCbPointer());
 
-  addAndMakeVisible(demoSlider1);
-  slider1Attachment =
-    std::make_unique<SliderAttachment>(valueTreeState, "param1", demoSlider1);
-
-  addAndMakeVisible(demoSlider2);
-  slider2Attachment =
-    std::make_unique<SliderAttachment>(valueTreeState, "param2", demoSlider2);
-
-  addAndMakeVisible(playButton);
-  playButton.setButtonText("play sweep");
-  playButton.onClick = [this] { audioProcessor.playSweep(); };
-
-  addAndMakeVisible(stopButton);
-  stopButton.setButtonText("stop playing");
-  stopButton.onClick = [this] { audioProcessor.stopPlaying(); };
+  addAndMakeVisible(sweepEditor);
 
   startTimer(20); // --> timerCallback()
 }
@@ -78,13 +65,7 @@ void MultiSweepAudioProcessorEditor::resized()
 {
   Rectangle<int> area = getLocalBounds();
   drawHeaderFooter(area);
-
-  Rectangle<int> sliderRow = area.removeFromTop(50);
-  demoSlider1.setBounds(sliderRow.removeFromLeft(150));
-  demoSlider2.setBounds(sliderRow.removeFromRight(150));
-
-  stopButton.setBounds(area.removeFromBottom(50));
-  playButton.setBounds(area.removeFromBottom(50));
+  sweepEditor.setBounds(area);
 }
 
 void MultiSweepAudioProcessorEditor::timerCallback()

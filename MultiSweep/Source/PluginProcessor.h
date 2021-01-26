@@ -56,20 +56,16 @@ public:
   void parameterChanged(const String& parameterID, float newValue) override;
   void updateBuffers() override; // use this to implement a buffer update method
 
-  void playSweep();
-  void stopPlaying();
-
 public:
   constexpr static int numberOfInputChannels = 10;
   constexpr static int numberOfOutputChannels = 64;
   std::vector<std::unique_ptr<RangedAudioParameter>> createParameterLayout();
 
+  SweepComponentProcessor sweep;
+
 private:
   std::atomic<float>* outputChannelsSetting;
-  std::atomic<float>* param1;
-  std::atomic<float>* param2;
-
-  SweepComponentProcessor sweep;
+  // std::atomic<float>* param1;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessor)
 };

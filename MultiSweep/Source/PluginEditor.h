@@ -22,6 +22,7 @@
 
 #pragma once
 #include "PluginProcessor.h"
+#include "SweepComponentEditor.h"
 #include <customComponents/ReverseSlider.h>
 #include <customComponents/SimpleLabel.h>
 #include <customComponents/TitleBar.h>
@@ -62,14 +63,7 @@ private:
 
   Footer footer;
 
-  // UI Elements:
-  Slider demoSlider1;
-  std::unique_ptr<SliderAttachment> slider1Attachment;
-  ReverseSlider demoSlider2;
-  std::unique_ptr<SliderAttachment> slider2Attachment;
-
-  TextButton playButton;
-  TextButton stopButton;
+  SweepComponentEditor sweepEditor;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessorEditor)
 };
