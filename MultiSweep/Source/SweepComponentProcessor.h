@@ -147,13 +147,35 @@ public:
   void stopSweep()
   {
     sweepActive = false;
+    thumbnailUpdateNotifier.sendChangeMessage();
     // processSweep(); // should this happen here? it will block the thread
   }
 
   bool isSweepActive() const { return sweepActive; }
 
+  const juce::AudioSampleBuffer& getInputBuffer()
+  {
+    // NOTE: this can be nullptr!
+    return *inputBuffer;
+  }
+
   void exportFilter() const {}
   void clearData() {}
+
+  void addThumbnailListener(juce::ChangeListener* listener)
+  {
+    thumbnailUpdateNotifier.addChangeListener(listener);
+  }
+
+  void removeThumbnailListener(juce::ChangeListener* listener)
+  {
+    thumbnailUpdateNotifier.removeChangeListener(listener);
+  }
+
+  juce::ChangeBroadcaster* getThumbnailUpdateNotifier()
+  {
+    return &thumbnailUpdateNotifier;
+  }
 
 private:
   void saveInputBuffer(juce::AudioSampleBuffer& input)
@@ -193,6 +215,8 @@ private:
   std::unique_ptr<juce::ChannelRemappingAudioSource> outputChannelMapper;
 
   std::unique_ptr<juce::AudioSampleBuffer> inputBuffer;
+
+  juce::ChangeBroadcaster thumbnailUpdateNotifier;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentProcessor)
 };

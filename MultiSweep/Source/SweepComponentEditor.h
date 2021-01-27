@@ -44,13 +44,24 @@ class RecordingThumbnail
   , private juce::ChangeListener
 {
 public:
-  RecordingThumbnail()
+  RecordingThumbnail(SweepComponentProcessor& _sweepProcessor)
+    : sweepProcessor(_sweepProcessor)
   {
     formatManager.registerBasicFormats();
-    thumbnail.addChangeListener(this);
+    // thumbnail.addChangeListener(this);
+    sweepProcessor.addThumbnailListener(this);
   }
 
   ~RecordingThumbnail() override { thumbnail.removeChangeListener(this); }
+
+  void setThumbnail(const juce::AudioSampleBuffer* input, double sampleRate)
+  {
+    DBG("num samples: " << input->getNumSamples());
+    thumbnail.reset(1, sampleRate, input->getNumSamples());
+    if (input)
+      thumbnail.addBlock(0, *input, 0, input->getNumSamples());
+    repaint();
+  }
 
   juce::AudioThumbnail& getAudioThumbnail() { return thumbnail; }
 
@@ -74,7 +85,7 @@ public:
       thumbnail.drawChannels(g, thumbArea.reduced(2), 0.0, endTime, 1.0f);
     } else {
       g.setFont(14.0f);
-      g.drawFittedText("(No file recorded)",
+      g.drawFittedText("Press Start Sweep to record a sweep response.",
                        getLocalBounds(),
                        juce::Justification::centred,
                        2);
@@ -86,12 +97,17 @@ private:
   juce::AudioThumbnailCache thumbnailCache{ 10 };
   juce::AudioThumbnail thumbnail{ 512, formatManager, thumbnailCache };
 
-  bool displayFullThumb = false;
+  SweepComponentProcessor& sweepProcessor;
+
+  bool displayFullThumb = true;
 
   void changeListenerCallback(juce::ChangeBroadcaster* source) override
   {
-    if (source == &thumbnail)
-      repaint();
+    const auto fs = 44100.0; // TODO get this
+    // if (source == &thumbnail)
+    //   repaint();
+    if (source == sweepProcessor.getThumbnailUpdateNotifier())
+      setThumbnail(&sweepProcessor.getInputBuffer(), fs);
   }
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RecordingThumbnail)
@@ -105,6 +121,7 @@ public:
   SweepComponentEditor(SweepComponentProcessor& sweepProcessor)
     : AudioProcessorEditor(&sweepProcessor)
     , sweep(sweepProcessor)
+    , sweepResponseThumbnail(sweepProcessor)
   {
     addAndMakeVisible(playButton);
     playButton.setButtonText("Start Sweep");
@@ -140,6 +157,8 @@ public:
     durationSliderLabel.setText("Duration", juce::dontSendNotification);
     durationSliderLabel.setJustificationType(juce::Justification::centred);
     durationSliderLabel.attachToComponent(&durationSlider, false);
+
+    addAndMakeVisible(sweepResponseThumbnail);
   }
   void resized() override
   {
@@ -151,6 +170,7 @@ public:
     auto secondButtonRow = bottomRow;
 
     durationSlider.setBounds(sliderArea);
+    sweepResponseThumbnail.setBounds(area.reduced(25));
 
     playButton.setBounds(
       firstButtonRow.removeFromLeft(firstButtonRow.getWidth() / 2));
@@ -170,6 +190,8 @@ private:
 
   juce::Slider durationSlider;
   juce::Label durationSliderLabel;
+
+  RecordingThumbnail sweepResponseThumbnail;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentEditor)
 };
