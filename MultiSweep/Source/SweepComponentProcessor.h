@@ -146,6 +146,7 @@ public:
 
   void stopSweep()
   {
+    // TODO: two separate methods depending on if sweep is finished or cancelled
     sweepActive = false;
     thumbnailUpdateNotifier.sendChangeMessage();
     // processSweep(); // should this happen here? it will block the thread

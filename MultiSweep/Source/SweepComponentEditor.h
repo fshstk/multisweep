@@ -127,6 +127,7 @@ public:
     playButton.setButtonText("Start Sweep");
     playButton.onClick = [this] { sweep.startSweep(); };
 
+    // TODO: clear & stop could be the same button
     addAndMakeVisible(stopButton);
     stopButton.setButtonText("Stop Sweep");
     stopButton.onClick = [this] { sweep.stopSweep(); };
