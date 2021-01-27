@@ -127,7 +127,8 @@ public:
       juce::Slider::SliderStyle::RotaryVerticalDrag);
     // Ignore the JUCE assertion failure, the slider doesn't like negative
     // angles but they're perfectly fine:
-    durationSlider.setRotaryParameters(-5 / 6.0 * M_PI, +5 / 6.0 * M_PI, true);
+    durationSlider.setRotaryParameters(
+      float(-5 / 6.0 * M_PI), float(+5 / 6.0 * M_PI), true);
     durationSlider.setRange(1.0, 20.0);
     durationSlider.setDoubleClickReturnValue(true, 2.0);
     durationSlider.setTextBoxStyle(
