@@ -43,7 +43,7 @@ struct SweepComponentMetadata
   double duration = 2;
   double lowerFreq = 20.0;
   double upperFreq = 20e3;
-  double responseTailInSeconds = 1; // TODO: unused
+  double responseTailInSeconds = 1;
 };
 
 class SweepComponentProcessor : public juce::AudioProcessor
