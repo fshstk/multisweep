@@ -99,14 +99,16 @@ public:
 
     jassert(audioSource);
     jassert(outputChannelMapper);
-    outputChannelMapper->getNextAudioBlock(
-      juce::AudioSourceChannelInfo(buffer));
+
+    if (!sweepFinished)
+      outputChannelMapper->getNextAudioBlock(
+        juce::AudioSourceChannelInfo(buffer));
 
     // We need to manually stop the source from looping: (Why...?!)
     const auto prevOutputBufferIndex = outputBufferIndex;
     outputBufferIndex = int(audioSource->getNextReadPosition());
     if (prevOutputBufferIndex > outputBufferIndex)
-      stopSweep(); // TODO: shouldn't stop it here since we need the tail
+      sweepFinished = true;
   }
 
   void releaseResources() override
@@ -148,12 +150,14 @@ public:
     // This needs to happen AFTER all the memory stuff since everything runs
     // concurrently:
     sweepActive = true;
+    sweepFinished = false;
   }
 
   void stopSweep()
   {
     // TODO: two separate methods depending on if sweep is finished or cancelled
     sweepActive = false;
+    sweepFinished = false;
     thumbnailUpdateNotifier.sendChangeMessage();
     // processSweep(); // should this happen here? it will block the thread
   }
@@ -209,7 +213,8 @@ private:
   }
 
 private:
-  bool sweepActive = false;
+  bool sweepActive = false;   // used in check for recording AND playback
+  bool sweepFinished = false; // only used in check for playback
   double fs = 0;
   int samplesPerBlock = 0;
 
