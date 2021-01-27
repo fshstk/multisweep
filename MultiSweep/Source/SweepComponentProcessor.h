@@ -152,6 +152,9 @@ public:
 
   bool isSweepActive() const { return sweepActive; }
 
+  void exportFilter() const {}
+  void clearData() {}
+
 private:
   void saveInputBuffer(juce::AudioSampleBuffer& input)
   {
