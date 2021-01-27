@@ -79,7 +79,7 @@ const bool OSCParameterInterface::processOSCMessage (OSCMessage oscMessage)
         {
             if (auto* ptr = dynamic_cast<AudioProcessorParameterWithID*> (item)) // that's maybe not the best solution, but it does the job for now
             {
-                auto address = ptr->paramID;
+                address = ptr->paramID;
                 if (pattern.matches (OSCAddress ("/" + address)))
                 {
                     if (oscMessage.size() > 0)
@@ -100,7 +100,7 @@ const bool OSCParameterInterface::processOSCMessage (OSCMessage oscMessage)
         }
     }
 
-    String address = oscMessage.getAddressPattern().toString().substring(1); // trimming forward slash
+    address = oscMessage.getAddressPattern().toString().substring(1); // trimming forward slash
     if (auto parameter = parameters.getParameter (address))
     {
         if (oscMessage.size() > 0)

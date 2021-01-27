@@ -176,5 +176,5 @@ public:
     /**
      Use this method to send additional OSCMessages during the OSCSender's send routine.
      */
-    virtual void sendAdditionalOSCMessages (OSCSender& oscSender, const OSCAddressPattern& address) {}
+    virtual void sendAdditionalOSCMessages (OSCSender&, const OSCAddressPattern&) {}
 };

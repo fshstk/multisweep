@@ -63,8 +63,8 @@ public:
      */
     void setValue (const String paramID, const float value);
 
-    OSCReceiverPlus& getOSCReceiver() { return oscReceiver; };
-    OSCSenderPlus& getOSCSender() { return oscSender; };
+    OSCReceiverPlus& getOSCReceiver() { return oscReceiver; }
+    OSCSenderPlus& getOSCSender() { return oscSender; }
 
     void oscMessageReceived (const OSCMessage &message) override;
     void oscBundleReceived (const OSCBundle &bundle) override;
@@ -75,7 +75,7 @@ public:
     void sendParameterChanges (const bool forceSend = false);
     void setOSCAddress (const String newAddress);
 
-    const String getOSCAddress() const { return address; };
+    const String getOSCAddress() const { return address; }
 
     void setInterval (const int interValInMilliseconds);
     const int getInterval() const { return getTimerInterval(); }

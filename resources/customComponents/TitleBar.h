@@ -264,9 +264,9 @@ public:
         cbNormalization.addItem ("N3D", 1);
         cbNormalization.addItem ("SN3D", 2);
         cbNormalization.setBounds (35, 0, 70, 15);
-    };
+    }
 
-    ~AmbisonicIOWidget() {};
+    ~AmbisonicIOWidget() {}
 
     void setOrderIfUnselectable (int newOrder)
     {
@@ -376,7 +376,7 @@ public:
             g.setFont (15.0f);
             g.drawFittedText (displayTextIfNotSelectable, 35, 15, 55, 15, Justification::centred, 1);
         }
-    };
+    }
 
 private:
     ComboBox cbNormalization, cbOrder;

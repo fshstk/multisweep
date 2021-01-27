@@ -190,7 +190,16 @@ public:
                 case RotaryHorizontalVerticalDrag:
                     delta = e.getDistanceFromDragStartX() - e.getDistanceFromDragStartY() - lastDistanceFromDragStart;
                     break;
-                default:
+                case LinearHorizontal:
+                case LinearVertical:
+                case LinearBar:
+                case LinearBarVertical:
+                case Rotary:
+                case IncDecButtons:
+                case TwoValueHorizontal:
+                case TwoValueVertical:
+                case ThreeValueHorizontal:
+                case ThreeValueVertical:
                     break;
             }
             delta = delta * (reversed ? -1 : 1);
@@ -224,8 +233,17 @@ public:
             case RotaryHorizontalVerticalDrag:
                 lastDistanceFromDragStart = e.getDistanceFromDragStartX() - e.getDistanceFromDragStartY();
                 break;
-            default:
-                break;
+            case LinearHorizontal:
+            case LinearVertical:
+            case LinearBar:
+            case LinearBarVertical:
+            case Rotary:
+            case IncDecButtons:
+            case TwoValueHorizontal:
+            case TwoValueVertical:
+            case ThreeValueHorizontal:
+            case ThreeValueVertical:
+              break;
         }
 
         Slider::mouseDrag(e);
