@@ -50,8 +50,8 @@ private:
   void updateIOChannelCount();
 
 private:
-  static constexpr int editorWindowHeight = 300;
-  static constexpr int editorWindowWidth = 500;
+  static constexpr int editorWindowHeight = 600;
+  static constexpr int editorWindowWidth = 800;
   static constexpr int maxOuputChannels = 10;
 
   LaF iemLookAndFeel;
