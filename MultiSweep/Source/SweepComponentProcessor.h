@@ -88,8 +88,12 @@ public:
     if (metadata.channel < 0 || metadata.channel >= buffer.getNumChannels())
       return;
 
-    if (!isSweepActive())
+    if (!isSweepActive()) {
+      // Mute input:
+      for (int i = 0; i < buffer.getNumChannels(); ++i)
+        buffer.clear(i, 0, buffer.getNumSamples());
       return;
+    }
 
     saveInputBuffer(buffer);
 
