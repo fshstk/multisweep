@@ -107,8 +107,10 @@ public:
 
   void releaseResources() override
   {
-    outputChannelMapper->releaseResources();
-    audioSource->releaseResources();
+    if (audioSource)
+      audioSource->releaseResources();
+    if (outputChannelMapper)
+      outputChannelMapper->releaseResources();
   }
 
   void startSweep()
