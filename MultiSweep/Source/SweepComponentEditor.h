@@ -122,15 +122,34 @@ public:
     exportButton.onClick = [this] { sweep.exportFilter(); };
     exportButton.setButtonText("Export");
 
+    addAndMakeVisible(durationSlider);
+    durationSlider.setSliderStyle(
+      juce::Slider::SliderStyle::RotaryVerticalDrag);
+    // Ignore the JUCE assertion failure, the slider doesn't like negative
+    // angles but they're perfectly fine:
+    durationSlider.setRotaryParameters(-5 / 6.0 * M_PI, +5 / 6.0 * M_PI, true);
+    durationSlider.setRange(1.0, 20.0);
+    durationSlider.setDoubleClickReturnValue(true, 2.0);
+    durationSlider.setTextBoxStyle(
+      juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 100, 20);
+    durationSlider.setNumDecimalPlacesToDisplay(1);
+    // durationSlider.addListener();
+
+    addAndMakeVisible(durationSliderLabel);
+    durationSliderLabel.setText("Duration", juce::dontSendNotification);
+    durationSliderLabel.setJustificationType(juce::Justification::centred);
+    durationSliderLabel.attachToComponent(&durationSlider, false);
   }
   void resized() override
   {
     auto area = getLocalBounds();
 
     auto bottomRow = area.removeFromBottom(100);
+    auto sliderArea = bottomRow.removeFromRight(100);
     auto firstButtonRow = bottomRow.removeFromTop(50);
     auto secondButtonRow = bottomRow;
 
+    durationSlider.setBounds(sliderArea);
 
     playButton.setBounds(
       firstButtonRow.removeFromLeft(firstButtonRow.getWidth() / 2));
@@ -148,6 +167,8 @@ private:
   juce::TextButton clearButton;
   juce::TextButton exportButton;
 
+  juce::Slider durationSlider;
+  juce::Label durationSliderLabel;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentEditor)
 };
