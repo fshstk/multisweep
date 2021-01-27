@@ -106,22 +106,38 @@ public:
     : AudioProcessorEditor(&sweepProcessor)
     , sweep(sweepProcessor)
   {
-    // setSize(200, 200);
-
     addAndMakeVisible(playButton);
-    playButton.setButtonText("play sweep");
+    playButton.setButtonText("Start Sweep");
     playButton.onClick = [this] { sweep.startSweep(); };
 
     addAndMakeVisible(stopButton);
-    stopButton.setButtonText("stop playing");
+    stopButton.setButtonText("Stop Sweep");
     stopButton.onClick = [this] { sweep.stopSweep(); };
-  }
 
+    addAndMakeVisible(clearButton);
+    clearButton.setButtonText("Clear");
+    clearButton.onClick = [this] { sweep.clearData(); };
+
+    addAndMakeVisible(exportButton);
+    exportButton.onClick = [this] { sweep.exportFilter(); };
+    exportButton.setButtonText("Export");
+
+  }
   void resized() override
   {
-    juce::Rectangle<int> area = getLocalBounds();
-    stopButton.setBounds(area.removeFromBottom(50));
-    playButton.setBounds(area.removeFromBottom(50));
+    auto area = getLocalBounds();
+
+    auto bottomRow = area.removeFromBottom(100);
+    auto firstButtonRow = bottomRow.removeFromTop(50);
+    auto secondButtonRow = bottomRow;
+
+
+    playButton.setBounds(
+      firstButtonRow.removeFromLeft(firstButtonRow.getWidth() / 2));
+    stopButton.setBounds(firstButtonRow);
+    exportButton.setBounds(
+      secondButtonRow.removeFromLeft(secondButtonRow.getWidth() / 2));
+    clearButton.setBounds(secondButtonRow);
   }
 
 private:
@@ -129,6 +145,9 @@ private:
 
   juce::TextButton playButton;
   juce::TextButton stopButton;
+  juce::TextButton clearButton;
+  juce::TextButton exportButton;
+
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentEditor)
 };
