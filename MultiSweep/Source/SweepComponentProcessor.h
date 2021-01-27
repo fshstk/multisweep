@@ -164,10 +164,10 @@ public:
 
   bool isSweepActive() const { return sweepActive; }
 
-  const juce::AudioSampleBuffer& getInputBuffer()
+  const juce::AudioSampleBuffer* getInputBuffer()
   {
     // NOTE: this can be nullptr!
-    return *inputBuffer;
+    return inputBuffer.get();
   }
 
   void exportFilter() const {}

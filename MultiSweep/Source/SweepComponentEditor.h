@@ -106,8 +106,11 @@ private:
     const auto fs = 44100.0; // TODO get this
     // if (source == &thumbnail)
     //   repaint();
-    if (source == sweepProcessor.getThumbnailUpdateNotifier())
-      setThumbnail(&sweepProcessor.getInputBuffer(), fs);
+    if (source == sweepProcessor.getThumbnailUpdateNotifier()) {
+      const auto buffer = sweepProcessor.getInputBuffer();
+      if (buffer)
+        setThumbnail(buffer, fs);
+    }
   }
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RecordingThumbnail)
