@@ -31,6 +31,10 @@ juce_add_plugin(MultiSweep
     NEEDS_MIDI_OUTPUT                           FALSE
     IS_MIDI_EFFECT                              FALSE
     EDITOR_WANTS_KEYBOARD_FOCUS                 FALSE
+
+    # Required in Mac OS to receive audio input:
+    MICROPHONE_PERMISSION_ENABLED TRUE
+    MICROPHONE_PERMISSION_TEXT "MultiSweep needs access to your sound devices."
 )
 
 juce_generate_juce_header(MultiSweep)
