@@ -146,6 +146,8 @@ public:
     const auto inputBufferSize =
       sweepBuffer.getNumSamples() + int(fs * metadata.responseTailInSeconds);
     inputBuffer.reset(new juce::AudioSampleBuffer(1, inputBufferSize));
+    // inputBuffer is NOT guaranteed to be empty on initialization:
+    inputBuffer->clear();
 
     // This needs to happen AFTER all the memory stuff since everything runs
     // concurrently:
