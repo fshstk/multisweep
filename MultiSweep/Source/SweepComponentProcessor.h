@@ -207,7 +207,8 @@ private:
       return;
     }
 
-    const auto numSamples = input.getNumSamples();
+    const auto numSamples = juce::jmin(
+      inputBuffer->getNumSamples() - inputBufferIndex, input.getNumSamples());
     inputBuffer->copyFrom(0, inputBufferIndex, input, 0, 0, numSamples);
     inputBufferIndex += numSamples;
   }
