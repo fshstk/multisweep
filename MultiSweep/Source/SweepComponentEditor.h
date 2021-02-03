@@ -110,6 +110,8 @@ private:
       const auto buffer = sweepProcessor.getInputBuffer();
       if (buffer)
         setThumbnail(buffer, fs);
+      else
+        setThumbnail({}, fs);
     }
   }
 

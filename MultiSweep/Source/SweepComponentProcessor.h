@@ -173,7 +173,14 @@ public:
   }
 
   void exportFilter() const {}
-  void clearData() {}
+  void clearData()
+  {
+    // TODO: We're resetting with a blank AudioSampleBuffer rather than with a
+    // simple nullptr because the RecordingThumbnail doesn't like nullptrs.
+    if (inputBuffer)
+      inputBuffer.reset(new juce::AudioSampleBuffer());
+    thumbnailUpdateNotifier.sendChangeMessage();
+  }
 
   void addThumbnailListener(juce::ChangeListener* listener)
   {
