@@ -99,7 +99,7 @@ public:
     jassert(audioSource);
     jassert(outputChannelMapper);
 
-    if (!sweepFinished)
+    if (sweepActive && !sweepFinished)
       outputChannelMapper->getNextAudioBlock(
         juce::AudioSourceChannelInfo(buffer));
 
