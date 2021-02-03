@@ -56,10 +56,11 @@ public:
 
   void setThumbnail(const juce::AudioSampleBuffer* input, double sampleRate)
   {
-    DBG("num samples: " << input->getNumSamples());
-    thumbnail.reset(1, sampleRate, input->getNumSamples());
-    if (input)
+    if (input) {
+      thumbnail.reset(1, sampleRate, input->getNumSamples());
       thumbnail.addBlock(0, *input, 0, input->getNumSamples());
+    }
+    // TODO: need an else clause here to display something if input is nullptr
     repaint();
   }
 
