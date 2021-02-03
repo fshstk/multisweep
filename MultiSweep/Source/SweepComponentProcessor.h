@@ -89,13 +89,12 @@ public:
       return;
 
     if (!isSweepActive()) {
-      // Mute input:
-      for (int i = 0; i < buffer.getNumChannels(); ++i)
-        buffer.clear(i, 0, buffer.getNumSamples());
+      buffer.clear(); // mute input
       return;
     }
 
     saveInputBuffer(buffer);
+    buffer.clear(); // don't leave anything in the buffer, it might get played
 
     jassert(audioSource);
     jassert(outputChannelMapper);
