@@ -22,6 +22,7 @@
 
 #pragma once
 #include "LogSweep.h"
+#include "fft.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 
 /*
@@ -132,7 +133,7 @@ public:
 
     const auto sweep = LogSweep(
       fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
-    auto sweepBuffer = makeAudioBuffer(sweep.generateSignal());
+    auto sweepBuffer = makeBufferFromVector(sweep.generateSignal());
     audioSource.reset(new juce::MemoryAudioSource(sweepBuffer, true));
 
     // We need the outputChannelMapper so we can play the sweep on the desired
@@ -159,6 +160,11 @@ public:
     // TODO: two separate methods depending on if sweep is finished or cancelled
     sweepActive = false;
     sweepFinished = false;
+
+    // NOTE: *DON'T* do this on the audio thread!!!
+    // irBuffer.reset(new juce::AudioSampleBuffer(getImpulseResponse()));
+    irBuffer.reset(new juce::AudioSampleBuffer(getFrequencyResponse()));
+
     thumbnailUpdateNotifier.sendChangeMessage();
     // processSweep(); // should this happen here? it will block the thread
   }
@@ -168,10 +174,12 @@ public:
   const juce::AudioSampleBuffer* getInputBuffer()
   {
     // NOTE: this can be nullptr!
-    return inputBuffer.get();
+    // return inputBuffer.get();
+    return irBuffer.get();
   }
 
   void exportFilter() const {}
+
   void clearData()
   {
     // TODO: We're resetting with a blank AudioSampleBuffer rather than with a
@@ -181,6 +189,41 @@ public:
     thumbnailUpdateNotifier.sendChangeMessage();
   }
 
+  juce::AudioSampleBuffer getImpulseResponse()
+  {
+    // TODO: everyhwere sweep gets created, use a member pointer (to base
+    // class!) instead
+    const auto sweep = LogSweep(
+      fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
+    if (inputBuffer) {
+      const auto inputVector = makeVectorFromBuffer(*inputBuffer);
+      const auto irVector = sweep.computeIR(inputVector);
+      const auto irBuffer = makeBufferFromVector(irVector);
+      return irBuffer;
+    } else {
+      return juce::AudioSampleBuffer();
+    }
+  }
+
+  juce::AudioSampleBuffer getFrequencyResponse()
+  {
+    // TODO: everyhwere sweep gets created, use a member pointer (to base
+    // class!) instead
+    const auto sweep = LogSweep(
+      fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
+    if (inputBuffer) {
+      const auto inputVector = makeVectorFromBuffer(*inputBuffer);
+      const auto irVector = sweep.computeIR(inputVector);
+      const auto freqResponse = dft_magnitude(irVector);
+      const auto freqBuffer = makeBufferFromVector(freqResponse);
+      return freqBuffer;
+    } else {
+      return juce::AudioSampleBuffer();
+    }
+  }
+
+  // TODO: Probably should rename this to SweepListener or some such...
+  // Not only the thumbnail but also the sweep processing gets done via this.
   void addThumbnailListener(juce::ChangeListener* listener)
   {
     thumbnailUpdateNotifier.addChangeListener(listener);
@@ -212,13 +255,23 @@ private:
     inputBufferIndex += numSamples;
   }
 
-  static const juce::AudioSampleBuffer makeAudioBuffer(
-    const std::vector<float>& vector)
+  // TODO: These should probably even be non-member functions:
+  template<typename T>
+  static juce::AudioBuffer<T> makeBufferFromVector(const std::vector<T>& vector)
   {
-    juce::AudioSampleBuffer buffer(1, int(vector.size()));
+    juce::AudioBuffer<T> buffer(1, int(vector.size()));
     for (size_t i = 0; i < vector.size(); ++i)
       buffer.setSample(0, int(i), vector[i]);
     return buffer;
+  }
+
+  // TODO: These should probably even be non-member functions:
+  template<typename T>
+  static std::vector<T> makeVectorFromBuffer(const juce::AudioBuffer<T>& buffer)
+  {
+    const float* const ptr = buffer.getReadPointer(0);
+    const auto length = buffer.getNumSamples();
+    return std::vector<T>(ptr, ptr + length);
   }
 
 private:
@@ -236,6 +289,7 @@ private:
   std::unique_ptr<juce::ChannelRemappingAudioSource> outputChannelMapper;
 
   std::unique_ptr<juce::AudioSampleBuffer> inputBuffer;
+  std::unique_ptr<juce::AudioSampleBuffer> irBuffer;
 
   juce::ChangeBroadcaster thumbnailUpdateNotifier;
 

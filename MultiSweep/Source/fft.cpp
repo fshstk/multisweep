@@ -129,6 +129,13 @@ RealVector dft_magnitude(RealVector input)
   return output;
 }
 
+std::vector<float> dft_magnitude(std::vector<float> input)
+{
+  std::vector<double> input_double(input.cbegin(), input.cend());
+  const auto output = dft_magnitude(input_double);
+  return std::vector<float>(output.cbegin(), output.cend());
+}
+
 RealVector dft_phase(RealVector input)
 {
   const auto spectrum = dft(input);

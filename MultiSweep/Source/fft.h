@@ -40,6 +40,7 @@ RealVector idft(ComplexVector input);
 
 RealVector dft_bins(float fs, size_t numSamples);
 RealVector dft_magnitude(RealVector input);
+std::vector<float> dft_magnitude(std::vector<float> input);
 RealVector dft_phase(RealVector input);
 
 RealVector convolve(RealVector a, RealVector b);

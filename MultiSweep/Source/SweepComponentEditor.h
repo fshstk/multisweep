@@ -52,7 +52,10 @@ public:
     sweepProcessor.addThumbnailListener(this);
   }
 
-  ~RecordingThumbnail() override { thumbnail.removeChangeListener(this); }
+  ~RecordingThumbnail() override
+  {
+    sweepProcessor.removeThumbnailListener(this);
+  }
 
   void setThumbnail(const juce::AudioSampleBuffer* input, double sampleRate)
   {

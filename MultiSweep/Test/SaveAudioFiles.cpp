@@ -12,7 +12,7 @@ const auto sweepLength = 2;
 
 void saveFile(const juce::AudioSampleBuffer&, std::string);
 void saveFile(const std::vector<float>&, std::string);
-juce::AudioSampleBuffer makeAudioBuffer(const std::vector<float>&);
+juce::AudioSampleBuffer makeBufferFromVector(const std::vector<float>&);
 
 // =============================================================================
 
@@ -34,7 +34,7 @@ int main()
 
 // =============================================================================
 
-juce::AudioSampleBuffer makeAudioBuffer(const std::vector<float>& vector)
+juce::AudioSampleBuffer makeBufferFromVector(const std::vector<float>& vector)
 {
   juce::AudioSampleBuffer buffer(1, int(vector.size()));
   for (size_t i = 0; i < vector.size(); ++i)
@@ -55,5 +55,5 @@ void saveFile(const juce::AudioSampleBuffer& buffer, std::string fileName)
 
 void saveFile(const std::vector<float>& vector, std::string fileName)
 {
-  saveFile(makeAudioBuffer(vector), fileName);
+  saveFile(makeBufferFromVector(vector), fileName);
 }
