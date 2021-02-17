@@ -31,6 +31,8 @@ juce_add_plugin(MultiSweep
     NEEDS_MIDI_OUTPUT                           FALSE
     IS_MIDI_EFFECT                              FALSE
     EDITOR_WANTS_KEYBOARD_FOCUS                 FALSE
+    NEEDS_CURL                                  FALSE
+    NEEDS_WEB_BROWSER                           FALSE
 
     # Required in Mac OS to receive audio input:
     MICROPHONE_PERMISSION_ENABLED TRUE
@@ -59,6 +61,8 @@ target_compile_definitions(MultiSweep
         JUCE_DISPLAY_SPLASH_SCREEN=0
         JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
         DONT_BUILD_WITH_JACK_SUPPORT=1
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0
 )
 
 target_link_libraries(MultiSweep
@@ -71,6 +75,7 @@ target_link_libraries(MultiSweep
         # JUCE modules required for Standalone only:
         juce::juce_audio_devices
         juce::juce_audio_utils
+        juce::juce_gui_extra
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
