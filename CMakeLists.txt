@@ -28,7 +28,7 @@ project(IEMPluginSuite
     LANGUAGES   C CXX
 )
 
-find_package(JUCE 6.0.5 REQUIRED)
+find_package(JUCE REQUIRED)
 find_package(Catch2 REQUIRED)
 
 include(CTest)

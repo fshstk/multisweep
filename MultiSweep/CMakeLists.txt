@@ -75,7 +75,6 @@ target_link_libraries(MultiSweep
         # JUCE modules required for Standalone only:
         juce::juce_audio_devices
         juce::juce_audio_utils
-        juce::juce_gui_extra
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
@@ -84,7 +83,11 @@ target_link_libraries(MultiSweep
 
 # ==============================================================================
 
-juce_add_console_app(SaveAudioFiles)
+juce_add_console_app(SaveAudioFiles
+    NEEDS_CURL                                  FALSE
+    NEEDS_WEB_BROWSER                           FALSE
+)
+
 juce_generate_juce_header(SaveAudioFiles)
 
 target_sources(SaveAudioFiles
@@ -92,6 +95,12 @@ target_sources(SaveAudioFiles
         Test/SaveAudioFiles.cpp
         Source/LogSweep.cpp
         Source/fft.cpp
+)
+
+target_compile_definitions(SaveAudioFiles
+    PUBLIC
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0
 )
 
 target_link_libraries(SaveAudioFiles
