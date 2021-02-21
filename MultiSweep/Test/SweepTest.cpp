@@ -79,7 +79,7 @@ TEST_CASE("Check LogSweep with a generated test system", "[sweeptest]")
 
 TEST_CASE("Check log bins")
 {
-  const auto bins = log_bins(1024, 20e0, 20e3);
+  const auto bins = dft_log_bins(1024, 20e0, 20e3);
   REQUIRE(bins.size() == 1024);
 
   // Reference values generated using Python:

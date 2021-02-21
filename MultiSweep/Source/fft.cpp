@@ -146,9 +146,9 @@ RealVector dft_phase(RealVector input)
   return output;
 }
 
-std::vector<float> log_bins(size_t num_samples = 1024,
-                            float f_low = 20e0,
-                            float f_high = 20e3)
+std::vector<float> dft_log_bins(size_t num_samples = 1024,
+                                float f_low = 20e0,
+                                float f_high = 20e3)
 {
   const auto index_to_log_bin = [=](auto x) {
     return pow(10,
