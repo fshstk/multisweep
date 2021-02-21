@@ -50,3 +50,6 @@ RealVector convolve(RealVector a, RealVector b);
 // Convenience function for using floats instead of doubles:
 std::vector<float> convolve(const std::vector<float>& a,
                             const std::vector<float>& b);
+
+std::vector<uint> map_log_to_lin_bins(const std::vector<float>& lin_bins,
+                                      const std::vector<float>& log_bins);

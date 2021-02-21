@@ -25,6 +25,7 @@
 #include <cassert>
 #include <cmath>
 #include <functional>
+#include <iterator>
 #include <numeric>
 
 ComplexVector dft(RealVector input)
@@ -164,3 +165,21 @@ std::vector<float> dft_log_bins(size_t num_samples = 1024,
   return log_bins;
 }
 
+
+std::vector<uint> map_log_to_lin_bins(const std::vector<float>& lin_bins,
+                                      const std::vector<float>& log_bins)
+{
+  const auto index_of_first_element_greater_than = [&](auto value) {
+    return std::distance(
+      lin_bins.cbegin(),
+      std::lower_bound(lin_bins.cbegin(), lin_bins.cend(), value));
+  };
+
+  auto indices = std::vector<uint>(log_bins.size());
+  std::transform(log_bins.cbegin(),
+                 log_bins.cend(),
+                 indices.begin(),
+                 index_of_first_element_greater_than);
+
+  return indices;
+}

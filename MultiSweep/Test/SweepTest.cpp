@@ -117,3 +117,25 @@ TEST_CASE("Check log bins")
   REQUIRE(bins[30] == Approx(24.491000955696432f));
   REQUIRE(bins[348] == Approx(209.6804089192401f));
 }
+
+TEST_CASE("Check mapping of log bins to lin bin indices")
+{
+  // Python code:
+  // def lower_bound(array, value):
+  //     return [x for x, y in enumerate(array) if y >= value][0]
+  // lin_bins = np.linspace(0, 44100, 88200, endpoint=False)
+  // log_bins = np.logspace(np.log10(20), np.log10(20e3), 1024)
+  // log2lin = [lower_bound(lin_bins, x) for x in log_bins]
+
+  const auto lin_bins = dft_lin_bins(44100, 88200);
+  const auto log_bins = dft_log_bins(1024, 20e0, 20e3);
+  const auto indices = map_log_to_lin_bins(lin_bins, log_bins);
+
+  REQUIRE(indices.size() == log_bins.size());
+  REQUIRE(indices[0] == 41);
+  REQUIRE(indices[100] == 79);
+  REQUIRE(indices[246] == 211);
+  REQUIRE(indices[1023] == 40001);
+  REQUIRE(indices[30] == 49);
+  REQUIRE(indices[348] == 420);
+}
