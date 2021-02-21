@@ -77,6 +77,34 @@ TEST_CASE("Check LogSweep with a generated test system", "[sweeptest]")
   CHECK(maxError(measuredSystem, referenceSystem) < 0.01);        // -40dB
 }
 
+TEST_CASE("Check lin bins (even N)")
+{
+  const auto bins = dft_lin_bins(44100, 1024);
+  REQUIRE(bins.size() == 513);
+
+  // Reference values generated using Python:
+  // bins = np.linspace(0, 44100, 1024, endpoint=False)
+  REQUIRE(bins[0] == Approx(0.0));
+  REQUIRE(bins[512] == Approx(22050.0));
+  REQUIRE(bins[511] == Approx(22006.93359375));
+  REQUIRE(bins[200] == Approx(8613.28125));
+  REQUIRE(bins[348] == Approx(14987.109375));
+}
+
+TEST_CASE("Check lin bins (odd N)")
+{
+  const auto bins = dft_lin_bins(44100, 999);
+  REQUIRE(bins.size() == 500);
+
+  // Reference values generated using Python:
+  // bins = np.linspace(0, 44100, 999, endpoint=False)
+  REQUIRE(bins[0] == Approx(0.0));
+  REQUIRE(bins[499] == Approx(22027.92792792793));
+  REQUIRE(bins[111] == Approx(4900.0));
+  REQUIRE(bins[200] == Approx(8828.828828828828));
+  REQUIRE(bins[348] == Approx(15362.162162162162));
+}
+
 TEST_CASE("Check log bins")
 {
   const auto bins = dft_log_bins(1024, 20e0, 20e3);

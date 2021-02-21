@@ -38,7 +38,7 @@ typedef std::vector<ComplexType> ComplexVector;
 ComplexVector dft(RealVector input);
 RealVector idft(ComplexVector input);
 
-RealVector dft_bins(float fs, size_t numSamples);
+RealVector dft_lin_bins(float fs, size_t numSamples);
 RealVector dft_magnitude(RealVector input);
 std::vector<float> dft_magnitude(std::vector<float> input);
 std::vector<float> dft_log_bins(size_t num_samples, float f_low, float f_high);

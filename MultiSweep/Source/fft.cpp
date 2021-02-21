@@ -107,7 +107,7 @@ std::vector<float> convolve(const std::vector<float>& a,
   return std::vector<float>(output.cbegin(), output.cend());
 }
 
-RealVector dft_bins(float fs, size_t numSamples)
+RealVector dft_lin_bins(float fs, size_t numSamples)
 {
   const size_t numBins = size_t(std::ceil(numSamples / 2)) + 1;
   RealVector bins(numBins);
@@ -117,7 +117,7 @@ RealVector dft_bins(float fs, size_t numSamples)
   };
 
   std::iota(bins.begin(), bins.end(), 0);
-  std::for_each(bins.begin(), bins.end(), bin2freq);
+  std::transform(bins.begin(), bins.end(), bins.begin(), bin2freq);
   return bins;
 }
 
