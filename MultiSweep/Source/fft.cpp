@@ -23,6 +23,7 @@
 #include "fft.h"
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <functional>
 #include <numeric>
 
@@ -144,3 +145,22 @@ RealVector dft_phase(RealVector input)
   std::transform(spectrum.cbegin(), spectrum.cend(), output.begin(), phase);
   return output;
 }
+
+std::vector<float> log_bins(size_t num_samples = 1024,
+                            float f_low = 20e0,
+                            float f_high = 20e3)
+{
+  const auto index_to_log_bin = [=](auto x) {
+    return pow(10,
+               log10(f_low) +
+                 (x / float(num_samples - 1) * (log10(f_high / f_low))));
+  };
+
+  auto log_bins = std::vector<float>(num_samples);
+  std::iota(log_bins.begin(), log_bins.end(), 0);
+  std::transform(
+    log_bins.cbegin(), log_bins.cend(), log_bins.begin(), index_to_log_bin);
+
+  return log_bins;
+}
+

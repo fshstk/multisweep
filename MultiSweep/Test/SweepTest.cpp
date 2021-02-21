@@ -76,3 +76,16 @@ TEST_CASE("Check LogSweep with a generated test system", "[sweeptest]")
   CHECK(meanSquaredError(measuredSystem, referenceSystem) < 0.1); // -20dB
   CHECK(maxError(measuredSystem, referenceSystem) < 0.01);        // -40dB
 }
+
+TEST_CASE("Check log bins")
+{
+  const auto bins = log_bins(1024, 20e0, 20e3);
+  REQUIRE(bins.size() == 1024);
+
+  // Reference values generated using Python:
+  // bins = np.logspace(np.log10(20), np.log10(20e3), 1024)
+  REQUIRE(bins[0] == Approx(20e0f));
+  REQUIRE(bins[1023] == Approx(20e3f));
+  REQUIRE(bins[30] == Approx(24.491000955696432f));
+  REQUIRE(bins[348] == Approx(209.6804089192401f));
+}
