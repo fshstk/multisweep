@@ -107,10 +107,10 @@ std::vector<float> convolve(const std::vector<float>& a,
   return std::vector<float>(output.cbegin(), output.cend());
 }
 
-RealVector dft_lin_bins(float fs, size_t numSamples)
+std::vector<float> dft_lin_bins(float fs, size_t numSamples)
 {
-  const size_t numBins = size_t(std::ceil(numSamples / 2)) + 1;
-  RealVector bins(numBins);
+  const size_t numBins = numSamples;
+  std::vector<float> bins(numBins);
 
   const auto bin2freq = [fs, numSamples](auto x) {
     return x * fs / numSamples;

@@ -80,7 +80,7 @@ TEST_CASE("Check LogSweep with a generated test system", "[sweeptest]")
 TEST_CASE("Check lin bins (even N)")
 {
   const auto bins = dft_lin_bins(44100, 1024);
-  REQUIRE(bins.size() == 513);
+  REQUIRE(bins.size() == 1024);
 
   // Reference values generated using Python:
   // bins = np.linspace(0, 44100, 1024, endpoint=False)
@@ -94,7 +94,7 @@ TEST_CASE("Check lin bins (even N)")
 TEST_CASE("Check lin bins (odd N)")
 {
   const auto bins = dft_lin_bins(44100, 999);
-  REQUIRE(bins.size() == 500);
+  REQUIRE(bins.size() == 999);
 
   // Reference values generated using Python:
   // bins = np.linspace(0, 44100, 999, endpoint=False)
