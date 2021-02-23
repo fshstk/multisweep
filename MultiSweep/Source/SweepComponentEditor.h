@@ -94,12 +94,13 @@ public:
     std::transform(
       values.cbegin(), values.cend(), xPixels.begin(), findPixelForFrequency);
 
-    // g.fillAll(juce::Colours::blanchedalmond);
+    g.setColour(juce::Colours::red);
+    g.drawRect(area);
 
     g.setColour(juce::Colours::darkslategrey);
     g.fillRect(graph);
     g.setColour(lookAndFeel.ClSeperator);
-    g.drawRect(graph);
+    // g.drawRect(graph);
 
     for (auto& pixel : xPixels) {
       const auto x = pixel + graph.getX();
@@ -140,6 +141,32 @@ public:
       g.setColour(lookAndFeel.ClText);
       g.drawSingleLineText(label, int(x), int(y), juce::Justification::right);
     }
+
+    const auto zeroDbCurve = std::vector<float>(xAxis.size(), 0);
+    const auto plusTenDbCurve = std::vector<float>(xAxis.size(), 10);
+    const auto minusTenDbCurve = std::vector<float>(xAxis.size(), -10);
+
+    const auto drawPoint = [&](auto frequency, auto db) {
+      const auto radius = 2;
+      const auto x = graph.getX() + findPixelForFrequency(frequency);
+      const auto y = graph.getBottom() - findPixelForDb(db);
+
+      g.fillEllipse(x, y, radius, radius);
+    };
+
+    for (const auto& freq : xAxis) {
+      g.setColour(juce::Colours::beige);
+      drawPoint(freq, 0);
+
+      g.setColour(juce::Colours::aliceblue);
+      drawPoint(freq, 12);
+
+      g.setColour(juce::Colours::red);
+      drawPoint(freq, -15);
+    }
+
+    g.setColour(lookAndFeel.ClSeperator);
+    g.drawRect(graph);
   }
 
 private:
