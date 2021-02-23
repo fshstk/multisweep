@@ -22,6 +22,7 @@
 
 
 #pragma once
+#include <JuceHeader.h>
 
 class LaF : public LookAndFeel_V4
 {
