@@ -101,7 +101,6 @@ public:
     g.setColour(juce::Colours::darkslategrey);
     g.fillRect(graph);
     g.setColour(lookAndFeel.ClSeperator);
-    // g.drawRect(graph);
 
     for (auto& pixel : xPixels) {
       const auto x = pixel + graph.getX();
