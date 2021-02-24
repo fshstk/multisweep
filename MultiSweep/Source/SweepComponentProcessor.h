@@ -42,8 +42,8 @@ struct SweepComponentMetadata
 {
   int channel = 0;
   double duration = 2;
-  double lowerFreq = 20.0;
-  double upperFreq = 20e3;
+  double lowerFreq = 10.0;
+  double upperFreq = 22e3;
   double responseTailInSeconds = 1;
 };
 
