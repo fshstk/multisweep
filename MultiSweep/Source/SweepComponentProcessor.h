@@ -197,8 +197,9 @@ public:
     if (inputBuffer) {
       const auto inputVector = makeVectorFromBuffer(*inputBuffer);
       const auto irVector = sweep.computeIR(inputVector);
-      const auto irBuffer = makeBufferFromVector(irVector);
-      return irBuffer;
+      irBuffer.reset(
+        new juce::AudioSampleBuffer(makeBufferFromVector(irVector)));
+      return *irBuffer;
     } else {
       return juce::AudioSampleBuffer();
     }
@@ -214,7 +215,7 @@ public:
       const auto inputVector = makeVectorFromBuffer(*inputBuffer);
       const auto irVector = sweep.computeIR(inputVector);
       const auto freqResponse =
-        dft_magnitude_with_log_bins(irVector, fs, numbins);
+        dft_magnitude_with_log_bins(irVector, float(fs), numbins);
       return freqResponse;
     }
     return {};

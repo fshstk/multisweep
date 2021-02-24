@@ -58,11 +58,11 @@ public:
     const auto area = getLocalBounds();
 
     const auto graph = area.reduced(margin);
-    const auto xAxis = dft_log_bins(graph.getWidth(), 20.0, 20e3);
+    const auto xAxis = dft_log_bins(size_t(graph.getWidth()), 20.0, 20e3);
 
-    const auto curve = sweep.getFrequencyResponse(graph.getWidth());
+    const auto curve = sweep.getFrequencyResponse(uint(graph.getWidth()));
 
-    auto yAxis = std::vector<float>(graph.getHeight());
+    auto yAxis = std::vector<float>(size_t(graph.getHeight()));
     std::iota(yAxis.begin(), yAxis.end(), 0);
     std::transform(
       yAxis.cbegin(), yAxis.cend(), yAxis.begin(), [&yAxis](auto x) {
