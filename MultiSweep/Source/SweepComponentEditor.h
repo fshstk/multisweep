@@ -95,8 +95,8 @@ public:
     std::transform(
       values.cbegin(), values.cend(), xPixels.begin(), findPixelForFrequency);
 
-    g.setColour(juce::Colours::red);
-    g.drawRect(area);
+    // g.setColour(juce::Colours::red);
+    // g.drawRect(area);
 
     g.setColour(juce::Colours::darkslategrey);
     g.fillRect(graph);
