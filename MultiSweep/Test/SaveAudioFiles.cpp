@@ -46,6 +46,8 @@ void saveFile(const juce::AudioSampleBuffer& buffer, std::string fileName)
 {
   const auto filePath = basePath + timestamp + "_" + fileName;
 
+  // The writer object takes ownership of the FileOutputStream, so we don't
+  // need to delete it:
   std::unique_ptr<juce::AudioFormatWriter> writer(
     juce::WavAudioFormat().createWriterFor(
       new juce::FileOutputStream(juce::File(filePath)), fs, 1, 24, {}, 0));
