@@ -53,13 +53,14 @@ public:
 
   void paint(juce::Graphics& g) override
   {
-    const auto curve = sweep.getFrequencyResponse();
 
     const auto margin = 35;
     const auto area = getLocalBounds();
 
     const auto graph = area.reduced(margin);
     const auto xAxis = dft_log_bins(graph.getWidth(), 20.0, 20e3);
+
+    const auto curve = sweep.getFrequencyResponse(graph.getWidth());
 
     auto yAxis = std::vector<float>(graph.getHeight());
     std::iota(yAxis.begin(), yAxis.end(), 0);
@@ -154,19 +155,12 @@ public:
       g.fillEllipse(x, y, radius, radius);
     };
 
-    for (const auto& freq : xAxis) {
-      g.setColour(juce::Colours::beige);
-      drawPoint(freq, 0);
-
-      g.setColour(juce::Colours::aliceblue);
-      drawPoint(freq, 12);
-
-      g.setColour(juce::Colours::red);
-      drawPoint(freq, -15);
-    }
-
     g.setColour(lookAndFeel.ClSeperator);
     g.drawRect(graph);
+
+    g.setColour(juce::Colours::red);
+    for (uint i = 0; i < curve.size(); ++i)
+      drawPoint(xAxis[i], curve[i]);
   }
 
 private:
