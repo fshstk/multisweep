@@ -158,8 +158,11 @@ public:
     g.drawRect(graph);
 
     g.setColour(juce::Colours::red);
-    for (uint i = 0; i < curve.size(); ++i)
-      drawPoint(xAxis[i], curve[i]);
+    for (uint i = 0; i < curve.size(); ++i) {
+      const auto x = xAxis[i];
+      const auto y = curve[i];
+      drawPoint(x, y);
+    }
 
     if (curve.size() == 0) {
       g.setColour(juce::Colours::white);
