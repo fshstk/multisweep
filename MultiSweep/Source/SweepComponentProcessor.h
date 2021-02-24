@@ -162,8 +162,7 @@ public:
     sweepFinished = false;
 
     // NOTE: *DON'T* do this on the audio thread!!!
-    // irBuffer.reset(new juce::AudioSampleBuffer(getImpulseResponse()));
-    irBuffer.reset(new juce::AudioSampleBuffer(getFrequencyResponse()));
+    irBuffer.reset(new juce::AudioSampleBuffer(getImpulseResponse()));
 
     thumbnailUpdateNotifier.sendChangeMessage();
     // processSweep(); // should this happen here? it will block the thread
@@ -205,7 +204,7 @@ public:
     }
   }
 
-  juce::AudioSampleBuffer getFrequencyResponse()
+  std::vector<float> getFrequencyResponse(uint numbins)
   {
     // TODO: everyhwere sweep gets created, use a member pointer (to base
     // class!) instead
@@ -214,12 +213,11 @@ public:
     if (inputBuffer) {
       const auto inputVector = makeVectorFromBuffer(*inputBuffer);
       const auto irVector = sweep.computeIR(inputVector);
-      const auto freqResponse = dft_magnitude(irVector);
-      const auto freqBuffer = makeBufferFromVector(freqResponse);
-      return freqBuffer;
-    } else {
-      return juce::AudioSampleBuffer();
+      const auto freqResponse =
+        dft_magnitude_with_log_bins(irVector, fs, numbins);
+      return freqResponse;
     }
+    return {};
   }
 
   // TODO: Probably should rename this to SweepListener or some such...
