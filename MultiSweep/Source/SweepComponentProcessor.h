@@ -177,7 +177,33 @@ public:
     return irBuffer.get();
   }
 
-  void exportFilter() const {}
+  void exportFilter() const
+  {
+    if (inputBuffer) {
+      const auto sweep = LogSweep(
+        fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
+      const auto inputVector = makeVectorFromBuffer(*inputBuffer);
+      const auto irVector = sweep.computeIR(inputVector);
+      const auto freqResponse = dft_magnitude(irVector);
+      const auto freqResponseDb = dft_magnitude_db(irVector);
+      const auto freqBins = dft_lin_bins(float(fs), freqResponse.size() * 2);
+
+      juce::FileChooser dialog(
+        "Select a location to save the filter coefficients...");
+      if (dialog.browseForFileToSave(true)) {
+        juce::File file = dialog.getResult();
+        auto fileContents = std::stringstream{};
+
+        fileContents << "freq,mag,db\n";
+
+        for (size_t i = 0; i < freqResponse.size(); ++i)
+          fileContents << freqBins[i] << "," << freqResponse[i] << ","
+                       << freqResponseDb[i] << "\n";
+
+        file.replaceWithText(fileContents.str());
+      }
+    }
+  }
 
   void clearData()
   {
