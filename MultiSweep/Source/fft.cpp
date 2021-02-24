@@ -138,6 +138,14 @@ std::vector<float> dft_magnitude(std::vector<float> input)
   return std::vector<float>(output.cbegin(), output.cend());
 }
 
+std::vector<float> dft_magnitude_db(std::vector<float> input)
+{
+  const auto actual_db = [](float x) { return 20.0f * std::log10(x); };
+  auto mag = dft_magnitude(input);
+  std::transform(mag.begin(), mag.end(), mag.begin(), actual_db);
+  return mag;
+}
+
 RealVector dft_phase(RealVector input)
 {
   const auto spectrum = dft(input);
@@ -165,6 +173,22 @@ std::vector<float> dft_log_bins(size_t num_samples = 1024,
   return log_bins;
 }
 
+std::vector<float> dft_magnitude_with_log_bins(const std::vector<float>& input,
+                                               float sampleRate,
+                                               uint numbins)
+{
+  const auto lin_mag = dft_magnitude_db(input);
+  const auto lin_bins = dft_lin_bins(sampleRate, lin_mag.size() * 2);
+  const auto log_bins = dft_log_bins(numbins, 20e0, 20e3);
+  auto log_mag = std::vector<float>(log_bins.size());
+  const auto indices = map_log_to_lin_bins(lin_bins, log_bins);
+
+  const auto resolve_indices = [&](auto index) { return lin_mag[index]; };
+  std::transform(
+    indices.cbegin(), indices.cend(), log_mag.begin(), resolve_indices);
+
+  return log_mag;
+}
 
 std::vector<uint> map_log_to_lin_bins(const std::vector<float>& lin_bins,
                                       const std::vector<float>& log_bins)
