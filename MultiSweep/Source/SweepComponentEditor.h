@@ -160,6 +160,16 @@ public:
     g.setColour(juce::Colours::red);
     for (uint i = 0; i < curve.size(); ++i)
       drawPoint(xAxis[i], curve[i]);
+
+    if (curve.size() == 0) {
+      g.setColour(juce::Colours::white);
+      g.setOpacity(0.4f);
+      g.fillRect(graph);
+      g.setColour(juce::Colours::darkslategrey);
+      g.setFont(lookAndFeel.robotoBold);
+      g.setFont(20);
+      g.drawText("No Sweep Recorded", graph, juce::Justification::centred);
+    }
   }
 
 private:
