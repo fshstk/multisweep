@@ -181,10 +181,7 @@ public:
 
   void clearData()
   {
-    // TODO: We're resetting with a blank AudioSampleBuffer rather than with a
-    // simple nullptr because the RecordingThumbnail doesn't like nullptrs.
-    if (inputBuffer)
-      inputBuffer.reset(new juce::AudioSampleBuffer());
+    inputBuffer.reset();
     thumbnailUpdateNotifier.sendChangeMessage();
   }
 
@@ -209,9 +206,9 @@ public:
   {
     // TODO: everyhwere sweep gets created, use a member pointer (to base
     // class!) instead
-    const auto sweep = LogSweep(
-      fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
     if (inputBuffer) {
+      const auto sweep = LogSweep(
+        fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
       const auto inputVector = makeVectorFromBuffer(*inputBuffer);
       const auto irVector = sweep.computeIR(inputVector);
       const auto freqResponse =
