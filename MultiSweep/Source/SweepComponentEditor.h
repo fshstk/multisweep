@@ -146,23 +146,21 @@ public:
     const auto plusTenDbCurve = std::vector<float>(xAxis.size(), 10);
     const auto minusTenDbCurve = std::vector<float>(xAxis.size(), -10);
 
+    auto path = juce::Path();
+    path.startNewSubPath(graph.getX() + findPixelForFrequency(20),
+                         graph.getBottom() - findPixelForDb(0));
+
     const auto drawPoint = [&](auto frequency, auto db) {
-      const auto radius = 2;
       const auto x = graph.getX() + findPixelForFrequency(frequency);
       const auto y = graph.getBottom() - findPixelForDb(db);
-
-      g.fillEllipse(x, y, radius, radius);
+      path.lineTo(x, y);
     };
+
+    for (uint i = 0; i < curve.size(); ++i)
+      drawPoint(xAxis[i], curve[i]);
 
     g.setColour(lookAndFeel.ClSeperator);
     g.drawRect(graph);
-
-    g.setColour(juce::Colours::red);
-    for (uint i = 0; i < curve.size(); ++i) {
-      const auto x = xAxis[i];
-      const auto y = curve[i];
-      drawPoint(x, y);
-    }
 
     if (curve.size() == 0) {
       g.setColour(juce::Colours::white);
@@ -173,6 +171,10 @@ public:
       g.setFont(20);
       g.drawText("No Sweep Recorded", graph, juce::Justification::centred);
     }
+
+    g.reduceClipRegion(graph.reduced(1)); // reduce by stroke width
+    g.setColour(juce::Colours::red);
+    g.strokePath(path, juce::PathStrokeType(2.0f));
   }
 
 private:
