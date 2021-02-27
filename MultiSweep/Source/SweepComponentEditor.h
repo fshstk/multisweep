@@ -214,25 +214,6 @@ public:
     exportButton.onClick = [this] { sweep.exportFilter(); };
     exportButton.setButtonText("Export");
 
-    addAndMakeVisible(durationSlider);
-    durationSlider.setSliderStyle(
-      juce::Slider::SliderStyle::RotaryVerticalDrag);
-    // Ignore the JUCE assertion failure, the slider doesn't like negative
-    // angles but they're perfectly fine:
-    durationSlider.setRotaryParameters(
-      float(-5 / 6.0 * M_PI), float(+5 / 6.0 * M_PI), true);
-    durationSlider.setRange(1.0, 20.0);
-    durationSlider.setDoubleClickReturnValue(true, 2.0);
-    durationSlider.setTextBoxStyle(
-      juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 100, 20);
-    durationSlider.setNumDecimalPlacesToDisplay(1);
-    // durationSlider.addListener();
-
-    addAndMakeVisible(durationSliderLabel);
-    durationSliderLabel.setText("Duration", juce::dontSendNotification);
-    durationSliderLabel.setJustificationType(juce::Justification::centred);
-    durationSliderLabel.attachToComponent(&durationSlider, false);
-
     addAndMakeVisible(freqResponse);
   }
   void resized() override
@@ -240,11 +221,9 @@ public:
     auto area = getLocalBounds();
 
     auto bottomRow = area.removeFromBottom(100);
-    auto sliderArea = bottomRow.removeFromRight(100);
     auto firstButtonRow = bottomRow.removeFromTop(50);
     auto secondButtonRow = bottomRow;
 
-    durationSlider.setBounds(sliderArea);
     freqResponse.setBounds(area);
 
     playButton.setBounds(
@@ -262,9 +241,6 @@ private:
   juce::TextButton stopButton;
   juce::TextButton clearButton;
   juce::TextButton exportButton;
-
-  juce::Slider durationSlider;
-  juce::Label durationSliderLabel;
 
   FreqResponseDisplay freqResponse;
 
