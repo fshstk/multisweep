@@ -90,7 +90,8 @@ public:
       return;
 
     if (!isSweepActive()) {
-      buffer.clear(); // mute input
+      // TODO: we can't mute input because of multiple sweep objects!
+      // buffer.clear();
       return;
     }
 
@@ -260,6 +261,8 @@ public:
   {
     return &thumbnailUpdateNotifier;
   }
+
+  int getChannel() { return metadata.channel; }
 
 private:
   void saveInputBuffer(juce::AudioSampleBuffer& input)

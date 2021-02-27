@@ -61,7 +61,7 @@ public:
   constexpr static int numberOfOutputChannels = 64;
   std::vector<std::unique_ptr<RangedAudioParameter>> createParameterLayout();
 
-  SweepComponentProcessor sweep;
+  std::vector<std::unique_ptr<SweepComponentProcessor>> sweeps;
 
 private:
   std::atomic<float>* outputChannelsSetting;

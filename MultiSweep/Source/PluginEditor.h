@@ -23,6 +23,7 @@
 #pragma once
 #include "PluginProcessor.h"
 #include "SweepComponentEditor.h"
+#include "SweepEditorContainer.h"
 #include <customComponents/ReverseSlider.h>
 #include <customComponents/SimpleLabel.h>
 #include <customComponents/TitleBar.h>
@@ -63,7 +64,7 @@ private:
 
   Footer footer;
 
-  SweepComponentEditor sweepEditor;
+  SweepEditorContainer sweepEditor;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessorEditor)
 };

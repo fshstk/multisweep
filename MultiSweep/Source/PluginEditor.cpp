@@ -30,7 +30,7 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   , audioProcessor(p)
   , valueTreeState(vts)
   , footer()
-  , sweepEditor(p.sweep)
+  , sweepEditor(p.sweeps)
 {
   setSize(editorWindowWidth, editorWindowHeight);
   setLookAndFeel(&iemLookAndFeel);
