@@ -25,19 +25,6 @@
 #include "fft.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 
-/*
-
-SweepProcessor does the following things:
-0. stores settings about sweep length, duration, start/stop frequencies, out ch
-1. generates & plays back a sine sweep
-2. simultaneously records the response + fixed time or until signal below thresh
-3. generates and stores IR, magnitude, phase, and frequency bins
-
-separate class for recording?
-separate class for playback?
-
-*/
-
 struct SweepComponentMetadata
 {
   int channel = 0;
@@ -47,12 +34,12 @@ struct SweepComponentMetadata
   double responseTailInSeconds = 1;
 };
 
-class SweepComponentProcessor : public juce::AudioProcessor
+class SweepComponentProcessor
+  : public juce::AudioProcessor
+  , public juce::ChangeBroadcaster
 {
 public:
-  SweepComponentProcessor(SweepComponentMetadata metadata_)
-    : metadata(metadata_)
-  {}
+  SweepComponentProcessor() = default;
 
   const juce::String getName() const override { return {}; }
   double getTailLengthSeconds() const override { return 0; }
@@ -81,15 +68,10 @@ public:
   void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
   {
     jassert(fs > 0);
-    jassert(metadata.channel >= 0);
-    jassert(metadata.channel < buffer.getNumChannels());
     if (fs <= 0)
       return;
 
-    if (metadata.channel < 0 || metadata.channel >= buffer.getNumChannels())
-      return;
-
-    if (!isSweepActive()) {
+    if (!sweepActive) {
       buffer.clear(); // mute input
       return;
     }
@@ -119,21 +101,21 @@ public:
       outputChannelMapper->releaseResources();
   }
 
-  void startSweep()
+  void startSweep(SweepComponentMetadata metadata)
   {
     jassert(fs > 0);
     jassert(samplesPerBlock > 0);
 
-    // If sweep is already active, should we do nothing or stop/restart?
-    if (isSweepActive())
+    // If sweep is already active, do nothing
+    if (sweepActive)
       return;
 
     inputBufferIndex = 0;
     outputBufferIndex = 0;
 
-    const auto sweep = LogSweep(
-      fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
-    auto sweepBuffer = makeBufferFromVector(sweep.generateSignal());
+    sweep.reset(new LogSweep(
+      fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq }));
+    auto sweepBuffer = makeBufferFromVector(sweep->generateSignal());
     audioSource.reset(new juce::MemoryAudioSource(sweepBuffer, true));
 
     // We need the outputChannelMapper so we can play the sweep on the desired
@@ -157,108 +139,67 @@ public:
 
   void stopSweep()
   {
-    // TODO: two separate methods depending on if sweep is finished or cancelled
     sweepActive = false;
     sweepFinished = false;
-
-    // NOTE: *DON'T* do this on the audio thread!!!
-    irBuffer.reset(new juce::AudioSampleBuffer(getImpulseResponse()));
-
-    thumbnailUpdateNotifier.sendChangeMessage();
-    // processSweep(); // should this happen here? it will block the thread
-  }
-
-  bool isSweepActive() const { return sweepActive; }
-
-  const juce::AudioSampleBuffer* getInputBuffer()
-  {
-    // NOTE: this can be nullptr!
-    // return inputBuffer.get();
-    return irBuffer.get();
+    sendChangeMessage();
   }
 
   void exportFilter() const
   {
-    if (inputBuffer) {
-      const auto sweep = LogSweep(
-        fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
-      const auto inputVector = makeVectorFromBuffer(*inputBuffer);
-      const auto irVector = sweep.computeIR(inputVector);
-      const auto freqResponse = dft_magnitude(irVector);
-      const auto freqResponseDb = dft_magnitude_db(irVector);
-      const auto freqBins = dft_lin_bins(float(fs), freqResponse.size() * 2);
+    // // TODO: this needs to be in editor!
+    // if (inputBuffer) {
+    //   const auto sweep = LogSweep(
+    //     fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
+    //   const auto inputVector = makeVectorFromBuffer(*inputBuffer);
+    //   const auto irVector = sweep.computeIR(inputVector);
+    //   const auto freqResponse = dft_magnitude(irVector);
+    //   const auto freqResponseDb = dft_magnitude_db(irVector);
+    //   const auto freqBins = dft_lin_bins(float(fs), freqResponse.size() * 2);
 
-      juce::FileChooser dialog(
-        "Select a location to save the filter coefficients...");
-      if (dialog.browseForFileToSave(true)) {
-        juce::File file = dialog.getResult();
-        auto fileContents = std::stringstream{};
+    //   juce::FileChooser dialog(
+    //     "Select a location to save the filter coefficients...");
+    //   if (dialog.browseForFileToSave(true)) {
+    //     juce::File file = dialog.getResult();
+    //     auto fileContents = std::stringstream{};
 
-        fileContents << "freq,mag,db\n";
+    //     fileContents << "freq,mag,db\n";
 
-        for (size_t i = 0; i < freqResponse.size(); ++i)
-          fileContents << freqBins[i] << "," << freqResponse[i] << ","
-                       << freqResponseDb[i] << "\n";
+    //     for (size_t i = 0; i < freqResponse.size(); ++i)
+    //       fileContents << freqBins[i] << "," << freqResponse[i] << ","
+    //                    << freqResponseDb[i] << "\n";
 
-        file.replaceWithText(fileContents.str());
-      }
-    }
+    //     file.replaceWithText(fileContents.str());
+    //   }
+    // }
   }
 
   void clearData()
   {
     inputBuffer.reset();
-    thumbnailUpdateNotifier.sendChangeMessage();
+    sendChangeMessage();
   }
 
-  juce::AudioSampleBuffer getImpulseResponse()
+  std::vector<float> getImpulseResponse()
   {
-    // TODO: everyhwere sweep gets created, use a member pointer (to base
-    // class!) instead
-    const auto sweep = LogSweep(
-      fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
-    if (inputBuffer) {
+    jassert(inputBuffer);
+    jassert(sweep);
+    if (inputBuffer && sweep) {
       const auto inputVector = makeVectorFromBuffer(*inputBuffer);
-      const auto irVector = sweep.computeIR(inputVector);
-      irBuffer.reset(
-        new juce::AudioSampleBuffer(makeBufferFromVector(irVector)));
-      return *irBuffer;
-    } else {
-      return juce::AudioSampleBuffer();
-    }
-  }
-
-  std::vector<float> getFrequencyResponse(uint numbins)
-  {
-    // TODO: everyhwere sweep gets created, use a member pointer (to base
-    // class!) instead
-    if (inputBuffer) {
-      const auto sweep = LogSweep(
-        fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
-      const auto inputVector = makeVectorFromBuffer(*inputBuffer);
-      const auto irVector = sweep.computeIR(inputVector);
-      const auto freqResponse =
-        dft_magnitude_with_log_bins(irVector, float(fs), numbins);
-      return freqResponse;
+      return sweep->computeIR(inputVector);
     }
     return {};
   }
 
-  // TODO: Probably should rename this to SweepListener or some such...
-  // Not only the thumbnail but also the sweep processing gets done via this.
-  void addThumbnailListener(juce::ChangeListener* listener)
+  std::vector<float> getFrequencyResponse(uint numbins)
   {
-    thumbnailUpdateNotifier.addChangeListener(listener);
-  }
-
-  void removeThumbnailListener(juce::ChangeListener* listener)
-  {
-    thumbnailUpdateNotifier.removeChangeListener(listener);
-  }
-
-  juce::ChangeBroadcaster* getThumbnailUpdateNotifier()
-  {
-    return &thumbnailUpdateNotifier;
+    jassert(inputBuffer);
+    jassert(sweep);
+    if (inputBuffer && sweep) {
+      const auto inputVector = makeVectorFromBuffer(*inputBuffer);
+      const auto irVector = sweep->computeIR(inputVector);
+      return dft_magnitude_with_log_bins(irVector, float(fs), numbins);
+    }
+    return {};
   }
 
 private:
@@ -305,15 +246,13 @@ private:
   int outputBufferIndex = 0;
   int inputBufferIndex = 0;
 
-  SweepComponentMetadata metadata;
-
   std::unique_ptr<juce::MemoryAudioSource> audioSource;
   std::unique_ptr<juce::ChannelRemappingAudioSource> outputChannelMapper;
 
   std::unique_ptr<juce::AudioSampleBuffer> inputBuffer;
   std::unique_ptr<juce::AudioSampleBuffer> irBuffer;
 
-  juce::ChangeBroadcaster thumbnailUpdateNotifier;
+  std::unique_ptr<ImpulseResponse> sweep;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentProcessor)
 };

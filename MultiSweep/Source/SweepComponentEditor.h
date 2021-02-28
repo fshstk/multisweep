@@ -47,9 +47,9 @@ public:
   FreqResponseDisplay(SweepComponentProcessor& processor)
     : sweep(processor)
   {
-    sweep.addThumbnailListener(this);
+    sweep.addChangeListener(this);
   }
-  ~FreqResponseDisplay() override { sweep.removeThumbnailListener(this); }
+  ~FreqResponseDisplay() override { sweep.removeChangeListener(this); }
 
   void paint(juce::Graphics& g) override
   {
@@ -199,7 +199,9 @@ public:
   {
     addAndMakeVisible(playButton);
     playButton.setButtonText("Start Sweep");
-    playButton.onClick = [this] { sweep.startSweep(); };
+    playButton.onClick = [this] {
+      sweep.startSweep({ .channel = 0 });
+    };
 
     // TODO: clear & stop could be the same button
     addAndMakeVisible(stopButton);
