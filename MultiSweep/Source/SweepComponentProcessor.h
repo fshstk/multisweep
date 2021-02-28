@@ -146,31 +146,30 @@ public:
 
   void exportFilter() const
   {
-    // // TODO: this needs to be in editor!
-    // if (inputBuffer) {
-    //   const auto sweep = LogSweep(
-    //     fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq });
-    //   const auto inputVector = makeVectorFromBuffer(*inputBuffer);
-    //   const auto irVector = sweep.computeIR(inputVector);
-    //   const auto freqResponse = dft_magnitude(irVector);
-    //   const auto freqResponseDb = dft_magnitude_db(irVector);
-    //   const auto freqBins = dft_lin_bins(float(fs), freqResponse.size() * 2);
+    jassert(inputBuffer);
+    jassert(sweep);
+    if (inputBuffer && sweep) {
+      const auto inputVector = makeVectorFromBuffer(*inputBuffer);
+      const auto irVector = sweep->computeIR(inputVector);
+      const auto freqResponse = dft_magnitude(irVector);
+      const auto freqResponseDb = dft_magnitude_db(irVector);
+      const auto freqBins = dft_lin_bins(float(fs), freqResponse.size() * 2);
 
-    //   juce::FileChooser dialog(
-    //     "Select a location to save the filter coefficients...");
-    //   if (dialog.browseForFileToSave(true)) {
-    //     juce::File file = dialog.getResult();
-    //     auto fileContents = std::stringstream{};
+      juce::FileChooser dialog(
+        "Select a location to save the filter coefficients...");
+      if (dialog.browseForFileToSave(true)) {
+        juce::File file = dialog.getResult();
+        auto fileContents = std::stringstream{};
 
-    //     fileContents << "freq,mag,db\n";
+        fileContents << "freq,mag,db\n";
 
-    //     for (size_t i = 0; i < freqResponse.size(); ++i)
-    //       fileContents << freqBins[i] << "," << freqResponse[i] << ","
-    //                    << freqResponseDb[i] << "\n";
+        for (size_t i = 0; i < freqResponse.size(); ++i)
+          fileContents << freqBins[i] << "," << freqResponse[i] << ","
+                       << freqResponseDb[i] << "\n";
 
-    //     file.replaceWithText(fileContents.str());
-    //   }
-    // }
+        file.replaceWithText(fileContents.str());
+      }
+    }
   }
 
   void clearData()
