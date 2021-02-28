@@ -26,19 +26,6 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <lookAndFeel/IEM_LaF.h>
 
-/*
-
-SweepComponent has 4 waveform displays:
-1. raw recorded sweep response (live maybe?)
-2. calculated IR
-3. calculated freq response
-4. calculated phase
-
-separate class: audio thumbnail, takes in buffer/vector by reference,
-                has a callback to redraw
-
-*/
-
 class FreqResponseDisplay
   : public juce::Component
   , private juce::ChangeListener
@@ -95,9 +82,6 @@ public:
     std::transform(
       values.cbegin(), values.cend(), xPixels.begin(), findPixelForFrequency);
 
-    // g.setColour(juce::Colours::red);
-    // g.drawRect(area);
-
     g.setColour(juce::Colours::darkslategrey);
     g.fillRect(graph);
     g.setColour(lookAndFeel.ClSeperator);
@@ -132,7 +116,6 @@ public:
 
     for (auto& value : yValues) {
       const auto x = graph.getX() - 5;
-      // const auto y = graph.getBottom() - findPixelForDb(value);
       const auto y = graph.getBottom() - findPixelForDb(value) + 3;
 
       const auto label = juce::String(value) + " dB";
@@ -195,12 +178,12 @@ public:
   SweepComponentEditor(SweepComponentProcessor& sweepProcessor)
     : AudioProcessorEditor(&sweepProcessor)
     , sweep(sweepProcessor)
-    , freqResponse(sweepProcessor)
+    , freqDisplay(sweepProcessor)
   {
     addAndMakeVisible(playButton);
     playButton.setButtonText("Start Sweep");
     playButton.onClick = [this] {
-      sweep.startSweep({ .channel = 0 });
+      sweep.startSweep({ .channel = channelSelector.getSelectedItemIndex() });
     };
 
     // TODO: clear & stop could be the same button
@@ -216,7 +199,13 @@ public:
     exportButton.onClick = [this] { sweep.exportFilter(); };
     exportButton.setButtonText("Export");
 
-    addAndMakeVisible(freqResponse);
+    addAndMakeVisible(freqDisplay);
+
+    // TODO: would be nice to override AudioChannelsIOWidget for this purpose
+    addAndMakeVisible(channelSelector);
+    channelSelector.addItemList({ "1", "2" }, 1); // TODO: all channels
+    channelSelector.addSeparator();
+    channelSelector.addItem("all", 100);
   }
   void resized() override
   {
@@ -226,10 +215,14 @@ public:
     auto firstButtonRow = bottomRow.removeFromTop(50);
     auto secondButtonRow = bottomRow;
 
-    freqResponse.setBounds(area);
+    freqDisplay.setBounds(area);
 
-    playButton.setBounds(
-      firstButtonRow.removeFromLeft(firstButtonRow.getWidth() / 2));
+    auto playButtonArea =
+      firstButtonRow.removeFromLeft(firstButtonRow.getWidth() / 2);
+    channelSelector.setBounds(
+      playButtonArea.removeFromRight(playButtonArea.getWidth() / 2));
+    playButton.setBounds(playButtonArea);
+
     stopButton.setBounds(firstButtonRow);
     exportButton.setBounds(
       secondButtonRow.removeFromLeft(secondButtonRow.getWidth() / 2));
@@ -244,7 +237,10 @@ private:
   juce::TextButton clearButton;
   juce::TextButton exportButton;
 
-  FreqResponseDisplay freqResponse;
+  juce::ComboBox channelSelector;
+
+  FreqResponseDisplay freqDisplay;
+  std::vector<std::vector<float>> freqResponses;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentEditor)
 };
