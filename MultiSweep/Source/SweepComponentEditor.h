@@ -33,6 +33,8 @@ public:
   SweepComponentEditor(SweepComponentProcessor& sweepProcessor)
     : AudioProcessorEditor(&sweepProcessor)
     , sweep(sweepProcessor)
+    , prevChannelButton("previous channel", 0.5, juce::Colours::antiquewhite)
+    , nextChannelButton("next channel", 0.0, juce::Colours::antiquewhite)
     , freqDisplay(sweepProcessor)
   {
     addAndMakeVisible(playButton);
@@ -41,7 +43,6 @@ public:
       sweep.startSweep({ .channel = channelSelector.getSelectedItemIndex() });
     };
 
-    // TODO: clear & stop could be the same button
     addAndMakeVisible(stopButton);
     stopButton.setButtonText("Stop Sweep");
     stopButton.onClick = [this] { sweep.stopSweep(); };
@@ -61,12 +62,16 @@ public:
     channelSelector.addItemList({ "1", "2" }, 1); // TODO: all channels
     channelSelector.addSeparator();
     channelSelector.addItem("all", 100);
+
+    addAndMakeVisible(prevChannelButton);
+    addAndMakeVisible(nextChannelButton);
   }
+
   void resized() override
   {
     auto area = getLocalBounds();
 
-    auto bottomRow = area.removeFromBottom(100);
+    auto bottomRow = area.removeFromBottom(70);
     auto firstButtonRow = bottomRow.removeFromTop(50);
     auto secondButtonRow = bottomRow;
 
@@ -74,14 +79,25 @@ public:
 
     auto playButtonArea =
       firstButtonRow.removeFromLeft(firstButtonRow.getWidth() / 2);
-    channelSelector.setBounds(
-      playButtonArea.removeFromRight(playButtonArea.getWidth() / 2));
     playButton.setBounds(playButtonArea);
 
     stopButton.setBounds(firstButtonRow);
-    exportButton.setBounds(
-      secondButtonRow.removeFromLeft(secondButtonRow.getWidth() / 2));
-    clearButton.setBounds(secondButtonRow);
+
+    const auto rowWidth = secondButtonRow.getWidth();
+    // const auto buttonPadding = 10;
+    const auto buttonPadding = 0;
+
+    exportButton.setBounds(secondButtonRow.removeFromLeft(rowWidth * 0.4));
+    clearButton.setBounds(secondButtonRow.removeFromRight(rowWidth * 0.4));
+
+    prevChannelButton.setBounds(
+      secondButtonRow.removeFromLeft(secondButtonRow.getHeight())
+        .reduced(buttonPadding));
+    nextChannelButton.setBounds(
+      secondButtonRow.removeFromRight(secondButtonRow.getHeight())
+        .reduced(buttonPadding));
+
+    channelSelector.setBounds(secondButtonRow);
   }
 
 private:
@@ -89,10 +105,13 @@ private:
 
   juce::TextButton playButton;
   juce::TextButton stopButton;
+
   juce::TextButton clearButton;
   juce::TextButton exportButton;
 
+  juce::ArrowButton prevChannelButton;
   juce::ComboBox channelSelector;
+  juce::ArrowButton nextChannelButton;
 
   FreqResponseDisplay freqDisplay;
   std::vector<std::vector<float>> freqResponses;
