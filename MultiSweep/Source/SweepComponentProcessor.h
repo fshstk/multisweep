@@ -217,7 +217,6 @@ private:
     inputBufferIndex += numSamples;
   }
 
-  // TODO: These should probably even be non-member functions:
   template<typename T>
   static juce::AudioBuffer<T> makeBufferFromVector(const std::vector<T>& vector)
   {
@@ -227,7 +226,6 @@ private:
     return buffer;
   }
 
-  // TODO: These should probably even be non-member functions:
   template<typename T>
   static std::vector<T> makeVectorFromBuffer(const juce::AudioBuffer<T>& buffer)
   {
@@ -249,8 +247,6 @@ private:
   std::unique_ptr<juce::ChannelRemappingAudioSource> outputChannelMapper;
 
   std::unique_ptr<juce::AudioSampleBuffer> inputBuffer;
-  std::unique_ptr<juce::AudioSampleBuffer> irBuffer;
-
   std::unique_ptr<ImpulseResponse> sweep;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentProcessor)
