@@ -87,8 +87,8 @@ public:
     // const auto buttonPadding = 10;
     const auto buttonPadding = 0;
 
-    exportButton.setBounds(secondButtonRow.removeFromLeft(rowWidth * 0.4));
-    clearButton.setBounds(secondButtonRow.removeFromRight(rowWidth * 0.4));
+    exportButton.setBounds(secondButtonRow.removeFromLeft(int(rowWidth * 0.4)));
+    clearButton.setBounds(secondButtonRow.removeFromRight(int(rowWidth * 0.4)));
 
     prevChannelButton.setBounds(
       secondButtonRow.removeFromLeft(secondButtonRow.getHeight())
