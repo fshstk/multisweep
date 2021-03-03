@@ -57,7 +57,7 @@ public:
   void setStateInformation(const void*, int) override {}
 
   bool hasEditor() const override { return true; }
-  juce::AudioProcessorEditor* createEditor() override;
+  juce::AudioProcessorEditor* createEditor() override { return nullptr; }
 
   void prepareToPlay(double sampleRate, int maxSamplesPerBlock) override
   {
