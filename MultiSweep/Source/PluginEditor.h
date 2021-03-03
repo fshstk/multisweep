@@ -28,9 +28,7 @@
 #include <customComponents/TitleBar.h>
 #include <lookAndFeel/IEM_LaF.h>
 
-typedef ReverseSlider::SliderAttachment SliderAttachment;
 typedef AudioProcessorValueTreeState::ComboBoxAttachment ComboBoxAttachment;
-typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
 
 class MultiSweepAudioProcessorEditor
   : public AudioProcessorEditor
@@ -67,14 +65,3 @@ private:
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessorEditor)
 };
-
-// Procedure for adding a slider/value:
-// - add UI element editor member
-// - add element attachment as editor member
-// - add parameter as processor member
-// - push back parameter in createParameterLayout()
-// - attach vts parameter to processor member parameter
-// - add listener to processor member parameter
-// - addAndMakeVisible(UI element)
-// - init attachment with connection b/w parameter and slider
-// - ???

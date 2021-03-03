@@ -65,7 +65,6 @@ public:
 
 private:
   std::atomic<float>* outputChannelsSetting;
-  // std::atomic<float>* param1;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiSweepAudioProcessor)
 };
