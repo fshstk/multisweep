@@ -33,15 +33,18 @@ public:
   SweepComponentEditor(SweepComponentProcessor& sweepProcessor)
     : AudioProcessorEditor(&sweepProcessor)
     , sweep(sweepProcessor)
-    , prevChannelButton("previous channel", 0.5, juce::Colours::antiquewhite)
-    , nextChannelButton("next channel", 0.0, juce::Colours::antiquewhite)
+    , prevChannelButton("previous channel", 0.5, lookAndFeel.ClText)
+    , nextChannelButton("next channel", 0.0, lookAndFeel.ClText)
     , freqDisplay(sweepProcessor)
   {
-    addAndMakeVisible(playButton);
-    playButton.setButtonText("Start Sweep");
-    playButton.onClick = [this] {
-      sweep.startSweep({ .channel = channelSelector.getSelectedItemIndex() });
+    addAndMakeVisible(singleSweepButton);
+    singleSweepButton.setButtonText("Sweep Selected Channel");
+    singleSweepButton.onClick = [this] {
+      sweep.startSweep({ .channel = selectedChannel });
     };
+
+    addAndMakeVisible(multipleSweepButton);
+    multipleSweepButton.setButtonText("Sweep All Channels");
 
     addAndMakeVisible(stopButton);
     stopButton.setButtonText("Stop Sweep");
@@ -55,13 +58,10 @@ public:
     exportButton.onClick = [this] { sweep.exportFilter(); };
     exportButton.setButtonText("Export");
 
-    addAndMakeVisible(freqDisplay);
+    addAndMakeVisible(settingsButton);
+    settingsButton.setButtonText("Settings");
 
-    // TODO: would be nice to override AudioChannelsIOWidget for this purpose
-    addAndMakeVisible(channelSelector);
-    channelSelector.addItemList({ "1", "2" }, 1); // TODO: all channels
-    channelSelector.addSeparator();
-    channelSelector.addItem("all", 100);
+    addAndMakeVisible(freqDisplay);
 
     addAndMakeVisible(prevChannelButton);
     addAndMakeVisible(nextChannelButton);
@@ -71,46 +71,51 @@ public:
   {
     auto area = getLocalBounds();
 
-    auto bottomRow = area.removeFromBottom(70);
+    auto bottomRow = area.removeFromBottom(150);
     auto firstButtonRow = bottomRow.removeFromTop(50);
-    auto secondButtonRow = bottomRow;
+    auto secondButtonRow = bottomRow.removeFromTop(50);
+    auto thirdButtonRow = bottomRow;
 
-    freqDisplay.setBounds(area);
+    const auto arrowButtonWidth = 20;
+    const auto arrowButtonYMargin = 50;
+    const auto arrowButtonInsideMargin = 20;
+    prevChannelButton.setBounds(area.removeFromLeft(arrowButtonWidth)
+                                  .withTrimmedBottom(arrowButtonYMargin)
+                                  .withTrimmedTop(arrowButtonYMargin));
+    nextChannelButton.setBounds(area.removeFromRight(arrowButtonWidth)
+                                  .withTrimmedBottom(arrowButtonYMargin)
+                                  .withTrimmedTop(arrowButtonYMargin));
 
-    auto playButtonArea =
-      firstButtonRow.removeFromLeft(firstButtonRow.getWidth() / 2);
-    playButton.setBounds(playButtonArea);
+    freqDisplay.setBounds(area.withTrimmedLeft(arrowButtonInsideMargin));
 
-    stopButton.setBounds(firstButtonRow);
+    singleSweepButton.setBounds(
+      firstButtonRow.removeFromLeft(firstButtonRow.getWidth() / 2));
+    multipleSweepButton.setBounds(firstButtonRow);
 
-    const auto rowWidth = secondButtonRow.getWidth();
-    // const auto buttonPadding = 10;
-    const auto buttonPadding = 0;
+    stopButton.setBounds(
+      secondButtonRow.removeFromLeft(secondButtonRow.getWidth() / 2));
+    clearButton.setBounds(secondButtonRow);
 
-    exportButton.setBounds(secondButtonRow.removeFromLeft(int(rowWidth * 0.4)));
-    clearButton.setBounds(secondButtonRow.removeFromRight(int(rowWidth * 0.4)));
-
-    prevChannelButton.setBounds(
-      secondButtonRow.removeFromLeft(secondButtonRow.getHeight())
-        .reduced(buttonPadding));
-    nextChannelButton.setBounds(
-      secondButtonRow.removeFromRight(secondButtonRow.getHeight())
-        .reduced(buttonPadding));
-
-    channelSelector.setBounds(secondButtonRow);
+    exportButton.setBounds(
+      thirdButtonRow.removeFromLeft(thirdButtonRow.getWidth() / 2));
+    settingsButton.setBounds(thirdButtonRow);
   }
 
 private:
+  LaF lookAndFeel;
+
   SweepComponentProcessor& sweep;
 
-  juce::TextButton playButton;
-  juce::TextButton stopButton;
+  juce::TextButton singleSweepButton;
+  juce::TextButton multipleSweepButton;
 
+  juce::TextButton stopButton;
   juce::TextButton clearButton;
+
   juce::TextButton exportButton;
+  juce::TextButton settingsButton;
 
   juce::ArrowButton prevChannelButton;
-  juce::ComboBox channelSelector;
   juce::ArrowButton nextChannelButton;
 
   FreqResponseDisplay freqDisplay;
