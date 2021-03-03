@@ -93,7 +93,7 @@ private:
   {
     const auto value =
       valueTreeState.getRawParameterValue("outputChannelsSetting")->load();
-    return static_cast<int>(value - 1);
+    return static_cast<int>(value);
   }
 
 private:

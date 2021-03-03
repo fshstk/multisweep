@@ -17,8 +17,7 @@ public:
       cbChannels.reset(new ComboBox());
       addAndMakeVisible(cbChannels.get());
       cbChannels->setJustificationType(Justification::centred);
-      cbChannels->addSectionHeading("Number of channels");
-      cbChannels->addItem("Auto", 1);
+      cbChannels->addSectionHeading("Select Channel for Sweep");
       for (int i = 1; i <= maxChannels; ++i)
         cbChannels->addItem(String(i), i + 1);
       cbChannels->setBounds(35, 8, 70, 15);
