@@ -47,7 +47,10 @@ public:
     const auto graph = area.reduced(margin);
     const auto xAxis = dft_log_bins(size_t(graph.getWidth()), 20.0, 20e3);
 
-    const auto curve = sweep.getFrequencyResponse(uint(graph.getWidth()));
+    // Display the curve if it exists, else use an empty vector.
+    // TODO: further down we check curve.size() to see if it is set. It would
+    // probably be better to check directly if sweepResponse exists.
+    const auto& curve = sweepResponse ? *sweepResponse : std::vector<float>{};
 
     auto yAxis = std::vector<float>(size_t(graph.getHeight()));
     std::iota(yAxis.begin(), yAxis.end(), 0);
@@ -161,11 +164,20 @@ public:
   }
 
 private:
+  // TODO: we might not need this to be a change listener at all if we call
+  // setResponse()
   void changeListenerCallback(juce::ChangeBroadcaster*) override { repaint(); }
+
+  void setResponse(const std::vector<float>& logFreqResponse)
+  {
+    sweepResponse = &logFreqResponse;
+    repaint();
+  }
 
 private:
   LaF lookAndFeel;
   SweepComponentProcessor& sweep;
+  const std::vector<float>* sweepResponse;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FreqResponseDisplay)
 };
