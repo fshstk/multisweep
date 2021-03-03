@@ -30,8 +30,10 @@
 class SweepComponentEditor : public juce::AudioProcessorEditor
 {
 public:
-  SweepComponentEditor(SweepComponentProcessor& sweepProcessor)
+  SweepComponentEditor(SweepComponentProcessor& sweepProcessor,
+                       juce::AudioProcessorValueTreeState& vts)
     : AudioProcessorEditor(&sweepProcessor)
+    , valueTreeState(vts)
     , sweep(sweepProcessor)
     , prevChannelButton("previous channel", 0.5, lookAndFeel.ClText)
     , nextChannelButton("next channel", 0.0, lookAndFeel.ClText)
@@ -90,6 +92,7 @@ public:
   }
 
 private:
+  juce::AudioProcessorValueTreeState& valueTreeState;
   LaF lookAndFeel;
 
   SweepComponentProcessor& sweep;
