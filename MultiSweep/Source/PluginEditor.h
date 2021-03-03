@@ -22,6 +22,7 @@
 
 #pragma once
 #include "PluginProcessor.h"
+#include "SingleChannelIOWidget.h"
 #include "SweepComponentEditor.h"
 #include <customComponents/ReverseSlider.h>
 #include <customComponents/SimpleLabel.h>
@@ -56,7 +57,7 @@ private:
   MultiSweepAudioProcessor& audioProcessor;
   AudioProcessorValueTreeState& valueTreeState;
 
-  TitleBar<NoIOWidget, AudioChannelsIOWidget<maxOuputChannels, true>> title;
+  TitleBar<NoIOWidget, SingleChannelIOWidget<maxOuputChannels, true>> title;
   std::unique_ptr<ComboBoxAttachment> outputChannelsAttachment;
 
   Footer footer;
