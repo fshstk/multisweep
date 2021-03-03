@@ -76,21 +76,9 @@ public:
     auto secondButtonRow = bottomRow.removeFromTop(50);
     auto thirdButtonRow = bottomRow;
 
-    const auto arrowButtonWidth = 20;
-    const auto arrowButtonYMargin = 50;
-    const auto arrowButtonInsideMargin = 20;
-    prevChannelButton.setBounds(area.removeFromLeft(arrowButtonWidth)
-                                  .withTrimmedBottom(arrowButtonYMargin)
-                                  .withTrimmedTop(arrowButtonYMargin));
-    nextChannelButton.setBounds(area.removeFromRight(arrowButtonWidth)
-                                  .withTrimmedBottom(arrowButtonYMargin)
-                                  .withTrimmedTop(arrowButtonYMargin));
+    freqDisplay.setBounds(area);
 
-    freqDisplay.setBounds(area.withTrimmedLeft(arrowButtonInsideMargin));
-
-    singleSweepButton.setBounds(
-      firstButtonRow.removeFromLeft(firstButtonRow.getWidth() / 2));
-    multipleSweepButton.setBounds(firstButtonRow);
+    singleSweepButton.setBounds(firstButtonRow);
 
     stopButton.setBounds(
       secondButtonRow.removeFromLeft(secondButtonRow.getWidth() / 2));
@@ -120,6 +108,8 @@ private:
 
   FreqResponseDisplay freqDisplay;
   std::vector<std::vector<float>> freqResponses;
+
+  int selectedChannel = 0;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentEditor)
 };
