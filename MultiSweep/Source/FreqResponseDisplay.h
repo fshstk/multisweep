@@ -114,7 +114,8 @@ public:
 
       g.setFont(lookAndFeel.robotoMedium);
       g.setColour(lookAndFeel.ClText);
-      g.drawSingleLineText(label, int(x), int(y), juce::Justification::centred);
+      g.drawSingleLineText(
+        label, int(x), int(y), juce::Justification::horizontallyCentred);
     }
 
     for (auto& value : yValues) {
