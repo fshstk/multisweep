@@ -42,11 +42,8 @@ public:
     addAndMakeVisible(singleSweepButton);
     singleSweepButton.setButtonText("Sweep Selected Channel");
     singleSweepButton.onClick = [this] {
-      sweep.startSweep({ .channel = selectedChannel });
+      sweep.startSweep({ .channel = getSelectedChannel() });
     };
-
-    addAndMakeVisible(multipleSweepButton);
-    multipleSweepButton.setButtonText("Sweep All Channels");
 
     addAndMakeVisible(stopButton);
     stopButton.setButtonText("Stop Sweep");
@@ -92,6 +89,14 @@ public:
   }
 
 private:
+  int getSelectedChannel()
+  {
+    const auto value =
+      valueTreeState.getRawParameterValue("outputChannelsSetting")->load();
+    return static_cast<int>(value - 1);
+  }
+
+private:
   juce::AudioProcessorValueTreeState& valueTreeState;
   LaF lookAndFeel;
 
@@ -111,8 +116,6 @@ private:
 
   FreqResponseDisplay freqDisplay;
   std::vector<std::vector<float>> freqResponses;
-
-  int selectedChannel = 0;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentEditor)
 };
