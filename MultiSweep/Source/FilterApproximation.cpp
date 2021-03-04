@@ -22,36 +22,65 @@
 
 #include "FilterApproximation.h"
 #include <Util.h>
+#include <algorithm>
 #include <cmath>
+#include <complex>
+#include <functional>
 #include <nlopt.h>
 #include <numeric>
 
 std::vector<FilterParameter> FilterApproximation::calculate_filters(
-  std::vector<double> frequencies,
-  std::vector<double> fft_magnitudes,
+  const std::vector<double>& frequencies,
+  const std::vector<double>& fft_magnitudes,
   size_t max_num_filters)
 {
-  // Detect lower frequency bound @20Hz
-  int iFLower =  0;
-  while(frequencies[iFLower] < 20)
-  {
-    iFLower += 1;
-  }
-  iFLower -= 1;
-
-  int iFUpper = frequencies.size();
-  while(frequencies[iFUpper] > 20000)
-  {
-    iFUpper -= 1;
-  }
-  iFUpper += 1;
+  return {};
 }
 
 std::vector<double> FilterApproximation::calculate_frequency_response(
-  std::vector<FilterParameter> filters,
-  std::vector<double> frequencies)
+  const std::vector<FilterParameter>& filters,
+  const std::vector<double>& frequencies)
 {
-  //
+  auto total_filter_response = std::vector<double>(frequencies.size());
+
+  for (const auto& filter : filters) {
+    const auto transfer_function_mag = [filter](auto frequency) {
+      const auto omega = 2 * M_PI * frequency;
+      const auto s = 1i * omega;
+
+      const auto w0 = 2 * M_PI * filter.frequency;
+      const auto Q = filter.q_factor;
+      const auto A = filter.gain;
+
+      const auto s_squared = std::pow(s, 2);
+      const auto w0_squared = std::pow(w0, 2);
+
+      // Transfer function for bell filter:
+      //        s^2 + (A * w0 / Q) s + w0^2
+      // H(s) = ---------------------------
+      //        s^2 +     (w0 / Q) s + w0^2
+
+      const auto H = (s_squared + (A * w0 / Q) * s + w0_squared) /
+                     (s_squared + (w0 / Q) * s + w0_squared);
+      return std::abs(H);
+    };
+
+    // Calculate the response for the current loop iteration:
+    auto single_filter_response = std::vector<double>(frequencies.size());
+    std::transform(frequencies.cbegin(),
+                   frequencies.cend(),
+                   single_filter_response.begin(),
+                   transfer_function_mag);
+
+    // Multiply the response with the total response:
+    std::transform(single_filter_response.cbegin(),
+                   single_filter_response.cend(),
+                   total_filter_response.cbegin(),
+                   total_filter_response.begin(),
+                   std::multiplies<>());
+  }
+
+  return total_filter_response;
 }
 
 template<typename T>
@@ -65,9 +94,10 @@ double FilterApproximation::meanSquaredError(const std::vector<T>& a,
   return std::sqrt(sum);
 }
 
-double FilterApproximation::cost_function(std::vector<double> frequencies,
-                                          std::vector<double> fft_magnitudes,
-                                          std::vector<FilterParameter> filters)
+double FilterApproximation::cost_function(
+  const std::vector<double>& frequencies,
+  const std::vector<double>& fft_magnitudes,
+  const std::vector<FilterParameter>& filters)
 {
   assert(frequencies.size() == fft_magnitudes.size());
 
