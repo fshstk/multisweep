@@ -40,12 +40,12 @@ public:
    * NOTE: `fft_magnitudes` and `frequencies` must have the same size.
    *
    * @return Vector of filter coefficients. The returned vector has size
-   * `num_filters`.
+   * `max_num_filters`.
    */
   static std::vector<FilterParameter> calculate_filters(
     std::vector<double> frequencies,
     std::vector<double> fft_magnitudes,
-    size_t num_filters);
+    size_t max_num_filters = 4);
 
 private:
   /**
@@ -63,8 +63,15 @@ private:
     std::vector<double> frequencies);
 
   /**
-   * @brief Return a measure of how well the given filters match the given FFT.
-   * NOTE: `frequencies` and `fft_magnitudes` must have the same size.
+   * @brief Find the MSE between vectors a & b.
+   */
+  template<typename T>
+  static double meanSquaredError(const std::vector<T>& a,
+                                 const std::vector<T>& b);
+
+  /**
+   * @brief Return a measure of how well the given filters match the given
+   * FFT. NOTE: `frequencies` and `fft_magnitudes` must have the same size.
    */
   static double cost_function(std::vector<double> frequencies,
                               std::vector<double> fft_magnitudes,

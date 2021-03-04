@@ -22,12 +22,14 @@
 
 #include "FilterApproximation.h"
 #include <Util.h>
+#include <cmath>
 #include <nlopt.h>
+#include <numeric>
 
 std::vector<FilterParameter> FilterApproximation::calculate_filters(
   std::vector<double> frequencies,
   std::vector<double> fft_magnitudes,
-  size_t num_filters)
+  size_t max_num_filters)
 {
   //
 }
@@ -39,9 +41,26 @@ std::vector<double> FilterApproximation::calculate_frequency_response(
   //
 }
 
+template<typename T>
+double FilterApproximation::meanSquaredError(const std::vector<T>& a,
+                                             const std::vector<T>& b)
+{
+  assert(a.size() == b.size());
+  const auto squaredError = [](auto x, auto y) { return std::pow(x - y, 2); };
+  const auto sum = std::transform_reduce(
+    a.cbegin(), a.cend(), b.cbegin(), 0.0, std::plus<>(), squaredError);
+  return std::sqrt(sum);
+}
+
 double FilterApproximation::cost_function(std::vector<double> frequencies,
                                           std::vector<double> fft_magnitudes,
                                           std::vector<FilterParameter> filters)
 {
-  //
+  assert(frequencies.size() == fft_magnitudes.size());
+
+  const auto expected_response = fft_magnitudes;
+  const auto calculated_response =
+    calculate_frequency_response(filters, frequencies);
+
+  return meanSquaredError(calculated_response, expected_response);
 }
