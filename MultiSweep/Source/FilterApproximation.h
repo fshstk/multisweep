@@ -45,7 +45,7 @@ public:
   static std::vector<FilterParameter> calculate_filters(
     std::vector<double> frequencies,
     std::vector<double> fft_magnitudes,
-    uint num_filters);
+    size_t num_filters);
 
 private:
   /**
