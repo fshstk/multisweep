@@ -31,6 +31,8 @@
 #include <cassert>
 #include <complex>
 
+using namespace std::complex_literals;
+
 std::vector<FilterParameter> FilterApproximation::calculate_filters(
   const std::vector<double>& frequencies,
   const std::vector<double>& fft_magnitudes,
@@ -89,7 +91,7 @@ std::vector<double> FilterApproximation::calculate_frequency_response(
   auto total_filter_response = std::vector<double>(frequencies.size());
 
   for (const auto& filter : filters) {
-    const auto transfer_function_mag = [filter](auto frequency) {
+    const auto transfer_function_mag = [&filter](auto frequency) {
       const auto omega = 2 * M_PI * frequency;
       const auto s = 1i * omega;
 

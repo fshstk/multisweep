@@ -128,18 +128,32 @@ target_link_libraries(SaveAudioFiles
 # ==============================================================================
 
 add_executable(SweepTest)
-
 target_sources(SweepTest
     PRIVATE
         Test/SweepTest.cpp
         Source/LogSweep.cpp
         Source/fft.cpp
+        Test/FilterParameterTest.cpp
+        Source/FilterApproximation.cpp
 )
-
 target_link_libraries(SweepTest
     PRIVATE
         Catch2::Catch2
         PkgConfig::fftw3
 )
 
-catch_discover_tests(SweepTest)
+add_executable(FilterParameterTest)
+target_sources(FilterParameterTest
+    PRIVATE
+        Test/FilterParameterTest.cpp
+        Source/FilterApproximation.cpp
+)
+target_link_libraries(FilterParameterTest
+    PRIVATE
+        Catch2::Catch2
+)
+
+# Do we need these?
+
+# catch_discover_tests(SweepTest)
+# catch_discover_tests(FilterParameterTest)
