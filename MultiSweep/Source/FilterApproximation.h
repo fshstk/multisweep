@@ -47,7 +47,6 @@ public:
     const std::vector<double>& fft_magnitudes,
     size_t max_num_filters = 4);
 
-private:
   /**
    * @brief Given a set of filter parameters, calculate the resulting
    * frequency response (i.e. the magnitude of the transfer function).
@@ -62,6 +61,7 @@ private:
     const std::vector<FilterParameter>& filters,
     const std::vector<double>& frequencies);
 
+private:
   /**
    * @brief Find the MSE between vectors a & b.
    */
