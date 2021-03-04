@@ -153,7 +153,5 @@ target_link_libraries(FilterParameterTest
         Catch2::Catch2
 )
 
-# Do we need these?
-
-# catch_discover_tests(SweepTest)
-# catch_discover_tests(FilterParameterTest)
+catch_discover_tests(SweepTest)
+catch_discover_tests(FilterParameterTest)
