@@ -44,7 +44,7 @@ std::vector<double> FilterApproximation::calculate_frequency_response(
   auto total_filter_response = std::vector<double>(frequencies.size());
 
   for (const auto& filter : filters) {
-    const auto transfer_function_mag = [filter](auto frequency) {
+    const auto transfer_function_mag = [&filter](auto frequency) {
       const auto omega = 2 * M_PI * frequency;
       const auto s = 1i * omega;
 
