@@ -31,7 +31,7 @@ std::vector<FilterParameter> FilterApproximation::calculate_filters(
   const std::vector<double>& fft_magnitudes,
   size_t max_num_filters)
 {
-  //
+  return {};
 }
 
 std::vector<double> FilterApproximation::calculate_frequency_response(
