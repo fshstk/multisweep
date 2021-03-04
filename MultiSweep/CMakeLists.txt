@@ -44,6 +44,10 @@ add_library(find_peaks SHARED
     Lib/find-peaks/Util.cpp
 )
 
+target_include_directories(find_peaks PUBLIC
+    Lib/find-peaks
+)
+
 juce_generate_juce_header(MultiSweep)
 
 target_sources(MultiSweep
