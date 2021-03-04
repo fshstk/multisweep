@@ -29,6 +29,8 @@
 #include <nlopt.h>
 #include <numeric>
 
+using namespace std::complex_literals;
+
 std::vector<FilterParameter> FilterApproximation::calculate_filters(
   const std::vector<double>& frequencies,
   const std::vector<double>& fft_magnitudes,
