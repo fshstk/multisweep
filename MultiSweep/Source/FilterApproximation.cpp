@@ -21,6 +21,7 @@
  */
 
 #include "FilterApproximation.h"
+#include <Util.h>
 #include <nlopt.h>
 
 std::vector<FilterParameter> FilterApproximation::calculate_filters(

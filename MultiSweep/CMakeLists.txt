@@ -39,6 +39,11 @@ juce_add_plugin(MultiSweep
     MICROPHONE_PERMISSION_TEXT "MultiSweep needs access to your sound devices."
 )
 
+add_library(find_peaks SHARED
+    Lib/find-peaks/Util.h
+    Lib/find-peaks/Util.cpp
+)
+
 juce_generate_juce_header(MultiSweep)
 
 target_sources(MultiSweep
@@ -69,6 +74,7 @@ target_link_libraries(MultiSweep
     PRIVATE
         PkgConfig::fftw3
         NLopt::nlopt
+        find_peaks
         # JUCE modules required for VST3 and Standalone:
         RobotoFont
         juce::juce_audio_plugin_client
