@@ -44,7 +44,7 @@ std::vector<FilterParameter> FilterApproximation::calculate_filters(
   }
   iF_lower -= 1;
 
-  // determine lower frequency bound
+  // determine upper frequency bound
   int iF_upper = frequencies.size();
   while (frequencies[iF_upper] > 20000) {
     iF_upper -= 1;
