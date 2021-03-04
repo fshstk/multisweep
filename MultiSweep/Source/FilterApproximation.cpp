@@ -21,3 +21,26 @@
  */
 
 #include "FilterApproximation.h"
+#include <nlopt.h>
+
+std::vector<FilterParameter> FilterApproximation::calculate_filters(
+  std::vector<double> frequencies,
+  std::vector<double> fft_magnitudes,
+  uint num_filters)
+{
+  //
+}
+
+std::vector<double> FilterApproximation::calculate_frequency_response(
+  std::vector<FilterParameter> filters,
+  std::vector<double> frequencies)
+{
+  //
+}
+
+double FilterApproximation::cost_function(std::vector<double> frequencies,
+                                          std::vector<double> fft_magnitudes,
+                                          std::vector<FilterParameter> filters)
+{
+  //
+}
