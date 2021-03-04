@@ -48,6 +48,7 @@ target_sources(MultiSweep
         Source/PluginProcessor.cpp
         Source/LogSweep.cpp
         Source/fft.cpp
+        Source/FilterApproximation.cpp
         # IEM library:
         ../resources/Standalone/StandaloneApp.cpp
         ../resources/Standalone/IEM_AudioDeviceSelectorComponent.cpp
@@ -67,6 +68,7 @@ target_compile_definitions(MultiSweep
 target_link_libraries(MultiSweep
     PRIVATE
         PkgConfig::fftw3
+        NLopt::nlopt
         # JUCE modules required for VST3 and Standalone:
         RobotoFont
         juce::juce_audio_plugin_client

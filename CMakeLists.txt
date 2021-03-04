@@ -32,6 +32,9 @@ project(IEMPluginSuite
 find_package(JUCE REQUIRED)
 find_package(Catch2 REQUIRED)
 
+find_package(nlopt REQUIRED)
+include_directories(${NLOPT_INCLUDE_DIRS})
+
 include(CTest)
 include(Catch)
 include(FindPkgConfig)
