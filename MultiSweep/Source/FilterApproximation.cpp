@@ -31,7 +31,20 @@ std::vector<FilterParameter> FilterApproximation::calculate_filters(
   std::vector<double> fft_magnitudes,
   size_t max_num_filters)
 {
-  //
+  // Detect lower frequency bound @20Hz
+  int iFLower =  0;
+  while(frequencies[iFLower] < 20)
+  {
+    iFLower += 1;
+  }
+  iFLower -= 1;
+
+  int iFUpper = frequencies.size();
+  while(frequencies[iFUpper] > 20000)
+  {
+    iFUpper -= 1;
+  }
+  iFUpper += 1;
 }
 
 std::vector<double> FilterApproximation::calculate_frequency_response(
