@@ -23,13 +23,12 @@
 #include "FilterApproximation.h"
 #include <Util.h>
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <complex>
 #include <functional>
 #include <nlopt.h>
 #include <numeric>
-#include <cassert>
-#include <complex>
 
 using namespace std::complex_literals;
 
@@ -40,25 +39,24 @@ std::vector<FilterParameter> FilterApproximation::calculate_filters(
 {
   // determine lower frequency bound
   int iF_lower = 0;
-  while(frequencies[iF_lower] < 20)
-  {
+  while (frequencies[iF_lower] < 20) {
     iF_lower += 1;
   }
   iF_lower -= 1;
 
   // determine lower frequency bound
   int iF_upper = frequencies.size();
-  while(frequencies[iF_upper] > 20000)
-  {
+  while (frequencies[iF_upper] > 20000) {
     iF_upper -= 1;
   }
   iF_upper += 1;
 
-  std::vector<double> vF = std::vector<double>(frequencies[iF_lower], frequencies[iF_upper]);
-  std::vector<double> vMag = std::vector<double>(fft_magnitudes[iF_lower], fft_magnitudes[iF_upper]);
+  std::vector<double> vF =
+    std::vector<double>(frequencies[iF_lower], frequencies[iF_upper]);
+  std::vector<double> vMag =
+    std::vector<double>(fft_magnitudes[iF_lower], fft_magnitudes[iF_upper]);
   std::vector<std::complex<double>> vS(vF.size());
-  for(int iS = 0; iS < vF.size(); iS++)
-  {
+  for (int iS = 0; iS < vF.size(); iS++) {
     const std::complex<double> tmp(0, vF[iS] * 2 * M_PI);
     vS.push_back(tmp);
   }
@@ -72,8 +70,7 @@ std::vector<FilterParameter> FilterApproximation::calculate_filters(
   std::vector<double> vAc(num_filters);
   std::vector<double> vQc(num_filters);
   std::vector<double> vB0(3 * num_filters);
-  for(int i = 0; i < vFc.size(); i++)
-  {
+  for (int i = 0; i < vFc.size(); i++) {
     vFc[i] = vF[iPeaks[i]];
     vAc[i] = vMag[iPeaks[i]];
     vQc[i] = 1;
