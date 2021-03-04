@@ -2,6 +2,8 @@ clc
 close all
 clear variables
 
+set(0, 'DefaultLineLineWidth', 2);
+
 %% Approximation of filter parameters
 mData = csvread('sweeptest.csv', 1);
   vF = mData(:, 1);
@@ -16,13 +18,39 @@ bFLims = (vF >= 20) & (vF <= 20e3);
 mTrue = [150, +5, 1; 900, -7, 1; 3e3, +6, 1]; % true filter settings: f, magnitude in dB, bw in oct
 
 % curve fit by polynomial regression
-nFilters = 4; % number of filters, must be defined
+nFiltersMax = 4; % max number of filters
 
-% 1) Detect center frequencies
-iFc = utils.peakfinder(abs(vMagDb));
+% Initial guess
+[iFc, vMagC] = peakfinder(abs(vMagDb));
+nFilters = length(iFc);
+if nFilters > nFiltersMax % select 4 largest peaks
+  [~, perm] = sort(vMagC, 'descend');
+  iFc = sort(iFc(perm(1:4)), 'ascend');
+end
 vFc = vF(iFc);
   vAc = vMagDb(iFc); % amplitude initialization
   vQc = ones(size(vAc)); % quality initialization
+
+figure('Units', 'Centimeters', 'Position', [52, 2, 24, 15]);
+  cLegend = cell(length(vFc) + 3, 1);
+    cLegend{1} = 'Gemessen'; cLegend{2} = 'Initialschätzung';
+  semilogx(vF, vMagDb, 'x');
+  hold on; plot(vFc, vAc, 'o', 'MarkerSize', 30)
+  vHInitial = zeros(size(vMagDb));
+  for iC = 1:length(vFc)
+    [~, vH] = func_peqtf(10^(vAc(iC) / 20), 2 * pi * vFc(iC), sqrt(2) * vQc(iC), 1i * 2 * pi * vF);
+      vHInitial = vHInitial + vH;
+    semilogx(vF, vH, '--');
+    cLegend{iC + 2} = ['Glocke ', num2str(iC)];
+  end
+  cLegend{iC + 3} = 'Initialschätzung';
+  semilogx(vF, vHInitial);
+    text(200, vAc(1), ['f_c=', num2str(vFc(1)), 'Hz, A=', num2str(vAc(1)), 'dB']);
+    text(1100, vAc(2), ['f_c=', num2str(vFc(2)), 'Hz, A=', num2str(vAc(2)), 'dB']);
+    text(4000, vAc(3), ['f_c=', num2str(vFc(3)), 'Hz, A=', num2str(vAc(3)), 'dB']);
+  xlim([20 20e3]), ylim([-7, 7]), grid on;
+  xlabel('Frequenz in Hz'); ylabel('Amplitude in dB');
+  legend(cLegend, 'Location', 'southwest');
 
 % Parameter optimatzion
 vS = 0 + 1i * (2 * pi * vF);
@@ -60,26 +88,24 @@ for iE = 1:size(mTrue, 1)
 end
 vHdB = 20 * log10(abs(prod(mH, 2)));
 
-mEst = zeros(nFilters, 3); % estimation result matrix
-
 sMSE = sum((vMagDb - vHdB).^2) / length(vMagDb);
 
 fprintf(['Convergence after ', num2str(output.iterations), ' iterations |']);
 fprintf([' achieved MSE(H) = ', num2str(sMSE), 'dB\n']);
 
 cLegend = cell(size(mTrue, 1) + 2, 1);
-  cLegend{1} = 'Measurement'; cLegend{2} = ['Estimate (MSE(H) = ', num2str(sMSE), 'dB'];
+  cLegend{1} = 'Gemessen'; cLegend{2} = ['Schätzung (MSE(H) = ', num2str(sMSE), 'dB'];
 figure('Units', 'Centimeters', 'Position', [52, 2, 24, 15]);
   semilogx(vF, vMagDb, 'x', vF, vHdB);
   hold on;
   for iE = 1:size(mTrue, 1)
     semilogx(vF, 20 * log10(abs(mH(:, iE))), '--');
-    cLegend{iE + 2} = ['Bell ', num2str(iE)];
+    cLegend{iE + 2} = ['Glocke ', num2str(iE)];
   end
   hAx = gca;
     set(hAx.Children(end-1), 'LineWidth', 3);
   xlabel('Frequency in Hz'), ylabel('Magnitude in dB'), grid on;
-  legend(cLegend, 'Location', 'Southeast'), xlim([20 20e3]);
+  legend(cLegend, 'Location', 'southwest'), xlim([20 20e3]);
 
 
 %% Functions
