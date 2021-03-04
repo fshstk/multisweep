@@ -43,8 +43,8 @@ public:
    * `max_num_filters`.
    */
   static std::vector<FilterParameter> calculate_filters(
-    std::vector<double> frequencies,
-    std::vector<double> fft_magnitudes,
+    const std::vector<double>& frequencies,
+    const std::vector<double>& fft_magnitudes,
     size_t max_num_filters = 4);
 
 private:
@@ -59,8 +59,8 @@ private:
    * corresponds to the FFT magnitude of the respective bin in `frequencies`.
    */
   static std::vector<double> calculate_frequency_response(
-    std::vector<FilterParameter> filters,
-    std::vector<double> frequencies);
+    const std::vector<FilterParameter>& filters,
+    const std::vector<double>& frequencies);
 
   /**
    * @brief Find the MSE between vectors a & b.
@@ -73,7 +73,7 @@ private:
    * @brief Return a measure of how well the given filters match the given
    * FFT. NOTE: `frequencies` and `fft_magnitudes` must have the same size.
    */
-  static double cost_function(std::vector<double> frequencies,
-                              std::vector<double> fft_magnitudes,
-                              std::vector<FilterParameter> filters);
+  static double cost_function(const std::vector<double>& frequencies,
+                              const std::vector<double>& fft_magnitudes,
+                              const std::vector<FilterParameter>& filters);
 };

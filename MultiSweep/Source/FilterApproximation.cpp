@@ -27,16 +27,16 @@
 #include <numeric>
 
 std::vector<FilterParameter> FilterApproximation::calculate_filters(
-  std::vector<double> frequencies,
-  std::vector<double> fft_magnitudes,
+  const std::vector<double>& frequencies,
+  const std::vector<double>& fft_magnitudes,
   size_t max_num_filters)
 {
   //
 }
 
 std::vector<double> FilterApproximation::calculate_frequency_response(
-  std::vector<FilterParameter> filters,
-  std::vector<double> frequencies)
+  const std::vector<FilterParameter>& filters,
+  const std::vector<double>& frequencies)
 {
   //
 }
@@ -52,9 +52,10 @@ double FilterApproximation::meanSquaredError(const std::vector<T>& a,
   return std::sqrt(sum);
 }
 
-double FilterApproximation::cost_function(std::vector<double> frequencies,
-                                          std::vector<double> fft_magnitudes,
-                                          std::vector<FilterParameter> filters)
+double FilterApproximation::cost_function(
+  const std::vector<double>& frequencies,
+  const std::vector<double>& fft_magnitudes,
+  const std::vector<FilterParameter>& filters)
 {
   assert(frequencies.size() == fft_magnitudes.size());
 
