@@ -48,6 +48,10 @@ public:
     const auto xAxis = dft_log_bins(size_t(graph.getWidth()), 20.0, 20e3);
 
     const auto numPixels = graph.getWidth();
+
+    // TODO: The way this is coded right now means that the frequency response
+    // is re-calculated EVERY TIME the UI is repainted. This is barely
+    // noticeable performance wise but is a disaster and needs to be fixed ASAP.
     const auto& curve = sweep.getFrequencyResponse(uint(numPixels));
 
     auto yAxis = std::vector<float>(size_t(graph.getHeight()));
