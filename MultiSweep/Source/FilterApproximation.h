@@ -26,7 +26,7 @@
 struct FilterParameter
 {
   double frequency;
-  double gain;
+  double gain_db;
   double q_factor;
 };
 

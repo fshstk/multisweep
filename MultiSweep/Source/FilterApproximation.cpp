@@ -85,7 +85,8 @@ std::vector<double> FilterApproximation::calculate_frequency_response(
   const std::vector<FilterParameter>& filters,
   const std::vector<double>& frequencies)
 {
-  auto total_filter_response = std::vector<double>(frequencies.size());
+  // Initialize with 1.0 since we are multiplying later:
+  auto total_filter_response = std::vector<double>(frequencies.size(), 1.0);
 
   for (const auto& filter : filters) {
     const auto transfer_function_mag = [&filter](auto frequency) {
@@ -94,7 +95,7 @@ std::vector<double> FilterApproximation::calculate_frequency_response(
 
       const auto w0 = 2 * M_PI * filter.frequency;
       const auto Q = filter.q_factor;
-      const auto A = filter.gain;
+      const auto A = std::pow(10, filter.gain_db / 20);
 
       const auto s_squared = std::pow(s, 2);
       const auto w0_squared = std::pow(w0, 2);

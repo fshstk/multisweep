@@ -20,9 +20,9 @@ TEST_CASE("Check frequency response calculation")
   REQUIRE(frequencies[110250] == Approx(22049.8));
 
   const auto filters = std::vector<FilterParameter>{
-    FilterParameter{ .frequency = 150, .gain = +5.0, .q_factor = 1.0 },
-    FilterParameter{ .frequency = 900, .gain = -7.0, .q_factor = 1.0 },
-    FilterParameter{ .frequency = 3e3, .gain = +6.0, .q_factor = 1.0 },
+    FilterParameter{ .frequency = 150, .gain_db = +5.0, .q_factor = 1.0 },
+    FilterParameter{ .frequency = 900, .gain_db = -7.0, .q_factor = 1.0 },
+    FilterParameter{ .frequency = 3e3, .gain_db = +6.0, .q_factor = 1.0 },
   };
 
   const auto magnitudes =
