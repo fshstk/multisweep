@@ -18,6 +18,8 @@
 #  along with this software.  If not, see <https://www.gnu.org/licenses/>.
 # ==============================================================================
 
+add_subdirectory(Test)
+
 juce_add_plugin(MultiSweep
     VERSION                                     0.0.1
     PLUGIN_CODE                                 MuSw
@@ -91,67 +93,3 @@ target_link_libraries(MultiSweep
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
-
-# ==============================================================================
-
-juce_add_console_app(SaveAudioFiles
-    NEEDS_CURL                                  FALSE
-    NEEDS_WEB_BROWSER                           FALSE
-)
-
-juce_generate_juce_header(SaveAudioFiles)
-
-target_sources(SaveAudioFiles
-    PRIVATE
-        Test/SaveAudioFiles.cpp
-        Source/LogSweep.cpp
-        Source/fft.cpp
-)
-
-target_compile_definitions(SaveAudioFiles
-    PUBLIC
-        JUCE_WEB_BROWSER=0
-        JUCE_USE_CURL=0
-)
-
-target_link_libraries(SaveAudioFiles
-    PRIVATE
-        PkgConfig::fftw3
-        juce::juce_core
-        juce::juce_audio_formats
-        juce::juce_audio_processors
-    PUBLIC
-        juce::juce_recommended_config_flags
-        juce::juce_recommended_warning_flags
-)
-
-# ==============================================================================
-
-add_executable(SweepTest)
-target_sources(SweepTest
-    PRIVATE
-        Test/SweepTest.cpp
-        Source/LogSweep.cpp
-        Source/fft.cpp
-        Test/FilterParameterTest.cpp
-        Source/FilterApproximation.cpp
-)
-target_link_libraries(SweepTest
-    PRIVATE
-        Catch2::Catch2
-        PkgConfig::fftw3
-)
-
-add_executable(FilterParameterTest)
-target_sources(FilterParameterTest
-    PRIVATE
-        Test/FilterParameterTest.cpp
-        Source/FilterApproximation.cpp
-)
-target_link_libraries(FilterParameterTest
-    PRIVATE
-        Catch2::Catch2
-)
-
-catch_discover_tests(SweepTest)
-catch_discover_tests(FilterParameterTest)
