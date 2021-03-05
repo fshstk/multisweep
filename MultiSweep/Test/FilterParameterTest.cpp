@@ -29,8 +29,6 @@ TEST_CASE("Check frequency response calculation")
     FilterApproximation::calculate_frequency_response(filters, frequencies);
 
   // Taken from sweeptest.csv:
-  REQUIRE(frequenmagnitudescies[0] == Approx(0.0386788));
-  REQUIRE(magnitudes[1] == Approx(0.0389565));
   REQUIRE(magnitudes[79390] == Approx(1.01112));
   REQUIRE(magnitudes[98480] == Approx(1.00539));
   REQUIRE(magnitudes[110250] == Approx(0.4324));
