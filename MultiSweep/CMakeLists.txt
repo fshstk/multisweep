@@ -19,6 +19,7 @@
 # ==============================================================================
 
 add_subdirectory(Test)
+add_subdirectory(Lib)
 
 juce_add_plugin(MultiSweep
     VERSION                                     0.0.1
@@ -39,15 +40,6 @@ juce_add_plugin(MultiSweep
     # Required in Mac OS to receive audio input:
     MICROPHONE_PERMISSION_ENABLED TRUE
     MICROPHONE_PERMISSION_TEXT "MultiSweep needs access to your sound devices."
-)
-
-add_library(find_peaks SHARED
-    Lib/find-peaks/Util.h
-    Lib/find-peaks/Util.cpp
-)
-
-target_include_directories(find_peaks PUBLIC
-    Lib/find-peaks
 )
 
 juce_generate_juce_header(MultiSweep)
