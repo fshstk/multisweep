@@ -76,6 +76,7 @@ target_sources(FilterParameterTest
 target_link_libraries(FilterParameterTest
     PRIVATE
         Catch2::Catch2
+        find_peaks
 )
 
 catch_discover_tests(SweepTest)
