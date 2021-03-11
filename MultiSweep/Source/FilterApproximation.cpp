@@ -136,7 +136,7 @@ double FilterApproximation::meanSquaredError(const std::vector<T>& a,
   const auto squaredError = [](auto x, auto y) { return std::pow(x - y, 2); };
   const auto sum = std::transform_reduce(
     a.cbegin(), a.cend(), b.cbegin(), 0.0, std::plus<>(), squaredError);
-  return std::sqrt(sum);
+  return sum / a.size();
 }
 
 double FilterApproximation::cost_function(
