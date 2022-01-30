@@ -8,8 +8,8 @@ juce_generate_juce_header(SaveAudioFiles)
 target_sources(SaveAudioFiles
     PRIVATE
         SaveAudioFiles.cpp
-        ../Source/LogSweep.cpp
-        ../Source/fft.cpp
+        ../src/LogSweep.cpp
+        ../src/fft.cpp
 )
 
 target_compile_definitions(SaveAudioFiles
@@ -37,8 +37,8 @@ add_executable(FilterParameterTest)
 target_sources(SweepTest
     PRIVATE
         SweepTest.cpp
-        ../Source/LogSweep.cpp
-        ../Source/fft.cpp
+        ../src/LogSweep.cpp
+        ../src/fft.cpp
 )
 
 target_link_libraries(SweepTest
@@ -50,7 +50,7 @@ target_link_libraries(SweepTest
 target_sources(FilterParameterTest
     PRIVATE
         FilterParameterTest.cpp
-        ../Source/FilterApproximation.cpp
+        ../src/FilterApproximation.cpp
 )
 
 target_link_libraries(FilterParameterTest

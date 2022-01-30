@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 
-#include "../Source/FilterApproximation.h"
+#include "../src/FilterApproximation.h"
 #include <catch2/catch.hpp>
 
 TEST_CASE("Check frequency response calculation")

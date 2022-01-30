@@ -1,5 +1,5 @@
-#include "../Source/LogSweep.h"
-#include "../Source/fft.h"
+#include "../src/LogSweep.h"
+#include "../src/fft.h"
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <juce_core/juce_core.h>
 

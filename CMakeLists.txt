@@ -36,8 +36,8 @@ juce_add_plugin(${CMAKE_PROJECT_NAME}
     MICROPHONE_PERMISSION_TEXT "MultiSweep needs access to your sound devices."
 )
 
-add_subdirectory(Test)
-add_subdirectory(Source)
+add_subdirectory(src)
+add_subdirectory(test)
 
 juce_generate_juce_header(${CMAKE_PROJECT_NAME})
 
