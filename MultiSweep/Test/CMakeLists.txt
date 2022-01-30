@@ -40,7 +40,7 @@ target_compile_definitions(SaveAudioFiles
 
 target_link_libraries(SaveAudioFiles
     PRIVATE
-        PkgConfig::fftw3
+        fftw3
         juce::juce_core
         juce::juce_audio_formats
         juce::juce_audio_processors
@@ -64,7 +64,7 @@ target_sources(SweepTest
 target_link_libraries(SweepTest
     PRIVATE
         Catch2::Catch2
-        PkgConfig::fftw3
+        fftw3
 )
 
 target_sources(FilterParameterTest

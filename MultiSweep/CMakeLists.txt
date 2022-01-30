@@ -70,7 +70,7 @@ target_compile_definitions(MultiSweep
 
 target_link_libraries(MultiSweep
     PRIVATE
-        PkgConfig::fftw3
+        fftw3
         NLopt::nlopt
         find_peaks
         # JUCE modules required for VST3 and Standalone:
