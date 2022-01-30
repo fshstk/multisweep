@@ -1,6 +1,6 @@
 add_subdirectory(Test)
 
-juce_add_plugin(MultiSweep
+juce_add_plugin(${CMAKE_PROJECT_NAME}
     PLUGIN_CODE                                 MuSw
     FORMATS                                     AU VST3 Standalone
     DESCRIPTION                                 "Multi-channel room EQ correction tool"
@@ -16,9 +16,9 @@ juce_add_plugin(MultiSweep
     MICROPHONE_PERMISSION_TEXT "MultiSweep needs access to your sound devices."
 )
 
-juce_generate_juce_header(MultiSweep)
+juce_generate_juce_header(${CMAKE_PROJECT_NAME})
 
-target_sources(MultiSweep
+target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
         # Project files:
         Source/PluginEditor.cpp
@@ -32,7 +32,7 @@ target_sources(MultiSweep
         ../resources/OSC/OSCParameterInterface.cpp
 )
 
-target_compile_definitions(MultiSweep
+target_compile_definitions(${CMAKE_PROJECT_NAME}
     PUBLIC
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_DISPLAY_SPLASH_SCREEN=0
@@ -41,7 +41,7 @@ target_compile_definitions(MultiSweep
         JUCE_MODAL_LOOPS_PERMITTED=1
 )
 
-target_link_libraries(MultiSweep
+target_link_libraries(${CMAKE_PROJECT_NAME}
     PRIVATE
         fftw3
         nlopt
