@@ -1,20 +1,15 @@
 add_subdirectory(Test)
 
 juce_add_plugin(MultiSweep
-    VERSION                                     0.0.1
     PLUGIN_CODE                                 MuSw
-    ICON_SMALL                                  ${PROJECT_SOURCE_DIR}/resources/Standalone/IEMPluginSuiteSmall.png
     FORMATS                                     AU VST3 Standalone
     DESCRIPTION                                 "Multi-channel room EQ correction tool"
-    VST3_CATEGORIES                             Generator Analyzer Mono Stereo Spatial Tools
+    COMPANY_NAME                                "Fabian Hummel & David Neussl"
+    PLUGIN_MANUFACTURER_CODE                    FHDN
 
     IS_SYNTH                                    FALSE
     NEEDS_MIDI_INPUT                            FALSE
-    NEEDS_MIDI_OUTPUT                           FALSE
-    IS_MIDI_EFFECT                              FALSE
-    EDITOR_WANTS_KEYBOARD_FOCUS                 FALSE
-    NEEDS_CURL                                  FALSE
-    NEEDS_WEB_BROWSER                           FALSE
+    COPY_PLUGIN_AFTER_BUILD                     TRUE
 
     # Required in Mac OS to receive audio input:
     MICROPHONE_PERMISSION_ENABLED TRUE
@@ -43,8 +38,6 @@ target_compile_definitions(MultiSweep
         JUCE_DISPLAY_SPLASH_SCREEN=0
         JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
         DONT_BUILD_WITH_JACK_SUPPORT=1
-        JUCE_WEB_BROWSER=0
-        JUCE_USE_CURL=0
         JUCE_MODAL_LOOPS_PERMITTED=1
 )
 
