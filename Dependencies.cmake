@@ -31,6 +31,12 @@ include(Catch)
 # NLopt
 ################################################################################
 
+set(NLOPT_PYTHON OFF CACHE INTERNAL "build python bindings")
+set(NLOPT_OCTAVE OFF CACHE INTERNAL "build octave bindings")
+set(NLOPT_MATLAB OFF CACHE INTERNAL "build matlab bindings")
+set(NLOPT_GUILE OFF CACHE INTERNAL "build guile bindings")
+set(NLOPT_SWIG OFF CACHE INTERNAL "use SWIG to build bindings")
+
 FetchContent_Declare(
   NLopt
   GIT_REPOSITORY https://github.com/stevengj/nlopt.git
