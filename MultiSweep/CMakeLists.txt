@@ -19,7 +19,6 @@
 # ==============================================================================
 
 add_subdirectory(Test)
-add_subdirectory(Lib)
 
 juce_add_plugin(MultiSweep
     VERSION                                     0.0.1

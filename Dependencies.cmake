@@ -50,3 +50,16 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(fftw3)
 
 include_directories(${fftw3_SOURCE_DIR}/api)
+
+################################################################################
+# find-peaks
+################################################################################
+
+FetchContent_Declare(
+  find_peaks
+  GIT_REPOSITORY https://github.com/claydergc/find-peaks.git
+  GIT_TAG        4b9c56671e43554a26bbba28ec7420458b3eaaea)
+FetchContent_MakeAvailable(find_peaks)
+
+add_library(find_peaks SHARED ${find_peaks_SOURCE_DIR}/Util.cpp)
+target_include_directories(find_peaks INTERFACE ${find_peaks_SOURCE_DIR})
