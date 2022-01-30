@@ -31,6 +31,8 @@ project(IEMPluginSuite
 
 include(Dependencies.cmake)
 
+enable_testing()
+
 set_directory_properties(PROPERTIES
     JUCE_COMPANY_NAME               "IEM"
     JUCE_COMPANY_WEBSITE            "iem.at"
