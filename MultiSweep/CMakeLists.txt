@@ -24,7 +24,7 @@ juce_add_plugin(MultiSweep
     VERSION                                     0.0.1
     PLUGIN_CODE                                 MuSw
     ICON_SMALL                                  ${PROJECT_SOURCE_DIR}/resources/Standalone/IEMPluginSuiteSmall.png
-    FORMATS                                     VST3 Standalone
+    FORMATS                                     AU VST3 Standalone
     DESCRIPTION                                 "Multi-channel room EQ correction tool"
     VST3_CATEGORIES                             Generator Analyzer Mono Stereo Spatial Tools
 
