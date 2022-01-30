@@ -65,6 +65,7 @@ target_compile_definitions(MultiSweep
         DONT_BUILD_WITH_JACK_SUPPORT=1
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
+        JUCE_MODAL_LOOPS_PERMITTED=1
 )
 
 target_link_libraries(MultiSweep
