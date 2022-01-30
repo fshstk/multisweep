@@ -31,8 +31,13 @@ include(Catch)
 # NLopt
 ################################################################################
 
-find_package(NLopt REQUIRED)
-include_directories(${NLOPT_INCLUDE_DIRS})
+FetchContent_Declare(
+  NLopt
+  GIT_REPOSITORY https://github.com/stevengj/nlopt.git
+  GIT_TAG        v2.7.1)
+FetchContent_MakeAvailable(NLopt)
+
+include_directories(${nlopt_SOURCE_DIR}/src/api)
 
 ################################################################################
 # fftw3

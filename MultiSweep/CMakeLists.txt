@@ -71,7 +71,7 @@ target_compile_definitions(MultiSweep
 target_link_libraries(MultiSweep
     PRIVATE
         fftw3
-        NLopt::nlopt
+        nlopt
         find_peaks
         # JUCE modules required for VST3 and Standalone:
         RobotoFont
