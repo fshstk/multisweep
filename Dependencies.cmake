@@ -58,8 +58,8 @@ include_directories(${fftw3_SOURCE_DIR}/api)
 FetchContent_Declare(
   find_peaks
   GIT_REPOSITORY https://github.com/claydergc/find-peaks.git
-  GIT_TAG        4b9c56671e43554a26bbba28ec7420458b3eaaea)
+  GIT_TAG        e34dd0832596ce7f322e460fe425e0bf68b4db95)
 FetchContent_MakeAvailable(find_peaks)
 
-add_library(find_peaks SHARED ${find_peaks_SOURCE_DIR}/Util.cpp)
+add_library(find_peaks SHARED ${find_peaks_SOURCE_DIR}/PeakFinder.cpp)
 target_include_directories(find_peaks INTERFACE ${find_peaks_SOURCE_DIR})

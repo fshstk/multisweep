@@ -21,7 +21,7 @@
  */
 
 #include "FilterApproximation.h"
-#include <Util.h>
+#include <PeakFinder.h>
 #include <algorithm>
 #include <cassert>
 #include <cmath>
@@ -64,7 +64,7 @@ std::vector<FilterParameter> FilterApproximation::calculate_filters(
   // initial guesses
   std::vector<int> iPeaks;
   std::vector<float> vMagTmp(vMag.begin(), vMag.end());
-  Peaks::findPeaks(vMagTmp, iPeaks);
+  PeakFinder::findPeaks(vMagTmp, iPeaks);
   int num_filters = iPeaks.size();
   std::vector<double> vFc(num_filters);
   std::vector<double> vAc(num_filters);
