@@ -1,4 +1,5 @@
 todo
+.vscode
 
 # Ignore CMake generated files:
 CMakeLists.txt.user
