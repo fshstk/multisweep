@@ -20,7 +20,7 @@ public:
     addAndMakeVisible(singleSweepButton);
     singleSweepButton.setButtonText("Sweep Selected Channel");
     singleSweepButton.onClick = [this] {
-      sweep.startSweep({ .channel = getSelectedChannel() });
+      sweep.startSweep({ .channel = 0 });
     };
 
     addAndMakeVisible(stopButton);
@@ -64,14 +64,6 @@ public:
     exportButton.setBounds(
       thirdButtonRow.removeFromLeft(thirdButtonRow.getWidth() / 2));
     settingsButton.setBounds(thirdButtonRow);
-  }
-
-private:
-  int getSelectedChannel()
-  {
-    const auto value =
-      valueTreeState.getRawParameterValue("outputChannelsSetting")->load();
-    return static_cast<int>(value);
   }
 
 private:
