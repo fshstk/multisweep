@@ -26,3 +26,17 @@ FetchContent_MakeAvailable(Catch2)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
 include(Catch)
+
+################################################################################
+# NLopt
+################################################################################
+
+find_package(NLopt REQUIRED)
+include_directories(${NLOPT_INCLUDE_DIRS})
+
+################################################################################
+# fftw3
+################################################################################
+
+include(FindPkgConfig)
+pkg_check_modules(fftw3 REQUIRED IMPORTED_TARGET fftw3)
