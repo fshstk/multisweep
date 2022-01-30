@@ -1,7 +1,6 @@
-
 target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
-        # Project files:
+        Main.cpp
         PluginEditor.cpp
         PluginProcessor.cpp
         LogSweep.cpp

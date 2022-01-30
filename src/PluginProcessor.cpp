@@ -150,8 +150,3 @@ MultiSweepAudioProcessor::createParameterLayout()
 
   return params;
 }
-
-AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{
-  return new MultiSweepAudioProcessor();
-}
