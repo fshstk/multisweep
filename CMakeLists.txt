@@ -20,8 +20,6 @@ juce_add_binary_data(RobotoFont SOURCES
         resources/lookAndFeel/Roboto-Regular.ttf
 )
 
-add_subdirectory(Test)
-
 juce_add_plugin(${CMAKE_PROJECT_NAME}
     PLUGIN_CODE                                 MuSw
     FORMATS                                     AU VST3 Standalone
@@ -38,16 +36,13 @@ juce_add_plugin(${CMAKE_PROJECT_NAME}
     MICROPHONE_PERMISSION_TEXT "MultiSweep needs access to your sound devices."
 )
 
+add_subdirectory(Test)
+add_subdirectory(Source)
+
 juce_generate_juce_header(${CMAKE_PROJECT_NAME})
 
 target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
-        # Project files:
-        Source/PluginEditor.cpp
-        Source/PluginProcessor.cpp
-        Source/LogSweep.cpp
-        Source/fft.cpp
-        Source/FilterApproximation.cpp
         # IEM library:
         ../resources/Standalone/StandaloneApp.cpp
         ../resources/Standalone/IEM_AudioDeviceSelectorComponent.cpp
