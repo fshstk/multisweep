@@ -29,14 +29,11 @@ project(IEMPluginSuite
     LANGUAGES   C CXX
 )
 
-find_package(JUCE REQUIRED)
-find_package(Catch2 REQUIRED)
+include(Dependencies.cmake)
 
 find_package(NLopt REQUIRED)
 include_directories(${NLOPT_INCLUDE_DIRS})
 
-include(CTest)
-include(Catch)
 include(FindPkgConfig)
 
 pkg_check_modules(fftw3 REQUIRED IMPORTED_TARGET fftw3)
