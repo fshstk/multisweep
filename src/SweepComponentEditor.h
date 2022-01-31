@@ -19,9 +19,7 @@ public:
   {
     addAndMakeVisible(singleSweepButton);
     singleSweepButton.setButtonText("Sweep Selected Channel");
-    singleSweepButton.onClick = [this] {
-      sweep.startSweep({ .channel = 0 });
-    };
+    singleSweepButton.onClick = [this] { sweep.startSweep({ .channel = 0 }); };
 
     addAndMakeVisible(stopButton);
     stopButton.setButtonText("Stop Sweep");
