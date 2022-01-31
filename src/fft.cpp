@@ -153,7 +153,7 @@ std::vector<float> dft_log_bins(size_t num_samples = 1024,
 
 std::vector<float> dft_magnitude_with_log_bins(const std::vector<float>& input,
                                                float sampleRate,
-                                               uint numbins)
+                                               size_t numbins)
 {
   const auto lin_mag = dft_magnitude_db(input);
   const auto lin_bins = dft_lin_bins(sampleRate, lin_mag.size() * 2);
@@ -168,8 +168,8 @@ std::vector<float> dft_magnitude_with_log_bins(const std::vector<float>& input,
   return log_mag;
 }
 
-std::vector<uint> map_log_to_lin_bins(const std::vector<float>& lin_bins,
-                                      const std::vector<float>& log_bins)
+std::vector<size_t> map_log_to_lin_bins(const std::vector<float>& lin_bins,
+                                        const std::vector<float>& log_bins)
 {
   const auto index_of_first_element_greater_than = [&](auto value) {
     return std::distance(
@@ -177,7 +177,7 @@ std::vector<uint> map_log_to_lin_bins(const std::vector<float>& lin_bins,
       std::lower_bound(lin_bins.cbegin(), lin_bins.cend(), value));
   };
 
-  auto indices = std::vector<uint>(log_bins.size());
+  auto indices = std::vector<size_t>(log_bins.size());
   std::transform(log_bins.cbegin(),
                  log_bins.cend(),
                  indices.begin(),

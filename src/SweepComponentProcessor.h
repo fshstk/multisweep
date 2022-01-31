@@ -167,7 +167,7 @@ public:
     return {};
   }
 
-  std::vector<float> getFrequencyResponse(uint numbins)
+  std::vector<float> getFrequencyResponse(size_t numbins)
   {
     jassert(inputBuffer);
     jassert(sweep);

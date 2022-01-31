@@ -30,7 +30,8 @@ public:
     // TODO: The way this is coded right now means that the frequency response
     // is re-calculated EVERY TIME the UI is repainted. This is barely
     // noticeable performance wise but is a disaster and needs to be fixed ASAP.
-    const auto& curve = sweep.getFrequencyResponse(uint(numPixels));
+    const auto& curve =
+      sweep.getFrequencyResponse(static_cast<size_t>(numPixels));
 
     auto yAxis = std::vector<float>(size_t(graph.getHeight()));
     std::iota(yAxis.begin(), yAxis.end(), 0);
@@ -123,7 +124,7 @@ public:
       path.lineTo(x, y);
     };
 
-    for (uint i = 0; i < curve.size(); ++i)
+    for (auto i = 0U; i < curve.size(); ++i)
       drawPoint(xAxis[i], curve[i]);
 
     g.setColour(lookAndFeel.ClSeperator);
