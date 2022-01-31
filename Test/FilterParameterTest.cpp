@@ -1,5 +1,6 @@
 #include "FilterApproximation.h"
 #include <catch2/catch.hpp>
+#include <numeric>
 
 TEST_CASE("Check frequency response calculation")
 {
