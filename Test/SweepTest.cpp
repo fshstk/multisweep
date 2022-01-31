@@ -1,7 +1,5 @@
-#define CATCH_CONFIG_MAIN
-
-#include "../src/LogSweep.h"
-#include "../src/fft.h"
+#include "LogSweep.h"
+#include "fft.h"
 #include <algorithm>
 #include <catch2/catch.hpp>
 #include <cmath>

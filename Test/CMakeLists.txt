@@ -1,63 +1,9 @@
-juce_add_console_app(SaveAudioFiles
-    NEEDS_CURL                                  FALSE
-    NEEDS_WEB_BROWSER                           FALSE
+add_executable(UnitTests TestMain.cpp)
+
+target_sources(UnitTests PRIVATE
+  FilterParameterTest.cpp
+  SweepTest.cpp
 )
 
-juce_generate_juce_header(SaveAudioFiles)
-
-target_sources(SaveAudioFiles
-    PRIVATE
-        SaveAudioFiles.cpp
-        ../src/LogSweep.cpp
-        ../src/fft.cpp
-)
-
-target_compile_definitions(SaveAudioFiles
-    PUBLIC
-        JUCE_WEB_BROWSER=0
-        JUCE_USE_CURL=0
-)
-
-target_link_libraries(SaveAudioFiles
-    PRIVATE
-        fftw3
-        juce::juce_core
-        juce::juce_audio_formats
-        juce::juce_audio_processors
-    PUBLIC
-        juce::juce_recommended_config_flags
-        juce::juce_recommended_warning_flags
-)
-
-# ==============================================================================
-
-add_executable(SweepTest)
-add_executable(FilterParameterTest)
-
-target_sources(SweepTest
-    PRIVATE
-        SweepTest.cpp
-        ../src/LogSweep.cpp
-        ../src/fft.cpp
-)
-
-target_link_libraries(SweepTest
-    PRIVATE
-        Catch2::Catch2
-        fftw3
-)
-
-target_sources(FilterParameterTest
-    PRIVATE
-        FilterParameterTest.cpp
-        ../src/FilterApproximation.cpp
-)
-
-target_link_libraries(FilterParameterTest
-    PRIVATE
-        Catch2::Catch2
-        find_peaks
-)
-
-catch_discover_tests(SweepTest)
-catch_discover_tests(FilterParameterTest)
+target_link_libraries(UnitTests PRIVATE ${CMAKE_PROJECT_NAME} Catch2::Catch2)
+catch_discover_tests(UnitTests)
