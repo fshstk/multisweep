@@ -23,7 +23,7 @@
 
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
-#include "BinaryData.h"
+#include <RobotoFont.h>
 using namespace juce;
 
 class LaF : public LookAndFeel_V4
@@ -51,10 +51,10 @@ public:
 
     LaF()
     {
-        robotoLight = Typeface::createSystemTypefaceFor(BinaryData::RobotoLight_ttf, BinaryData::RobotoLight_ttfSize); //TODO: free this data
-        robotoMedium = Typeface::createSystemTypefaceFor(BinaryData::RobotoMedium_ttf, BinaryData::RobotoMedium_ttfSize);
-        robotoBold = Typeface::createSystemTypefaceFor(BinaryData::RobotoBold_ttf, BinaryData::RobotoBold_ttfSize);
-        robotoRegular = Typeface::createSystemTypefaceFor(BinaryData::RobotoRegular_ttf, BinaryData::RobotoRegular_ttfSize); //
+        robotoLight = Typeface::createSystemTypefaceFor(Roboto::RobotoLight_ttf, Roboto::RobotoLight_ttfSize); //TODO: free this data
+        robotoMedium = Typeface::createSystemTypefaceFor(Roboto::RobotoMedium_ttf, Roboto::RobotoMedium_ttfSize);
+        robotoBold = Typeface::createSystemTypefaceFor(Roboto::RobotoBold_ttf, Roboto::RobotoBold_ttfSize);
+        robotoRegular = Typeface::createSystemTypefaceFor(Roboto::RobotoRegular_ttf, Roboto::RobotoRegular_ttfSize); //
 
         setColour (Slider::rotarySliderFillColourId, Colours::black);
         setColour (Slider::thumbColourId, Colour (0xCCFFFFFF));
