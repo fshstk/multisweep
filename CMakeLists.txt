@@ -12,8 +12,6 @@ include(Dependencies.cmake)
 
 enable_testing()
 
-include_directories(resources)
-
 add_subdirectory(font)
 
 juce_add_plugin(${CMAKE_PROJECT_NAME}
