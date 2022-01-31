@@ -54,14 +54,11 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         fftw3
         nlopt
         find_peaks
-        # JUCE modules required for VST3 and Standalone:
+
         RobotoFont
-        juce::juce_audio_plugin_client
-        juce::juce_osc
-        # JUCE modules required for Standalone only:
-        juce::juce_audio_devices
+
         juce::juce_audio_utils
-    PUBLIC
+
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
