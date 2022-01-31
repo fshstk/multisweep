@@ -33,8 +33,6 @@ juce_add_plugin(${CMAKE_PROJECT_NAME}
 add_subdirectory(src)
 add_subdirectory(test)
 
-juce_generate_juce_header(${CMAKE_PROJECT_NAME})
-
 target_compile_definitions(${CMAKE_PROJECT_NAME}
     PUBLIC
         JUCE_VST3_CAN_REPLACE_VST2=0
