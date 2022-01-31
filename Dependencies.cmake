@@ -67,5 +67,5 @@ FetchContent_Declare(
   GIT_TAG        e34dd0832596ce7f322e460fe425e0bf68b4db95)
 FetchContent_MakeAvailable(find_peaks)
 
-add_library(find_peaks SHARED ${find_peaks_SOURCE_DIR}/PeakFinder.cpp)
+add_library(find_peaks STATIC ${find_peaks_SOURCE_DIR}/PeakFinder.cpp)
 target_include_directories(find_peaks INTERFACE ${find_peaks_SOURCE_DIR})
