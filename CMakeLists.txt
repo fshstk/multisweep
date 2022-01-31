@@ -42,20 +42,10 @@ add_subdirectory(test)
 
 juce_generate_juce_header(${CMAKE_PROJECT_NAME})
 
-target_sources(${CMAKE_PROJECT_NAME}
-    PRIVATE
-        # IEM library:
-        ../resources/Standalone/StandaloneApp.cpp
-        ../resources/Standalone/IEM_AudioDeviceSelectorComponent.cpp
-        ../resources/OSC/OSCParameterInterface.cpp
-)
-
 target_compile_definitions(${CMAKE_PROJECT_NAME}
     PUBLIC
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_DISPLAY_SPLASH_SCREEN=0
-        JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
-        DONT_BUILD_WITH_JACK_SUPPORT=1
         JUCE_MODAL_LOOPS_PERMITTED=1
 )
 
