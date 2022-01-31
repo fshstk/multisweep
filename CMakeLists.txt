@@ -14,12 +14,7 @@ enable_testing()
 
 include_directories(resources)
 
-juce_add_binary_data(RobotoFont SOURCES
-        resources/lookAndFeel/Roboto-Bold.ttf
-        resources/lookAndFeel/Roboto-Light.ttf
-        resources/lookAndFeel/Roboto-Medium.ttf
-        resources/lookAndFeel/Roboto-Regular.ttf
-)
+add_subdirectory(font)
 
 juce_add_plugin(${CMAKE_PROJECT_NAME}
     PLUGIN_CODE                                 MuSw
