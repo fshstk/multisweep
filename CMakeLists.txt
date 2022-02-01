@@ -34,10 +34,12 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC
   _USE_MATH_DEFINES
 )
 
+add_subdirectory(iem)
+
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC
   juce::juce_audio_utils
 
-  RobotoFont
+  iem
 
   fftw3
   nlopt
@@ -48,6 +50,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC
   juce::juce_recommended_warning_flags
 )
 
-add_subdirectory(font)
 add_subdirectory(src)
 add_subdirectory(test)

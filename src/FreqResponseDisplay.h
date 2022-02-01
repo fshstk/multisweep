@@ -1,6 +1,6 @@
 #pragma once
-#include "IEM_LaF.h"
 #include "SweepComponentProcessor.h"
+#include <IEM_LaF.h>
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_audio_utils/juce_audio_utils.h>
 
