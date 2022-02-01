@@ -23,6 +23,7 @@
 #include "IEM_LaF.h"
 
 using namespace juce;
+using namespace iem;
 
 LaF::LaF()
 {

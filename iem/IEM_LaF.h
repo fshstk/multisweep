@@ -24,6 +24,8 @@
 #include <RobotoFont.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
+namespace iem {
+
 class LaF : public juce::LookAndFeel_V4
 {
 public:
@@ -225,3 +227,5 @@ public:
                                 const juce::Path& path,
                                 juce::Image& cachedImage) override;
 };
+
+} // namespace iem

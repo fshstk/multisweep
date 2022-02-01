@@ -149,7 +149,7 @@ private:
   void changeListenerCallback(juce::ChangeBroadcaster*) override { repaint(); }
 
 private:
-  LaF lookAndFeel;
+  iem::LaF lookAndFeel;
   SweepComponentProcessor& sweep;
   std::vector<float> sweepResponse;
 

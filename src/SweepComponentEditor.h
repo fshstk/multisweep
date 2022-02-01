@@ -66,7 +66,7 @@ public:
 
 private:
   juce::AudioProcessorValueTreeState& valueTreeState;
-  LaF lookAndFeel;
+  iem::LaF lookAndFeel;
 
   SweepComponentProcessor& sweep;
 
