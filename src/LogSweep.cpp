@@ -2,7 +2,7 @@
 #include "FFT.h"
 #include <algorithm>
 
-LogSweep::LogSweep(Frequency _fs, Duration _duration, FreqRange _range)
+LogSweep::LogSweep(double _fs, double _duration, FreqRange _range)
   : ImpulseResponse(_fs, _duration, _range)
 {
   k = std::pow(range.upper / range.lower, 1 / duration);

@@ -5,8 +5,8 @@
 class LogSweep : public ImpulseResponse
 {
 public:
-  explicit LogSweep(Frequency _fs,
-                    Duration _duration,
+  explicit LogSweep(double _fs,
+                    double _duration,
                     FreqRange _range = { 20, 20e3 });
   virtual ~LogSweep() override = default;
 

@@ -45,8 +45,7 @@ TEST_CASE("Check LogSweep with a generated test system", "[sweeptest]")
 {
   // Set all parameters and generate forward sweep:
   float fs = 44100;
-  const auto sweepObject =
-    LogSweep(Frequency{ fs }, Duration{ 2.5 }, FreqRange{ 1, fs / 2 });
+  const auto sweepObject = LogSweep(fs, 2.5, FreqRange{ 1, fs / 2 });
   const auto sweep = sweepObject.generateSignal();
 
   // Simulate an LTI system using a generated IR with arbitrary samples:

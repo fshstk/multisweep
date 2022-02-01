@@ -4,24 +4,20 @@
 #include <cmath>
 #include <vector>
 
-// TODO: these should be converted to strong types at some point:
-typedef double Frequency;
-typedef double Duration;
-
 struct FreqRange
 {
   FreqRange(double a, double b)
     : lower(a < b ? a : b)
     , upper(a < b ? b : a)
   {}
-  Frequency lower;
-  Frequency upper;
+  double lower;
+  double upper;
 };
 
 class ImpulseResponse
 {
 public:
-  explicit ImpulseResponse(Frequency _fs, Duration _duration, FreqRange _range)
+  explicit ImpulseResponse(double _fs, double _duration, FreqRange _range)
     : fs(_fs)
     , duration(_duration)
     , range(_range)
@@ -41,8 +37,8 @@ protected:
   inline double t(size_t i) const { return i / fs; }
 
 protected:
-  const Frequency fs;
-  const Duration duration;
+  const double fs;
+  const double duration;
   const FreqRange range;
   const size_t numSamples;
 };

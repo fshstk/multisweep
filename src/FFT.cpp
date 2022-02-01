@@ -6,12 +6,12 @@
 #include <iterator>
 #include <numeric>
 
-ComplexVector dft(RealVector input)
+std::vector<std::complex<double>> dft(std::vector<double> input)
 {
   // To avoid confusion when calculating the inverse dft, dft() needs an input
   // of even length:
   input.resize(input.size() + input.size() % 2, 0);
-  ComplexVector output(input.size() / 2 + 1);
+  std::vector<std::complex<double>> output(input.size() / 2 + 1);
 
   // NOTE: if FFTW_ESTIMATE is not specified, this will overwrite the contents
   // of the input/output buffers!
@@ -26,11 +26,11 @@ ComplexVector dft(RealVector input)
   return output;
 }
 
-RealVector idft(ComplexVector input)
+std::vector<double> idft(std::vector<std::complex<double>> input)
 {
   // NOTE: This works as long as we ensure that the original real-valued signal
   // was even:
-  RealVector output((input.size() - 1) * 2);
+  std::vector<double> output((input.size() - 1) * 2);
 
   // NOTE: if FFTW_ESTIMATE is not specified, this will overwrite the contents
   // of the input/output buffers!
@@ -43,14 +43,13 @@ RealVector idft(ComplexVector input)
   fftw_destroy_plan(plan);
 
   // FFTW doesn't normalise the IFFT by itself, so we have to do it manually:
-  std::for_each(output.begin(), output.end(), [output](RealType& n) {
-    n /= output.size();
-  });
+  std::for_each(
+    output.begin(), output.end(), [output](double& n) { n /= output.size(); });
 
   return output;
 }
 
-RealVector convolve(RealVector a, RealVector b)
+std::vector<double> convolve(std::vector<double> a, std::vector<double> b)
 {
   auto outputSize = a.size() + b.size() - 1;
   // Make sure outputSize is even:
@@ -62,7 +61,7 @@ RealVector convolve(RealVector a, RealVector b)
   const auto a_dft = dft(a);
   const auto b_dft = dft(b);
   assert(a_dft.size() == b_dft.size());
-  auto convolution = ComplexVector(a_dft.size());
+  auto convolution = std::vector<std::complex<double>>(a_dft.size());
 
   // Element-wise multiplication of a_dft & b_dft:
   std::transform(a_dft.cbegin(),
@@ -100,10 +99,10 @@ std::vector<float> dft_lin_bins(float fs, size_t numSamples)
   return bins;
 }
 
-RealVector dft_magnitude(RealVector input)
+std::vector<double> dft_magnitude(std::vector<double> input)
 {
   const auto spectrum = dft(input);
-  RealVector output(spectrum.size());
+  std::vector<double> output(spectrum.size());
   const auto magnitude = [](auto x) { return std::abs(x); };
   std::transform(spectrum.cbegin(), spectrum.cend(), output.begin(), magnitude);
   return output;
@@ -124,10 +123,10 @@ std::vector<float> dft_magnitude_db(std::vector<float> input)
   return mag;
 }
 
-RealVector dft_phase(RealVector input)
+std::vector<double> dft_phase(std::vector<double> input)
 {
   const auto spectrum = dft(input);
-  RealVector output(spectrum.size());
+  std::vector<double> output(spectrum.size());
   const auto phase = [](auto x) { return std::arg(x); };
   std::transform(spectrum.cbegin(), spectrum.cend(), output.begin(), phase);
   return output;
