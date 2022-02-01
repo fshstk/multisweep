@@ -1,6 +1,6 @@
 #pragma once
 #include "LogSweep.h"
-#include "fft.h"
+#include "FFT.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 
 struct SweepComponentMetadata

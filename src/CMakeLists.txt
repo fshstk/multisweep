@@ -3,7 +3,7 @@ target_sources(${CMAKE_PROJECT_NAME} PUBLIC
   PluginEditor.cpp
   PluginProcessor.cpp
   LogSweep.cpp
-  fft.cpp
+  FFT.cpp
   FilterApproximation.cpp
 )
 

@@ -1,5 +1,5 @@
 #include "LogSweep.h"
-#include "fft.h"
+#include "FFT.h"
 #include <algorithm>
 #include <catch2/catch.hpp>
 #include <cmath>

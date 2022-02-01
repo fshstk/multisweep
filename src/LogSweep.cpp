@@ -1,5 +1,5 @@
 #include "LogSweep.h"
-#include "fft.h"
+#include "FFT.h"
 #include <algorithm>
 
 LogSweep::LogSweep(Frequency _fs, Duration _duration, FreqRange _range)
