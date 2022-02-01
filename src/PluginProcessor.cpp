@@ -5,7 +5,7 @@
 namespace {
 juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
 {
-  std::vector<std::unique_ptr<RangedAudioParameter>> params;
+  std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
   return { params.begin(), params.end() };
 }
 }
@@ -25,10 +25,10 @@ void MultiSweepAudioProcessor::releaseResources()
   sweep.releaseResources();
 }
 
-void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
-                                            MidiBuffer& midi)
+void MultiSweepAudioProcessor::processBlock(juce::AudioSampleBuffer& buffer,
+                                            juce::MidiBuffer& midi)
 {
-  ScopedNoDenormals noDenormals;
+  juce::ScopedNoDenormals noDenormals;
 
   const int totalNumInputChannels = getTotalNumInputChannels();
   const int totalNumOutputChannels = getTotalNumOutputChannels();
@@ -39,7 +39,7 @@ void MultiSweepAudioProcessor::processBlock(AudioSampleBuffer& buffer,
   sweep.processBlock(buffer, midi);
 }
 
-AudioProcessorEditor* MultiSweepAudioProcessor::createEditor()
+juce::AudioProcessorEditor* MultiSweepAudioProcessor::createEditor()
 {
   return new MultiSweepAudioProcessorEditor(*this, parameters);
 }

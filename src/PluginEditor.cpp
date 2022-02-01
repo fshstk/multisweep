@@ -3,7 +3,7 @@
 
 MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   MultiSweepAudioProcessor& p,
-  AudioProcessorValueTreeState& vts)
+  juce::AudioProcessorValueTreeState& vts)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
   , valueTreeState(vts)
@@ -13,7 +13,7 @@ MultiSweepAudioProcessorEditor::MultiSweepAudioProcessorEditor(
   addAndMakeVisible(sweepEditor);
 }
 
-void MultiSweepAudioProcessorEditor::paint(Graphics&)
+void MultiSweepAudioProcessorEditor::paint(juce::Graphics&)
 {
 }
 

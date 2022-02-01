@@ -3,24 +3,24 @@
 #include "SweepComponentEditor.h"
 
 class MultiSweepAudioProcessorEditor
-  : public AudioProcessorEditor
+  : public juce::AudioProcessorEditor
 {
 public:
   MultiSweepAudioProcessorEditor(MultiSweepAudioProcessor&,
-                                 AudioProcessorValueTreeState&);
+                                 juce::AudioProcessorValueTreeState&);
 
-  void paint(Graphics&) override;
+  void paint(juce::Graphics&) override;
   void resized() override;
 
 private:
-  void drawHeaderFooter(Rectangle<int>& canvas);
+  void drawHeaderFooter(juce::Rectangle<int>& canvas);
 
 private:
   static constexpr int editorWindowHeight = 600;
   static constexpr int editorWindowWidth = 800;
 
   MultiSweepAudioProcessor& audioProcessor;
-  AudioProcessorValueTreeState& valueTreeState;
+  juce::AudioProcessorValueTreeState& valueTreeState;
 
   SweepComponentEditor sweepEditor;
 

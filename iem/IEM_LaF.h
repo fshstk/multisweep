@@ -23,77 +23,76 @@
 #pragma once
 #include <RobotoFont.h>
 #include <juce_gui_basics/juce_gui_basics.h>
-using namespace juce;
 
-class LaF : public LookAndFeel_V4
+class LaF : public juce::LookAndFeel_V4
 {
 public:
-  const Colour ClBackground = Colour(0xFF2D2D2D);
-  const Colour ClFace = Colour(0xFFD8D8D8);
-  const Colour ClFaceShadow = Colour(0XFF272727);
-  const Colour ClFaceShadowOutline = Colour(0xFF212121);
-  const Colour ClFaceShadowOutlineActive = Colour(0xFF7C7C7C);
-  const Colour ClRotSliderArrow = Colour(0xFF4A4A4A);
-  const Colour ClRotSliderArrowShadow = Colour(0x445D5D5D);
-  const Colour ClSliderFace = Colour(0xFF191919);
-  const Colour ClText = Colour(0xFFFFFFFF);
-  const Colour ClTextTextboxbg = Colour(0xFF000000);
-  const Colour ClSeperator = Colour(0xFF979797);
-  const Colour ClWidgetColours[4] = { Colour(0xFF00CAFF),
-                                      Colour(0xFF4FFF00),
-                                      Colour(0xFFFF9F00),
-                                      Colour(0xFFD0011B) };
+  const juce::Colour ClBackground = juce::Colour(0xFF2D2D2D);
+  const juce::Colour ClFace = juce::Colour(0xFFD8D8D8);
+  const juce::Colour ClFaceShadow = juce::Colour(0xFF272727);
+  const juce::Colour ClFaceShadowOutline = juce::Colour(0xFF212121);
+  const juce::Colour ClFaceShadowOutlineActive = juce::Colour(0xFF7C7C7C);
+  const juce::Colour ClRotSliderArrow = juce::Colour(0xFF4A4A4A);
+  const juce::Colour ClRotSliderArrowShadow = juce::Colour(0x445D5D5D);
+  const juce::Colour ClSliderFace = juce::Colour(0xFF191919);
+  const juce::Colour ClText = juce::Colour(0xFFFFFFFF);
+  const juce::Colour ClTextTextboxbg = juce::Colour(0xFF000000);
+  const juce::Colour ClSeperator = juce::Colour(0xFF979797);
+  const juce::Colour ClWidgetColours[4] = { juce::Colour(0xFF00CAFF),
+                                            juce::Colour(0xFF4FFF00),
+                                            juce::Colour(0xFFFF9F00),
+                                            juce::Colour(0xFFD0011B) };
 
-  Typeface::Ptr robotoLight, robotoRegular, robotoMedium, robotoBold;
+  juce::Typeface::Ptr robotoLight, robotoRegular, robotoMedium, robotoBold;
 
   float sliderBarSize = 8.0f;
 
   LaF();
 
-  Typeface::Ptr getTypefaceForFont(const Font& f) override;
+  juce::Typeface::Ptr getTypefaceForFont(const juce::Font& f) override;
 
-  Font getLabelFont(Label& label) override;
+  juce::Font getLabelFont(juce::Label& label) override;
 
-  Font getPopupMenuFont() override;
+  juce::Font getPopupMenuFont() override;
 
-  Font getTextButtonFont(TextButton& button, int height) override;
+  juce::Font getTextButtonFont(juce::TextButton& button, int height) override;
 
-  Font getAlertWindowMessageFont() override;
+  juce::Font getAlertWindowMessageFont() override;
 
-  Slider::SliderLayout getSliderLayout(Slider& slider) override;
+  juce::Slider::SliderLayout getSliderLayout(juce::Slider& slider) override;
 
-  void drawLabel(Graphics& g, Label& label) override;
+  void drawLabel(juce::Graphics& g, juce::Label& label) override;
 
-  void drawCornerResizer(Graphics& g,
+  void drawCornerResizer(juce::Graphics& g,
                          int w,
                          int h,
                          bool isMouseOver,
                          bool isMouseDragging) override;
 
-  void fillTextEditorBackground(Graphics& g,
+  void fillTextEditorBackground(juce::Graphics& g,
                                 int width,
                                 int height,
-                                TextEditor& textEditor) override;
+                                juce::TextEditor& textEditor) override;
 
-  void drawTextEditorOutline(Graphics& g,
+  void drawTextEditorOutline(juce::Graphics& g,
                              int width,
                              int height,
-                             TextEditor& textEditor) override;
+                             juce::TextEditor& textEditor) override;
 
-  void drawTableHeaderBackground(Graphics& g,
-                                 TableHeaderComponent& header) override;
+  void drawTableHeaderBackground(juce::Graphics& g,
+                                 juce::TableHeaderComponent& header) override;
 
-  void drawTableHeaderColumn(Graphics& g,
-                             TableHeaderComponent& header,
-                             const String& columnName,
-                             int /*columnId*/,
+  void drawTableHeaderColumn(juce::Graphics& g,
+                             juce::TableHeaderComponent& header,
+                             const juce::String& columnName,
+                             int columnId,
                              int width,
                              int height,
                              bool isMouseOver,
                              bool isMouseDown,
                              int columnFlags) override;
 
-  void drawLinearSlider(Graphics& g,
+  void drawLinearSlider(juce::Graphics& g,
                         int x,
                         int y,
                         int width,
@@ -101,10 +100,10 @@ public:
                         float sliderPos,
                         float minSliderPos,
                         float maxSliderPos,
-                        const Slider::SliderStyle style,
-                        Slider& slider) override;
+                        const juce::Slider::SliderStyle style,
+                        juce::Slider& slider) override;
 
-  void drawLinearSliderBackground(Graphics& g,
+  void drawLinearSliderBackground(juce::Graphics& g,
                                   int x,
                                   int y,
                                   int width,
@@ -112,10 +111,10 @@ public:
                                   float sliderPos,
                                   float minSliderPos,
                                   float maxSliderPos,
-                                  const Slider::SliderStyle style,
-                                  Slider& slider) override;
+                                  const juce::Slider::SliderStyle style,
+                                  juce::Slider& slider) override;
 
-  void drawRotarySlider(Graphics& g,
+  void drawRotarySlider(juce::Graphics& g,
                         int x,
                         int y,
                         int width,
@@ -123,9 +122,9 @@ public:
                         float sliderPos,
                         float rotaryStartAngle,
                         float rotaryEndAngle,
-                        Slider& slider) override;
+                        juce::Slider& slider) override;
 
-  void drawRotarySliderDual(Graphics& g,
+  void drawRotarySliderDual(juce::Graphics& g,
                             int x,
                             int y,
                             int width,
@@ -133,10 +132,10 @@ public:
                             float sliderPos,
                             float rotaryStartAngle,
                             float rotaryEndAngle,
-                            Slider& slider,
+                            juce::Slider& slider,
                             bool isDual);
 
-  void drawLinearSliderThumb(Graphics& g,
+  void drawLinearSliderThumb(juce::Graphics& g,
                              int x,
                              int y,
                              int width,
@@ -144,36 +143,37 @@ public:
                              float sliderPos,
                              float minSliderPos,
                              float maxSliderPos,
-                             const Slider::SliderStyle style,
-                             Slider& slider) override;
+                             const juce::Slider::SliderStyle style,
+                             juce::Slider& slider) override;
 
-  void drawRoundThumb(Graphics& g,
+  void drawRoundThumb(juce::Graphics& g,
                       const float centreX,
                       const float centreY,
                       const float diameter,
-                      const Colour& colour,
+                      const juce::Colour& colour,
                       float outlineThickness);
 
-  Button* createSliderButton(Slider&, const bool isIncrement) override;
+  juce::Button* createSliderButton(juce::Slider&,
+                                   const bool isIncrement) override;
 
-  void drawButtonBackground(Graphics& g,
-                            Button& button,
-                            const Colour& backgroundColour,
+  void drawButtonBackground(juce::Graphics& g,
+                            juce::Button& button,
+                            const juce::Colour& backgroundColour,
                             bool isMouseOverButton,
                             bool isButtonDown) override;
 
-  void drawButtonText(Graphics& g,
-                      TextButton& button,
+  void drawButtonText(juce::Graphics& g,
+                      juce::TextButton& button,
                       bool isMouseOverButton,
                       bool isButtonDown) override;
 
-  void drawToggleButton(Graphics& g,
-                        ToggleButton& button,
+  void drawToggleButton(juce::Graphics& g,
+                        juce::ToggleButton& button,
                         bool isMouseOverButton,
                         bool isButtonDown) override;
 
-  void drawTickBox(Graphics& g,
-                   Component& component,
+  void drawTickBox(juce::Graphics& g,
+                   juce::Component& component,
                    float x,
                    float y,
                    float w,
@@ -183,18 +183,18 @@ public:
                    bool isMouseOverButton,
                    bool isButtonDown) override;
 
-  Path getTickShape(const float height) override;
+  juce::Path getTickShape(const float height) override;
 
-  void drawGroupComponentOutline(Graphics& g,
+  void drawGroupComponentOutline(juce::Graphics& g,
                                  int width,
                                  int height,
-                                 const String& text,
-                                 const Justification& position,
-                                 GroupComponent& group) override;
+                                 const juce::String& text,
+                                 const juce::Justification& position,
+                                 juce::GroupComponent& group) override;
 
-  void positionComboBoxText(ComboBox& box, Label& label) override;
+  void positionComboBoxText(juce::ComboBox& box, juce::Label& label) override;
 
-  void drawComboBox(Graphics& g,
+  void drawComboBox(juce::Graphics& g,
                     int width,
                     int height,
                     bool isButtonDown,
@@ -202,26 +202,26 @@ public:
                     int buttonY,
                     int buttonW,
                     int buttonH,
-                    ComboBox& box) override;
+                    juce::ComboBox& box) override;
 
-  void drawPopupMenuSectionHeader(Graphics& g,
-                                  const Rectangle<int>& area,
-                                  const String& sectionName) override;
+  void drawPopupMenuSectionHeader(juce::Graphics& g,
+                                  const juce::Rectangle<int>& area,
+                                  const juce::String& sectionName) override;
 
-  void drawPopupMenuItem(Graphics& g,
-                         const Rectangle<int>& area,
+  void drawPopupMenuItem(juce::Graphics& g,
+                         const juce::Rectangle<int>& area,
                          const bool isSeparator,
                          const bool isActive,
                          const bool isHighlighted,
                          const bool isTicked,
                          const bool hasSubMenu,
-                         const String& text,
-                         const String& shortcutKeyText,
-                         const Drawable* icon,
-                         const Colour* const textColourToUse) override;
+                         const juce::String& text,
+                         const juce::String& shortcutKeyText,
+                         const juce::Drawable* icon,
+                         const juce::Colour* const textColourToUse) override;
 
-  void drawCallOutBoxBackground(CallOutBox& box,
-                                Graphics& g,
-                                const Path& path,
-                                Image& cachedImage) override;
+  void drawCallOutBoxBackground(juce::CallOutBox& box,
+                                juce::Graphics& g,
+                                const juce::Path& path,
+                                juce::Image& cachedImage) override;
 };
