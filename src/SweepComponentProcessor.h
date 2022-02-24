@@ -1,6 +1,6 @@
 #pragma once
-#include "LogSweep.h"
 #include "FFT.h"
+#include "LogSweep.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 
 struct SweepComponentMetadata
@@ -92,7 +92,7 @@ public:
     outputBufferIndex = 0;
 
     sweep.reset(new LogSweep(
-      fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq }));
+      { fs, metadata.duration, { metadata.lowerFreq, metadata.upperFreq } }));
     auto sweepBuffer = makeBufferFromVector(sweep->generateSignal());
     audioSource.reset(new juce::MemoryAudioSource(sweepBuffer, true));
 
@@ -225,7 +225,7 @@ private:
   std::unique_ptr<juce::ChannelRemappingAudioSource> outputChannelMapper;
 
   std::unique_ptr<juce::AudioSampleBuffer> inputBuffer;
-  std::unique_ptr<ImpulseResponse> sweep;
+  std::unique_ptr<LogSweep> sweep;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SweepComponentProcessor)
 };

@@ -1,23 +1,33 @@
 #pragma once
+#include <cassert>
+#include <utility>
+#include <vector>
 
-#include "ImpulseResponse.h"
+struct SweepSpec
+{
+  const double sampleRate{ 44.1e3 };
+  const double duration;
+  const std::pair<double, double> freqRange{ 20, 20e3 };
 
-class LogSweep : public ImpulseResponse
+  bool valid() const
+  {
+    return (freqRange.first > 0) && (duration > 0) &&
+           (freqRange.first < freqRange.second) &&
+           (freqRange.second <= .5 * sampleRate);
+  }
+};
+
+class LogSweep
 {
 public:
-  explicit LogSweep(double _fs,
-                    double _duration,
-                    FreqRange _range = { 20, 20e3 });
-  virtual ~LogSweep() override = default;
+  LogSweep(SweepSpec spec);
 
-  std::vector<float> generateSignal() const override;
-  std::vector<float> generateInverse() const;
-  std::vector<float> computeIR(
-    const std::vector<float>& signalResponse) const override;
+  std::vector<float> generateSignal() const;
+  std::vector<float> computeIR(const std::vector<float>& signalResponse) const;
 
 private:
-  double k;
-  static constexpr auto pi = M_PI;
-  std::vector<float> mutable sweep;
-  std::vector<float> mutable invSweep;
+  std::vector<float> generateInverse() const;
+
+private:
+  const SweepSpec spec_;
 };
