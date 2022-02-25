@@ -38,6 +38,7 @@ std::vector<float> LogSweep::generateSignal() const
   const auto k = compute_k(spec_);
 
   std::vector<float> sweep;
+  sweep.reserve(num_samples(spec_));
   for (const auto t : time_vector(spec_))
     sweep.emplace_back(std::sin(2 * M_PI * spec_.freqRange.first *
                                 (std::pow(k, t) - 1) / std::log(k)));
