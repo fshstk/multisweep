@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <numeric>
 
+using Sample = LogSweep::Sample;
+
 namespace {
 
 auto num_samples(const SweepSpec& spec)
@@ -18,7 +20,7 @@ auto compute_k(const SweepSpec& spec)
 
 auto time_vector(const SweepSpec& spec)
 {
-  std::vector<float> t(num_samples(spec));
+  std::vector<Sample> t(num_samples(spec));
   std::generate(std::begin(t),
                 std::end(t),
                 [fs = spec.sampleRate, i = 0]() mutable { return i++ / fs; });
@@ -33,11 +35,11 @@ LogSweep::LogSweep(SweepSpec spec)
   assert(spec.valid());
 }
 
-std::vector<float> LogSweep::generateSignal() const
+std::vector<Sample> LogSweep::generateSignal() const
 {
   const auto k = compute_k(spec_);
 
-  std::vector<float> sweep;
+  std::vector<Sample> sweep;
   sweep.reserve(num_samples(spec_));
   for (const auto t : time_vector(spec_))
     sweep.emplace_back(std::sin(2 * M_PI * spec_.freqRange.first *
@@ -45,7 +47,7 @@ std::vector<float> LogSweep::generateSignal() const
   return sweep;
 }
 
-std::vector<float> LogSweep::generateInverse() const
+std::vector<Sample> LogSweep::generateInverse() const
 {
   const auto time = time_vector(spec_);
   const auto k = compute_k(spec_);
@@ -65,8 +67,8 @@ std::vector<float> LogSweep::generateInverse() const
   return invSweep;
 }
 
-std::vector<float> LogSweep::computeIR(
-  const std::vector<float>& signalResponse) const
+std::vector<Sample> LogSweep::computeIR(
+  const std::vector<Sample>& signalResponse) const
 {
   return convolve(signalResponse, generateInverse());
 }

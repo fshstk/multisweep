@@ -20,13 +20,17 @@ struct SweepSpec
 class LogSweep
 {
 public:
+  using Sample = float;
+
+public:
   LogSweep(SweepSpec spec);
 
-  std::vector<float> generateSignal() const;
-  std::vector<float> computeIR(const std::vector<float>& signalResponse) const;
+  std::vector<Sample> generateSignal() const;
+  std::vector<Sample> computeIR(
+    const std::vector<Sample>& signalResponse) const;
 
 private:
-  std::vector<float> generateInverse() const;
+  std::vector<Sample> generateInverse() const;
 
 private:
   const SweepSpec spec_;
