@@ -1,4 +1,5 @@
 #include "FreqResponseDisplay.h"
+#include "FFT.h"
 
 FreqResponseDisplay::FreqResponseDisplay(SweepComponentProcessor& processor)
   : sweep(processor)
