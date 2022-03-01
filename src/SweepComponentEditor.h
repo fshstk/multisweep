@@ -12,25 +12,25 @@ public:
                        juce::AudioProcessorValueTreeState& vts)
     : AudioProcessorEditor(&sweepProcessor)
     , valueTreeState(vts)
-    , sweep(sweepProcessor)
+    , parent(sweepProcessor)
     , prevChannelButton("previous channel", 0.5, lookAndFeel.ClText)
     , nextChannelButton("next channel", 0.0, lookAndFeel.ClText)
     , freqDisplay(sweepProcessor)
   {
     addAndMakeVisible(singleSweepButton);
     singleSweepButton.setButtonText("Sweep Selected Channel");
-    singleSweepButton.onClick = [this] { sweep.startSweep({ .channel = 0 }); };
+    singleSweepButton.onClick = [this] { parent.startSweep({ .channel = 0 }); };
 
     addAndMakeVisible(stopButton);
     stopButton.setButtonText("Stop Sweep");
-    stopButton.onClick = [this] { sweep.stopSweep(); };
+    stopButton.onClick = [this] { parent.stopSweep(); };
 
     addAndMakeVisible(clearButton);
     clearButton.setButtonText("Clear");
-    clearButton.onClick = [this] { sweep.clearData(); };
+    clearButton.onClick = [this] { parent.clearData(); };
 
     addAndMakeVisible(exportButton);
-    exportButton.onClick = [this] { sweep.exportFilter(); };
+    exportButton.onClick = [this] { parent.exportFilter(); };
     exportButton.setButtonText("Export");
 
     addAndMakeVisible(settingsButton);
@@ -68,7 +68,7 @@ private:
   juce::AudioProcessorValueTreeState& valueTreeState;
   iem::LaF lookAndFeel;
 
-  SweepComponentProcessor& sweep;
+  SweepComponentProcessor& parent;
 
   juce::TextButton singleSweepButton;
   juce::TextButton multipleSweepButton;
